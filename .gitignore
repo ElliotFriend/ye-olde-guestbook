@@ -1,3 +1,9 @@
+# Rust's output directory
+target
+
+# Local Soroban settings
+.soroban
+
 .DS_Store
 node_modules
 /build
