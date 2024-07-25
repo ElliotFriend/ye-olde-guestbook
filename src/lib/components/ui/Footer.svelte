@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { PUBLIC_FACTORY_CONTRACT_ADDRESS } from '$env/static/public';
+    import { networks } from 'ye_olde_guestbook';
     import { seContractLink } from '$lib/stellarExpert';
 </script>
 
 <footer class="bg-surface-100-800-token p-6">
     <div class="flex justify-center">
-        {@html seContractLink(PUBLIC_FACTORY_CONTRACT_ADDRESS)}
+        {@html seContractLink(networks.testnet.contractId)}
     </div>
 </footer>

@@ -94,13 +94,10 @@ function importContract({ id, alias }) {
 
     const importContent =
         `import * as Client from '${alias}';\n` +
-        `import { rpcUrl } from './util';\n\n` +
+        `import { RPC_URL } from '$lib/contracts/util';\n\n` +
         `export default new Client.Client({\n` +
-        `  ...Client.networks.${process.env.STELLAR_NETWORK},\n` +
-        `  rpcUrl,\n` +
-        `${
-            process.env.STELLAR_NETWORK === 'local' || 'standalone' ? `  allowHttp: true,\n` : null
-        }` +
+        `    ...Client.networks.${process.env.STELLAR_NETWORK},\n` +
+        `    rpcUrl: RPC_URL,\n` +
         `});\n`;
 
     const outputPath = `${outputDir}/${alias}.ts`;

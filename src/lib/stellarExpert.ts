@@ -76,6 +76,6 @@ export function seContractLink(address: string): string {
     return `<a href="https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/contract/${address}" target="_blank"><code class="code">${address}</code></a>`;
 }
 
-export function seLedgerLink(ledger: string): string {
+export function seLedgerLink(ledger: number): string {
     return `<a href="https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/ledger/${ledger}" target="_blank"><code class="code">${ledger}</code></a>`;
 }

@@ -3,8 +3,6 @@
     import BookOpenText from 'lucide-svelte/icons/book-open-text';
     import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
 
-    import { page } from '$app/stores';
-
     const menuItems = [
         {
             name: 'Sign',
@@ -22,9 +20,16 @@
 <header class="flex flex-col bg-surface-100-800-token space-y-4 p-4">
     <div class="grid grid-cols-[auto_1fr_auto] gap-8">
         <div class="flex-none flex items-center">
-            <a href="/" title="Ye Old Guestbook Home">
+            <a href="/" title="Ye Olde Guestbook Home">
                 <span class="text-xl"
-                    ><span style="font-family: 'Jacquard 12';">Ye Old</span> Guestbook</span
+                    ><span
+                        class="bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
+                        style="font-family: 'Jacquard 12';">Ye Olde</span
+                    >
+                    <span
+                        class="bg-gradient-to-br from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
+                        >Guestbook</span
+                    ></span
                 >
             </a>
         </div>
