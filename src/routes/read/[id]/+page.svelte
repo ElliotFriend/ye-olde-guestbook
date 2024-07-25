@@ -5,15 +5,7 @@
     export let data: PageData;
 </script>
 
-<ol class="breadcrumb">
-    <li class="crumb"><a class="anchor" href="/">Home</a></li>
-    <li class="crumb-separator" aria-hidden>/</li>
-    <li class="crumb"><a class="anchor" href="/read">Read</a></li>
-    <li class="crumb-separator" aria-hidden>/</li>
-    <li>{data.id}</li>
-</ol>
-
-<h1 class="h1">Read message {data.id}</h1>
+<h1 class="h1">Read Message {data.id}</h1>
 <p>
     You're viewing just message {data.id}. You can
     <a class="anchor" href="/read">read all of them here</a>, as well.
