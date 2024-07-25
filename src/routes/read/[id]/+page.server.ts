@@ -5,7 +5,7 @@ import { scValToNative } from 'ye_olde_guestbook';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
-    let result
+    let result;
     try {
         result = await guestbook.read_message({
             message_id: Number(params.id),
