@@ -17,9 +17,9 @@
         </div>
         <hr class="opacity-50" />
         <footer class="p-4 flex justify-start items-center space-x-4">
-            <Identicon address={message.address} />
+            <Identicon address={message.author} />
             <div class="flex-auto flex justify-between items-center">
-                <h6 class="font-bold">By {@html seLedgerLink(message.address)}</h6>
+                <h6 class="font-bold">By {@html seLedgerLink(message.author)}</h6>
                 <small>At ledger {@html seLedgerLink(message.ledger)}</small>
             </div>
         </footer>
