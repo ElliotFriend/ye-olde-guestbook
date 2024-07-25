@@ -12,7 +12,7 @@
 <div class="h-screen grid grid-rows-[auto_1fr_auto]">
     <Header />
     <div class="container mx-auto">
-        <main class="col-span-1 p-4 space-y-4">
+        <main class="col-span-1 p-6 space-y-4 max-w-4xl mx-auto">
             <slot />
         </main>
     </div>

@@ -22,8 +22,10 @@
 <header class="flex flex-col bg-surface-100-800-token space-y-4 p-4">
     <div class="grid grid-cols-[auto_1fr_auto] gap-8">
         <div class="flex-none flex items-center">
-            <a href="/" title="Old Guestbook Homepage">
-                <span><strong class="text-xl">Old Guestbook</strong></span>
+            <a href="/" title="Ye Old Guestbook Home">
+                <span class="text-xl"
+                    ><span style="font-family: 'Jacquard 12';">Ye Old</span> Guestbook</span
+                >
             </a>
         </div>
         <div class="flex space-x-4">

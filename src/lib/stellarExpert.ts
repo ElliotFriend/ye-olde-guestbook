@@ -1,3 +1,5 @@
+import { PUBLIC_STELLAR_NETWORK } from '$env/static/public';
+
 const RESOLUTION: number = 7;
 const SIZE: number = 448;
 const base32Alphabet: { [key: string]: number } = {};
@@ -44,7 +46,7 @@ function decodeBase32(input: string) {
  * @param {Number} [size] - Identicon painting area size, in pixels (by default 448)
  * @return {String}
  */
-export function drawIdenticon(address: string, size = SIZE) {
+export function drawIdenticon(address: string, size: number = SIZE): string {
     //take 16 meaningful bytes from the raw pub key
     const decoded = decodeBase32(address).slice(2, 16);
     const width = RESOLUTION;
@@ -68,4 +70,12 @@ export function drawIdenticon(address: string, size = SIZE) {
         }
     }
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" fill="${fillStyle}">${dots.join('')}</svg>`;
+}
+
+export function seContractLink(address: string): string {
+    return `<a href="https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/contract/${address}" target="_blank"><code class="code">${address}</code></a>`;
+}
+
+export function seLedgerLink(ledger: string): string {
+    return `<a href="https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/ledger/${ledger}" target="_blank"><code class="code">${ledger}</code></a>`;
 }

@@ -6,7 +6,7 @@
 </script>
 
 <h1 class="h1">Sign the Book</h1>
-<p>Please feel free to sign my guestbook!</p>
+<p>Join in on the age-old tradition, and sign my guestbook! Please.</p>
 
 <label class="label">
     <span>Title</span>
