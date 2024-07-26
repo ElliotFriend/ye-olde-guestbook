@@ -2,6 +2,7 @@
     import Signature from 'lucide-svelte/icons/signature';
     import BookOpenText from 'lucide-svelte/icons/book-open-text';
     import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
+    import ConnectButtons from '$lib/components/ConnectButtons.svelte';
 
     const menuItems = [
         {
@@ -37,6 +38,9 @@
             {#each menuItems as item}
                 <NavbarButton {item} />
             {/each}
+        </div>
+        <div>
+            <ConnectButtons />
         </div>
     </div>
 </header>

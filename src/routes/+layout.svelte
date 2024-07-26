@@ -7,8 +7,12 @@
     import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
     import { storePopup } from '@skeletonlabs/skeleton';
     storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+
+    import { initializeStores, Toast } from '@skeletonlabs/skeleton';
+    initializeStores();
 </script>
 
+<Toast />
 <div class="h-screen grid grid-rows-[auto_1fr_auto]">
     <Header />
     <div class="container mx-auto">

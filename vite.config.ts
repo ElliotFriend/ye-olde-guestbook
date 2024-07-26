@@ -5,7 +5,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
     server: {
         fs: {
-            allow: ['packages'],
+            allow: ['./packages'],
         },
     },
     plugins: [sveltekit(), purgeCss()],

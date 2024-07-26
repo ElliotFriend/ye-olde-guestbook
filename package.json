@@ -15,6 +15,8 @@
     },
     "dependencies": {
         "@floating-ui/dom": "1.6.8",
+        "base64url": "^3.0.1",
+        "buffer": "^6.0.3",
         "lucide-svelte": "^0.414.0",
         "passkey-kit": "^0.5.3",
         "svelte-persisted-store": "^0.11.0"
