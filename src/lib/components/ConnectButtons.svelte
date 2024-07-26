@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getToastStore } from '@skeletonlabs/skeleton';
+    import { getToastStore, popup, type PopupSettings } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
 
     import { error } from '@sveltejs/kit';
@@ -8,6 +8,10 @@
     import base64url from 'base64url';
     import { keyId } from '$lib/stores/keyId';
     import { contractId } from '$lib/stores/contractId';
+    import Settings from 'lucide-svelte/icons/settings';
+    import ChevronDown from 'lucide-svelte/icons/chevron-down';
+    import Identicon from './ui/Identicon.svelte';
+    import StellarExpertLink from './ui/StellarExpertLink.svelte';
 
     async function signup() {
         try {
@@ -72,10 +76,42 @@
             });
         }
     }
+
+    const popupFeatured: PopupSettings = {
+        event: 'click',
+        target: 'popupFeatured',
+        placement: 'bottom'
+    }
 </script>
 
-<div class="btn-group variant-filled">
-    <button class="btn" on:click={signup}>Signup</button>
-    <button class="btn" on:click={login}>Login</button>
-    <button class="btn" on:click={logout}>Logout</button>
+<div class="flex space-x-1 md:space-x-2">
+    {#if !$contractId}
+        <button class="btn variant-filled-primary" on:click={signup}>Signup</button>
+        <button class="btn variant-soft-primary" on:click={login}>Login</button>
+    {:else}
+        <button class="btn hover:variant-soft-primary" use:popup={popupFeatured}>
+            <span><Settings /></span>
+            <span><ChevronDown size="18" /></span>
+        </button>
+
+        <div class="card p-4 w-60 shadow-xl z-10" data-popup="popupFeatured">
+            <div class="space-y-4">
+                <Identicon width="w-12" address={$contractId} />
+                <div>
+                    <p class="font-bold">Your Wallet</p>
+                    <p><StellarExpertLink target={$contractId} /></p>
+                </div>
+                <hr class="opacity-50" />
+                <nav class="list-nav">
+                    <ul>
+                        <li><a href="/">Fund my wallet</a></li>
+                        <li><a href="/">View my wallet</a></li>
+                        <li>
+                            <button class="btn variant-soft-error w-full" on:click={logout}>Logout</button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    {/if}
 </div>

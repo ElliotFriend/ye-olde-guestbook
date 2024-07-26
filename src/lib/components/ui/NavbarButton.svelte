@@ -1,7 +1,7 @@
 <script>
     export let item;
     import { page } from '$app/stores';
-    $: className = `btn hover:variant-filled-primary${$page.url.pathname.startsWith(item.href) ? ' variant-filled-primary' : ''}`;
+    $: className = `btn hover:variant-soft-primary${$page.url.pathname.startsWith(item.href) ? ' variant-soft-primary' : ''}`;
 </script>
 
 <a href={item.href} class={className}>

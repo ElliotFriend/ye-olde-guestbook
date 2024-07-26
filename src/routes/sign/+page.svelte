@@ -3,6 +3,7 @@
     const toastStore = getToastStore();
 
     import Signature from 'lucide-svelte/icons/signature';
+    import LoaderCircle from 'lucide-svelte/icons/loader-circle'
     import { contractId } from '$lib/stores/contractId';
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
     import { account, send } from '$lib/passkeyClient';
@@ -63,9 +64,15 @@
 <button
     on:click={signGuestbook}
     type="button"
-    class="btn variant-filled"
+    class="btn variant-filled-primary"
     disabled={signButtonDisabled}
 >
-    <span><Signature /></span>
+    <span>
+        {#if isLoading}
+            <LoaderCircle class="animate-spin" />
+        {:else}
+            <Signature />
+        {/if}
+    </span>
     <span>Sign!</span>
 </button>

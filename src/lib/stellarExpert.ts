@@ -73,9 +73,17 @@ export function drawIdenticon(address: string, size: number = SIZE): string {
 }
 
 export function seContractLink(address: string): string {
-    return `<a href="https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/contract/${address}" target="_blank"><code class="code">${address}</code></a>`;
+    return `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/contract/${address}`;
 }
 
 export function seLedgerLink(ledger: number): string {
-    return `<a href="https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/ledger/${ledger}" target="_blank"><code class="code">${ledger}</code></a>`;
+    return `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/ledger/${ledger}`;
+}
+
+export function seTransactionLink(transactionHash: string): string {
+    return `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/tx/${transactionHash}`;
+}
+
+export function seAccountLink(account: string): string {
+    return `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/account/${account}`;
 }
