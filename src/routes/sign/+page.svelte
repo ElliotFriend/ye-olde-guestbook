@@ -4,17 +4,19 @@
 
     import Signature from 'lucide-svelte/icons/signature';
     import { contractId } from '$lib/stores/contractId';
-    import type { PageData } from './$types';
     import ye_olde_guestbook from "$lib/contracts/ye_olde_guestbook";
     import { account, send } from "$lib/passkeyClient";
     import { keyId } from "$lib/stores/keyId";
 
-    export let data: PageData;
     let messageTitle: string;
     let messageText: string;
+    let isLoading: boolean = false;
+
+    $: signButtonDisabled = isLoading || !$contractId
 
     async function signGuestbook() {
         try {
+            isLoading = true
             const { built } = await ye_olde_guestbook.write_message({
                 author: $contractId,
                 title: messageTitle,
@@ -22,9 +24,7 @@
             })
 
             const xdr = await account.sign(built!, { keyId: $keyId})
-            let res = await send(xdr)
-
-            console.log(res)
+            await send(xdr)
 
             toastStore.trigger({
                 message: 'Huzzah!! You signed my guestbook! Thanks.',
@@ -36,6 +36,8 @@
                 message: 'Something went wrong logging out. Please try again later.',
                 background: 'variant-filled-error',
             })
+        } finally {
+            isLoading = false;
         }
     }
 </script>
@@ -53,7 +55,7 @@
     <textarea bind:value={messageText} class="textarea" rows="4" placeholder="Write your message here" />
 </label>
 
-<button on:click={signGuestbook} type="button" class="btn variant-filled" disabled={!$contractId}>
+<button on:click={signGuestbook} type="button" class="btn variant-filled" disabled={signButtonDisabled}>
     <span><Signature /></span>
     <span>Sign!</span>
 </button>
