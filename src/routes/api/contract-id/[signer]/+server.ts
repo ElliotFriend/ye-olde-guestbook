@@ -15,7 +15,7 @@ export const GET: RequestHandler = async ({ params }) => {
             message: 'Contract not found',
         });
     }
-    let contractId = await res.text()
+    let contractId = await res.text();
 
     return new Response(String(contractId));
 };
