@@ -2,7 +2,7 @@
     import ArrowRight from 'lucide-svelte/icons/arrow-right';
 </script>
 
-<h1 class="h1 !text-10xl md:!text-8xl max-w-[600px]">
+<h1 class="h1 !text-8xl max-w-[600px]">
     <span
         class="bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
         style="font-family: 'Jacquard 12';">Ye Olde</span

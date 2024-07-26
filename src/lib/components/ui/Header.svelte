@@ -18,29 +18,31 @@
     ];
 </script>
 
-<header class="flex flex-col bg-surface-100-800-token space-y-4 p-4">
-    <div class="grid grid-cols-[auto_1fr_auto] gap-8">
-        <div class="flex-none flex items-center">
-            <a href="/" title="Ye Olde Guestbook Home">
-                <span class="text-xl"
-                    ><span
-                        class="bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
-                        style="font-family: 'Jacquard 12';">Ye Olde</span
+<header class="flex-none">
+    <div class="flex flex-col bg-surface-100-800-token space-y-4 p-4">
+        <div class="grid grid-cols-[auto_1fr_auto] gap-8">
+            <div class="flex-none flex items-center">
+                <a href="/" title="Ye Olde Guestbook Home">
+                    <span class="text-xl"
+                        ><span
+                            class="bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
+                            style="font-family: 'Jacquard 12';">Ye Olde</span
+                        >
+                        <span
+                            class="bg-gradient-to-br from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
+                            >Guestbook</span
+                        ></span
                     >
-                    <span
-                        class="bg-gradient-to-br from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
-                        >Guestbook</span
-                    ></span
-                >
-            </a>
-        </div>
-        <div class="flex space-x-4">
-            {#each menuItems as item}
-                <NavbarButton {item} />
-            {/each}
-        </div>
-        <div>
-            <ConnectButtons />
+                </a>
+            </div>
+            <div class="flex space-x-4">
+                {#each menuItems as item}
+                    <NavbarButton {item} />
+                {/each}
+            </div>
+            <div>
+                <ConnectButtons />
+            </div>
         </div>
     </div>
 </header>

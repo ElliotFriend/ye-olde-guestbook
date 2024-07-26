@@ -3,7 +3,7 @@
     import { seContractLink } from '$lib/stellarExpert';
 </script>
 
-<footer class="bg-surface-100-800-token p-6">
+<footer class="flex-none bg-surface-100-800-token p-6">
     <div class="flex justify-center">
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
         {@html seContractLink(networks.testnet.contractId)}
