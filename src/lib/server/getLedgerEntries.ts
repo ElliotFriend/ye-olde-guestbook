@@ -33,7 +33,7 @@ export async function getAllMessages(totalCount: number): Promise<Message[]> {
     }
 
     const result = await server.getLedgerEntries(...ledgerKeysArray);
-    let messages = result.entries.map((message) => {
+    const messages = result.entries.map((message) => {
         return {
             ...scValToNative(message.val.contractData().val()),
         };

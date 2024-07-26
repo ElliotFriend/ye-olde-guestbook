@@ -5,5 +5,6 @@
 </script>
 
 <Avatar width="w-8">
+    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
     {@html drawIdenticon(address)}
 </Avatar>

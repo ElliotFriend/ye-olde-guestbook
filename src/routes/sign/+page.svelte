@@ -30,7 +30,7 @@
                 message: 'Huzzah!! You signed my guestbook! Thanks.',
                 background: 'variant-filled-success',
             });
-        } catch (err: any) {
+        } catch (err) {
             console.log(err);
             toastStore.trigger({
                 message: 'Something went wrong logging out. Please try again later.',

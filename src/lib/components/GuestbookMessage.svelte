@@ -20,7 +20,9 @@
         <footer class="p-4 flex justify-start items-center space-x-4">
             <Identicon address={message.author} />
             <div class="flex-auto flex justify-between items-center">
+                <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                 <h6 class="font-bold">By {@html seContractLink(message.author)}</h6>
+                <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                 <small>At ledger {@html seLedgerLink(message.ledger)}</small>
             </div>
         </footer>

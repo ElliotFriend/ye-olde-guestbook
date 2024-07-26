@@ -27,7 +27,7 @@
                 });
             }
             send(xdr);
-        } catch (err: any) {
+        } catch (err) {
             console.log(err);
             toastStore.trigger({
                 message: 'Something went wrong signing up. Please try again later.',
@@ -49,7 +49,7 @@
 
             contractId.set(cid);
             console.log(cid);
-        } catch (err: any) {
+        } catch (err) {
             console.log(err);
             toastStore.trigger({
                 message: 'Something went wrong logging in. Please try again later.',
@@ -64,7 +64,7 @@
             contractId.set('');
             localStorage.removeItem('yog:keyId');
             window.location.reload();
-        } catch (err: any) {
+        } catch (err) {
             console.log(err);
             toastStore.trigger({
                 message: 'Something went wrong logging out. Please try again later.',
