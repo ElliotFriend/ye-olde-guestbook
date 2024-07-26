@@ -3,7 +3,7 @@
     const toastStore = getToastStore();
 
     import Signature from 'lucide-svelte/icons/signature';
-    import LoaderCircle from 'lucide-svelte/icons/loader-circle'
+    import LoaderCircle from 'lucide-svelte/icons/loader-circle';
     import { contractId } from '$lib/stores/contractId';
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
     import { account, send } from '$lib/passkeyClient';

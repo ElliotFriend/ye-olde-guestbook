@@ -80,8 +80,8 @@
     const popupFeatured: PopupSettings = {
         event: 'click',
         target: 'popupFeatured',
-        placement: 'bottom'
-    }
+        placement: 'bottom',
+    };
 </script>
 
 <div class="flex space-x-1 md:space-x-2">
@@ -107,7 +107,9 @@
                         <li><a href="/">Fund my wallet</a></li>
                         <li><a href="/">View my wallet</a></li>
                         <li>
-                            <button class="btn variant-soft-error w-full" on:click={logout}>Logout</button>
+                            <button class="btn variant-soft-error w-full" on:click={logout}
+                                >Logout</button
+                            >
                         </li>
                     </ul>
                 </nav>

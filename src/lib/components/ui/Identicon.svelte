@@ -2,7 +2,7 @@
     import { Avatar } from '@skeletonlabs/skeleton';
     import { drawIdenticon } from '$lib/stellarExpert';
     export let address: string;
-    export let width: string = "w-8"
+    export let width: string = 'w-8';
 </script>
 
 <Avatar {width}>
