@@ -37,8 +37,8 @@ export const fundKeypair = new Promise<Keypair>(async (resolve) => {
 
     resolve(keypair)
 })
-export const fundPubkey = (await fundKeypair).publicKey()
-export const fundSigner = basicNodeSigner(await fundKeypair, PUBLIC_STELLAR_NETWORK_PASSPHRASE)
+// export const fundPubkey = (await fundKeypair).publicKey()
+// export const fundSigner = basicNodeSigner(await fundKeypair, PUBLIC_STELLAR_NETWORK_PASSPHRASE)
 
 export const sac = new SACClient({
     rpcUrl: PUBLIC_STELLAR_RPC_URL,
@@ -46,26 +46,26 @@ export const sac = new SACClient({
 });
 export const native = sac.getSACClient(PUBLIC_NATIVE_CONTRACT_ADDRESS)
 
-export async function fund(to: string) {
-    try {
-        const { built, ...transfer } = await native.transfer({
-            to,
-            from: fundPubkey,
-            amount: BigInt(1000 * 10_000_000),
-        })
+// export async function fund(to: string) {
+//     try {
+//         const { built, ...transfer } = await native.transfer({
+//             to,
+//             from: fundPubkey,
+//             amount: BigInt(1000 * 10_000_000),
+//         })
 
-        await transfer.signAuthEntries({
-            publicKey: fundPubkey,
-            signAuthEntry: (auth) => fundSigner.signAuthEntry(auth)
-        })
+//         await transfer.signAuthEntries({
+//             publicKey: fundPubkey,
+//             signAuthEntry: (auth) => fundSigner.signAuthEntry(auth)
+//         })
 
-        const res = await send(built!.toXDR());
+//         const res = await send(built!.toXDR());
 
-        console.log(res)
-    } catch (err) {
-        console.error(err)
-    }
-}
+//         console.log(res)
+//     } catch (err) {
+//         console.error(err)
+//     }
+// }
 
 export async function send(xdr: string) {
     return fetch('/api/send', {

@@ -3,7 +3,7 @@
     const toastStore = getToastStore();
 
     import { error } from '@sveltejs/kit';
-    import { account, send, getContractId, fund } from '$lib/passkeyClient';
+    import { account, send, getContractId } from '$lib/passkeyClient';
     import { PUBLIC_SITE_NAME } from '$env/static/public';
     import base64url from 'base64url';
     import { keyId } from '$lib/stores/keyId';
@@ -64,25 +64,25 @@
 
     async function funding() {
         const toastId = toastStore.trigger({
-            message: 'Sending request. Airdrop incoming!',
+            message: 'This is currently disabled. Sorry',
             background: 'variant-filled-warning',
         })
 
-        try {
-            await fund($contractId)
-            toastStore.close(toastId)
-            toastStore.trigger({
-                message: 'Funds received. Congrats!',
-                background: 'variant-filled-success',
-            })
-        } catch (err) {
-            toastStore.close(toastId)
-            console.log(err);
-            toastStore.trigger({
-                message: 'Something went wrong logging in. Please try again later.',
-                background: 'variant-filled-error',
-            });
-        }
+        // try {
+        //     await fund($contractId)
+        //     toastStore.close(toastId)
+        //     toastStore.trigger({
+        //         message: 'Funds received. Congrats!',
+        //         background: 'variant-filled-success',
+        //     })
+        // } catch (err) {
+        //     toastStore.close(toastId)
+        //     console.log(err);
+        //     toastStore.trigger({
+        //         message: 'Something went wrong logging in. Please try again later.',
+        //         background: 'variant-filled-error',
+        //     });
+        // }
     }
 
     async function logout() {
