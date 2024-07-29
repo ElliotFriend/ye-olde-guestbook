@@ -1,5 +1,4 @@
 import { Account, Keypair, SorobanRpc, StrKey } from '@stellar/stellar-sdk';
-import { basicNodeSigner } from '@stellar/stellar-sdk/contract'
 import { Buffer } from 'buffer';
 import { PasskeyKit, SACClient } from 'passkey-kit';
 
@@ -27,16 +26,17 @@ export const fundKeypair = new Promise<Keypair>(async (resolve) => {
     now.setMinutes(0, 0, 0);
 
     const nowData = new TextEncoder().encode(now.getTime().toString());
-    const hashBuffer = crypto.subtle ? await crypto.subtle.digest('SHA-256', nowData) : crypto.getRandomValues(new Uint8Array(32));
-    const keypair = Keypair.fromRawEd25519Seed(Buffer.from(hashBuffer))
+    const hashBuffer = crypto.subtle
+        ? await crypto.subtle.digest('SHA-256', nowData)
+        : crypto.getRandomValues(new Uint8Array(32));
+    const keypair = Keypair.fromRawEd25519Seed(Buffer.from(hashBuffer));
 
-    rpc
-        .requestAirdrop(keypair.publicKey())
+    rpc.requestAirdrop(keypair.publicKey())
         .then(console.log)
-        .catch(() => { })
+        .catch(() => {});
 
-    resolve(keypair)
-})
+    resolve(keypair);
+});
 // export const fundPubkey = (await fundKeypair).publicKey()
 // export const fundSigner = basicNodeSigner(await fundKeypair, PUBLIC_STELLAR_NETWORK_PASSPHRASE)
 
@@ -44,7 +44,7 @@ export const sac = new SACClient({
     rpcUrl: PUBLIC_STELLAR_RPC_URL,
     networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
 });
-export const native = sac.getSACClient(PUBLIC_NATIVE_CONTRACT_ADDRESS)
+export const native = sac.getSACClient(PUBLIC_NATIVE_CONTRACT_ADDRESS);
 
 // export async function fund(to: string) {
 //     try {

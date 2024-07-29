@@ -13,13 +13,12 @@
     import Identicon from '$lib/components/ui/Identicon.svelte';
     import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
     import { seContractLink } from '$lib/stellarExpert';
-    import { onMount } from 'svelte';
 
-    let balance: string = "0";
+    let balance: string = '0';
 
     async function getBalance() {
         try {
-            const { result } = await native.balance({ id: $contractId })
+            const { result } = await native.balance({ id: $contractId });
             balance = result.toString();
         } catch (err) {
             console.log(err);
@@ -80,10 +79,10 @@
     }
 
     async function funding() {
-        const toastId = toastStore.trigger({
+        toastStore.trigger({
             message: 'This is currently disabled. Sorry',
             background: 'variant-filled-warning',
-        })
+        });
 
         // try {
         //     await fund($contractId)
@@ -143,7 +142,13 @@
                     <div class="flex flex-col gap-0.25">
                         <div class="text-right"><small>Balance</small></div>
                         {#await getBalance() then}
-                            <div><h4 class="h4">{parseFloat((Number(balance) / 10e7).toFixed(2))}<small>XLM</small></h4></div>
+                            <div>
+                                <h4 class="h4">
+                                    {parseFloat((Number(balance) / 10e7).toFixed(2))}<small
+                                        >XLM</small
+                                    >
+                                </h4>
+                            </div>
                         {/await}
                     </div>
                 </div>
@@ -156,9 +161,19 @@
                 <hr class="opacity-50" />
                 <nav class="list-nav">
                     <ul>
-                        <li><button class="btn variant-soft-success w-full" on:click={funding}>Fund Wallet</button></li>
-                        <li><a href={seContractLink($contractId)} class="btn variant-soft-surface">View Wallet</a></li>
-                        <li><button class="btn variant-soft-surface w-full">Send Donation</button></li>
+                        <li>
+                            <button class="btn variant-soft-success w-full" on:click={funding}
+                                >Fund Wallet</button
+                            >
+                        </li>
+                        <li>
+                            <a href={seContractLink($contractId)} class="btn variant-soft-surface"
+                                >View Wallet</a
+                            >
+                        </li>
+                        <li>
+                            <button class="btn variant-soft-surface w-full">Send Donation</button>
+                        </li>
                         <li>
                             <button class="btn variant-soft-error w-full" on:click={logout}
                                 >Logout</button
