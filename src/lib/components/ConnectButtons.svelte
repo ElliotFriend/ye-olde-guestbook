@@ -3,15 +3,32 @@
     const toastStore = getToastStore();
 
     import { error } from '@sveltejs/kit';
-    import { account, send, getContractId } from '$lib/passkeyClient';
+    import { account, send, getContractId, native } from '$lib/passkeyClient';
     import { PUBLIC_SITE_NAME } from '$env/static/public';
     import base64url from 'base64url';
     import { keyId } from '$lib/stores/keyId';
     import { contractId } from '$lib/stores/contractId';
     import Settings from 'lucide-svelte/icons/settings';
     import ChevronDown from 'lucide-svelte/icons/chevron-down';
-    import Identicon from './ui/Identicon.svelte';
-    import StellarExpertLink from './ui/StellarExpertLink.svelte';
+    import Identicon from '$lib/components/ui/Identicon.svelte';
+    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
+    import { seContractLink } from '$lib/stellarExpert';
+    import { onMount } from 'svelte';
+
+    let balance: string = "0";
+
+    async function getBalance() {
+        try {
+            const { result } = await native.balance({ id: $contractId })
+            balance = result.toString();
+        } catch (err) {
+            console.log(err);
+            toastStore.trigger({
+                message: 'Something went wrong checking your balance. Please try again later.',
+                background: 'variant-filled-error',
+            });
+        }
+    }
 
     async function signup() {
         try {
@@ -119,17 +136,29 @@
 
         <div class="card p-4 w-60 shadow-xl z-10" data-popup="popupFeatured">
             <div class="space-y-4">
-                <Identicon width="w-12" address={$contractId} />
+                <div class="flex gap-4 w-full justify-between">
+                    <div>
+                        <Identicon width="w-12" address={$contractId} />
+                    </div>
+                    <div class="flex flex-col gap-0.25">
+                        <div class="text-right"><small>Balance</small></div>
+                        {#await getBalance() then}
+                            <div><h4 class="h4">{parseFloat((Number(balance) / 10e7).toFixed(2))}<small>XLM</small></h4></div>
+                        {/await}
+                    </div>
+                </div>
                 <div>
                     <p class="font-bold">Your Wallet</p>
-                    <p><StellarExpertLink target={$contractId} /></p>
+                    <div class="mt-1">
+                        <TruncatedAddress address={$contractId} />
+                    </div>
                 </div>
                 <hr class="opacity-50" />
                 <nav class="list-nav">
                     <ul>
                         <li><button class="btn variant-soft-success w-full" on:click={funding}>Fund Wallet</button></li>
-                        <li><a href="/">View Wallet</a></li>
-                        <li><a href="/">Send Donation</a></li>
+                        <li><a href={seContractLink($contractId)} class="btn variant-soft-surface">View Wallet</a></li>
+                        <li><button class="btn variant-soft-surface w-full">Send Donation</button></li>
                         <li>
                             <button class="btn variant-soft-error w-full" on:click={logout}
                                 >Logout</button
