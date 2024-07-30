@@ -10,12 +10,13 @@
     import { storePopup } from '@skeletonlabs/skeleton';
     storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
-    import { initializeStores, Toast } from '@skeletonlabs/skeleton';
+    import { initializeStores, Toast, Modal } from '@skeletonlabs/skeleton';
     initializeStores();
 </script>
 
 <Toast />
 <SidebarDrawer />
+<Modal />
 
 <div class="w-full h-screen flex flex-col overflow-hidden">
     <Header />

@@ -1,20 +1,31 @@
 <script lang="ts">
-    import { getToastStore, popup, type PopupSettings } from '@skeletonlabs/skeleton';
+    import {
+        getModalStore,
+        getToastStore,
+        popup,
+        type ModalSettings,
+        type PopupSettings,
+    } from '@skeletonlabs/skeleton';
     const toastStore = getToastStore();
+    const modalStore = getModalStore();
 
     import { error } from '@sveltejs/kit';
-    import { account, send, getContractId, native } from '$lib/passkeyClient';
+    import { account, send, getContractId, native, fundContract } from '$lib/passkeyClient';
     import { PUBLIC_SITE_NAME } from '$env/static/public';
     import base64url from 'base64url';
     import { keyId } from '$lib/stores/keyId';
     import { contractId } from '$lib/stores/contractId';
     import Settings from 'lucide-svelte/icons/settings';
     import ChevronDown from 'lucide-svelte/icons/chevron-down';
+    import { Wallet, CircleDollarSign, HelpingHand, LogOut, LoaderCircle } from 'lucide-svelte';
     import Identicon from '$lib/components/ui/Identicon.svelte';
     import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
     import { seContractLink } from '$lib/stellarExpert';
+    import { networks } from 'ye_olde_guestbook';
 
     let balance: string = '0';
+    let isFunding: boolean = false;
+    let isDonating: boolean = false;
 
     async function getBalance() {
         try {
@@ -78,27 +89,84 @@
         }
     }
 
-    async function funding() {
-        toastStore.trigger({
-            message: 'This is currently disabled. Sorry',
+    async function fund() {
+        isFunding = true;
+        const toastId = toastStore.trigger({
+            message: 'You got it! Awaiting airdrop.',
             background: 'variant-filled-warning',
+            autohide: false,
         });
 
-        // try {
-        //     await fund($contractId)
-        //     toastStore.close(toastId)
-        //     toastStore.trigger({
-        //         message: 'Funds received. Congrats!',
-        //         background: 'variant-filled-success',
-        //     })
-        // } catch (err) {
-        //     toastStore.close(toastId)
-        //     console.log(err);
-        //     toastStore.trigger({
-        //         message: 'Something went wrong logging in. Please try again later.',
-        //         background: 'variant-filled-error',
-        //     });
-        // }
+        try {
+            await fundContract($contractId);
+            toastStore.close(toastId);
+            toastStore.trigger({
+                message: 'Funds received. Congrats!',
+                background: 'variant-filled-success',
+            });
+            getBalance();
+        } catch (err) {
+            toastStore.close(toastId);
+            console.log(err);
+            toastStore.trigger({
+                message: 'Something went funding smart wallet. Please try again later.',
+                background: 'variant-filled-error',
+            });
+        } finally {
+            isFunding = false;
+        }
+    }
+
+    async function donate() {
+        isDonating = true;
+        let toastId: string = '';
+        try {
+            const modal: ModalSettings = {
+                type: 'prompt',
+                title: 'Your Generosity Knows No Bounds!',
+                body: 'Donations help this guestbook stay alive. Please enter the quantity of XLM you would like to donate.',
+                valueAttr: {
+                    type: 'number',
+                    required: true,
+                    min: 1,
+                },
+                response: async (donation: number) => {
+                    toastId = toastStore.trigger({
+                        message: 'Submitting donation. Much appreciated!',
+                        background: 'variant-filled-warning',
+                        autohide: false,
+                    });
+
+                    const { built } = await native.transfer({
+                        to: networks.testnet.contractId,
+                        from: $contractId,
+                        amount: BigInt(donation * 10_000_000),
+                    });
+
+                    const xdr = await account.sign(built!, { keyId: $keyId });
+                    const res = await send(xdr);
+
+                    console.log(res);
+
+                    toastStore.close(toastId);
+                    toastStore.trigger({
+                        message: 'Donation received! You reall ARE the goat.',
+                        background: 'variant-filled-success',
+                    });
+                    getBalance();
+                },
+            };
+            modalStore.trigger(modal);
+        } catch (err) {
+            console.log(err);
+            toastStore.trigger({
+                message: 'Something went wrong donating. Please try again later.',
+                background: 'variant-filled-error',
+            });
+        } finally {
+            isDonating = false;
+            toastStore.close(toastId);
+        }
     }
 
     async function logout() {
@@ -144,7 +212,7 @@
                         {#await getBalance() then}
                             <div>
                                 <h4 class="h4">
-                                    {parseFloat((Number(balance) / 10e7).toFixed(2))}<small
+                                    {parseFloat((Number(balance) / 1e7).toFixed(2))}<small
                                         >XLM</small
                                     >
                                 </h4>
@@ -162,21 +230,47 @@
                 <nav class="list-nav">
                     <ul>
                         <li>
-                            <button class="btn variant-soft-success w-full" on:click={funding}
-                                >Fund Wallet</button
+                            <button
+                                class="btn variant-soft-success w-full"
+                                on:click={fund}
+                                disabled={isFunding}
+                            >
+                                <span>
+                                    {#if isFunding}
+                                        <LoaderCircle class="animate-spin" />
+                                    {:else}
+                                        <CircleDollarSign />
+                                    {/if}
+                                </span>
+                                <span>Fund Wallet</span>
+                            </button>
+                        </li>
+                        <li>
+                            <a
+                                href={seContractLink($contractId)}
+                                class="btn variant-soft-surface"
+                                target="_blank"
+                            >
+                                <span><Wallet /></span>
+                                <span>View Wallet</span></a
                             >
                         </li>
                         <li>
-                            <a href={seContractLink($contractId)} class="btn variant-soft-surface"
-                                >View Wallet</a
-                            >
+                            <button class="btn variant-soft-surface w-full" on:click={donate}>
+                                <span>
+                                    {#if isDonating}
+                                        <LoaderCircle class="animate-spin" />
+                                    {:else}
+                                        <HelpingHand />
+                                    {/if}
+                                </span>
+                                <span>Send Donation</span>
+                            </button>
                         </li>
                         <li>
-                            <button class="btn variant-soft-surface w-full">Send Donation</button>
-                        </li>
-                        <li>
-                            <button class="btn variant-soft-error w-full" on:click={logout}
-                                >Logout</button
+                            <button class="btn variant-soft-error w-full" on:click={logout}>
+                                <span><LogOut /></span>
+                                <span>Logout</span></button
                             >
                         </li>
                     </ul>
