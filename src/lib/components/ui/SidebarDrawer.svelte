@@ -1,8 +1,6 @@
 <script lang="ts">
-    import { page } from '$app/stores';
     import { getDrawerStore, Drawer } from '@skeletonlabs/skeleton';
     import BookOpenText from 'lucide-svelte/icons/book-open-text';
-    import House from 'lucide-svelte/icons/house';
     import Signature from 'lucide-svelte/icons/signature';
     const drawerStore = getDrawerStore();
 
@@ -29,7 +27,12 @@
         <nav class="list-nav">
             <ul>
                 {#each menuItems as item}
-                    <a href={item.href} class="btn variant-soft-surface" on:keypress on:click={() => onClickSidebarItem()}>
+                    <a
+                        href={item.href}
+                        class="btn variant-soft-surface"
+                        on:keypress
+                        on:click={() => onClickSidebarItem()}
+                    >
                         <span><svelte:component this={item.icon} /></span>
                         <span>{item.name}</span>
                     </a>
