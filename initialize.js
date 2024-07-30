@@ -79,7 +79,7 @@ function contracts() {
 
 function bind({ alias, id }) {
     exe(
-        `${cli} contract bindings typescript --contract-id ${id} --output-dir ${dirname}/packages/${alias} --overwrite`,
+        `${cli} contract bindings typescript --id ${id} --output-dir ${dirname}/packages/${alias} --overwrite`,
     );
 }
 
@@ -111,9 +111,20 @@ function importAll() {
     contracts().forEach(importContract);
 }
 
+function initializeContract({ id, alias }) {
+    exe(
+        `${cli} contract invoke --id ${id} -- initialize --admin ${process.env.STELLAR_ACCOUNT} --title "Hello, Initialized Contract!" --text "I would be most honored if you would please sign my humble guestbook."`,
+    );
+}
+
+function initializeAll() {
+    contracts().forEach(initializeContract);
+}
+
 // Calling the functions (equivalent to the last part of your bash script)
 fundAll();
 buildAll();
 deployAll();
+initializeAll();
 bindAll();
 importAll();
