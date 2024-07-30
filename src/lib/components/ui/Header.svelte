@@ -3,7 +3,7 @@
     const drawerStore = getDrawerStore();
 
     import BookOpenText from 'lucide-svelte/icons/book-open-text';
-    import Menu from 'lucide-svelte/icons/Menu';
+    import Menu from 'lucide-svelte/icons/menu';
     import Signature from 'lucide-svelte/icons/signature';
     import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
     import ConnectButtons from '$lib/components/ConnectButtons.svelte';
