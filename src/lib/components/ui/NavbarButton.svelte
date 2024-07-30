@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     export let item;
     import { page } from '$app/stores';
     $: className = `btn hover:variant-soft-primary${$page.url.pathname.startsWith(item.href) ? ' variant-soft-primary' : ''}`;
