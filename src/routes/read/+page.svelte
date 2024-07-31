@@ -8,11 +8,11 @@
     let welcomeMessage = data.messages
         .filter(
             (message) =>
-                message.author === 'GCFCP362XXHRMQIOPWXN45TQWHGR6GQDEBK5PJZY7EDNC5HH3LTUIAQP',
+                message.author.startsWith('G'),
         )
         .pop();
     let messages = data.messages.filter(
-        (message) => message.author !== 'GCFCP362XXHRMQIOPWXN45TQWHGR6GQDEBK5PJZY7EDNC5HH3LTUIAQP',
+        (message) => !message.author.startsWith('G'),
     );
     let sortNewestFirst = true;
 

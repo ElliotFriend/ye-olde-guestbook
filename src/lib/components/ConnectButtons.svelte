@@ -11,16 +11,17 @@
         placement: 'bottom',
     };
 
-    import { send, getContractId } from '$lib/passkeyClient';
-    import { PUBLIC_SITE_NAME } from '$env/static/public';
+    import { error } from '@sveltejs/kit';
     import base64url from 'base64url';
     import { keyId } from '$lib/stores/keyId';
-    import { networks } from 'ye_olde_guestbook';
     import { contractId } from '$lib/stores/contractId';
     import { Settings, ChevronDown, Copy, Wallet, CircleDollarSign, HelpingHand, LogOut } from 'lucide-svelte';
     import Identicon from '$lib/components/ui/Identicon.svelte';
     import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
     import { seContractLink } from '$lib/stellarExpert';
+    import { fundContract, native } from '$lib/passkeyClient';
+
+    let balance = '133700000'
 
     async function signup() {
         console.log('signing up')
@@ -37,14 +38,31 @@
         // implement the logout function here
     }
 
-    async function fund() {
-        console.log('funding')
-        // implement the fund function here
-    }
-
     async function donate() {
         console.log('donating')
         // implement the donate function here
+    }
+
+    async function fund() {
+        console.log('funding')
+        try {
+            await fundContract($contractId);
+            getBalance()
+            console.log('Funded!')
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    async function getBalance() {
+        try {
+            const { result } = await native.balance({
+                id: $contractId
+            });
+            balance = result.toString();
+        } catch (e) {
+            console.log(e)
+        }
     }
 </script>
 
@@ -66,7 +84,7 @@
                     <div class="text-right"><small>Balance</small></div>
                     <div>
                         <h4 class="h4">
-                            {parseFloat((Number(13370000000) / 1e7).toFixed(2))}<small
+                            {parseFloat((Number(balance) / 1e7).toFixed(2))}<small
                                 >XLM</small
                             >
                         </h4>

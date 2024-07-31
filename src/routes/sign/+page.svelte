@@ -1,7 +1,4 @@
 <script lang="ts">
-    import { getToastStore } from '@skeletonlabs/skeleton';
-    const toastStore = getToastStore();
-
     import Signature from 'lucide-svelte/icons/signature';
     import LoaderCircle from 'lucide-svelte/icons/loader-circle';
     import { contractId } from '$lib/stores/contractId';

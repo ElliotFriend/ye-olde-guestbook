@@ -1,14 +1,13 @@
 import { SorobanRpc } from '@stellar/stellar-sdk';
-import { PasskeyKit, SACClient } from 'passkey-kit';
+import { SACClient } from 'passkey-kit';
 
 import {
     PUBLIC_STELLAR_RPC_URL,
     PUBLIC_STELLAR_NETWORK_PASSPHRASE,
-    PUBLIC_FACTORY_CONTRACT_ADDRESS,
     PUBLIC_NATIVE_CONTRACT_ADDRESS,
 } from '$env/static/public';
 
-// implement the PasskeyKit client and the native SAC in this file.
+// implement the PasskeyKit client in this file.
 
 // The functions and constants below are utilities to assist in interacting
 // between the client and server.
