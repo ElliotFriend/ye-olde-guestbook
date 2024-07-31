@@ -59,7 +59,9 @@
                     message: 'XDR transaction missing',
                 });
             }
-            send(xdr);
+            await send(xdr);
+            await fundContract($contractId);
+            getBalance();
         } catch (err) {
             console.log(err);
             toastStore.trigger({
