@@ -1,38 +1,54 @@
-# create-svelte
+# Ye Olde Guestbook
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+A passkey powered dapp that acts like a smart contract version of the [internet
+guestbooks](https://en.wikipedia.org/wiki/Guestbook) from the olden days!
 
-## Creating a project
+![guestbook screenshot](screenshot.png)
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Give it a Spin
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+You can get to a Testnet version of the dapp here:
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+- [ye-olde-guestbook.vercel.app](https://ye-olde-guestbook.vercel.app)
 
-## Developing
+## Passkeys
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+We utilize Tyler's **amazing**
+[passkey-kit](https://github.com/kalepail/passkey-kit) to interact with users
+and authenticate with their passkeys. This makes it possible for users to get
+on-chain without _any_ of the usual obstacles that can stand in their way.
 
-```bash
-npm run dev
+> Seriously. You have **GOT** to start thinking about passkeys.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+## Anatomy of the Repository
 
-## Building
+### Smart Contract
 
-To create a production version of your app:
+The [Stellar smart
+contract](https://developers.stellar.org/docs/build#smart-contracts) that powers
+this dapp is located in the `/contracts/ye_olde_guestbook` directory. It's
+simple enough that you can probably get a pretty solid understanding, just by
+browsing through the source code.
 
-```bash
-npm run build
-```
+This smart contract is also used to generate "bindings" that can be imported and
+used in the frontend code. The bindings are located in the
+`/packages/ye_olde_guestbook` directory. They're auto-generated each time the
+`initialize.js` script is run (you can use `npm run init` for this), so the
+generated bindings are always going to be up-to-date with the deployed smart
+contract.
 
-You can preview the production build with `npm run preview`.
+### Frontend
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+The frontend files are found in the `/src` directory. It's a
+[SvelteKit](https://kit.svelte.dev/) app. There are server-only API routes
+located in the `/src/routes/api` directory. Components and utilities are
+included in the `/src/lib` directory.
+
+## More Info
+
+- [Developer
+  Documentation](https://developers.stellar.org/docs/build/apps/smart-wallets)
+- [passkey-kit](https://github.com/kalepail/passkey-kit)
+- [Super Peach](https://github.com/kalepail/superpeach)
+- [Join us on Discord](https://discord.gg/stellardev), and ask questions in the
+  `#passkeys` channel.
