@@ -1,5 +1,6 @@
 <script lang="ts">
     import {
+        clipboard,
         getModalStore,
         getToastStore,
         popup,
@@ -17,6 +18,7 @@
     import { contractId } from '$lib/stores/contractId';
     import Settings from 'lucide-svelte/icons/settings';
     import ChevronDown from 'lucide-svelte/icons/chevron-down';
+    import Copy from 'lucide-svelte/icons/copy';
     import { Wallet, CircleDollarSign, HelpingHand, LogOut, LoaderCircle } from 'lucide-svelte';
     import Identicon from '$lib/components/ui/Identicon.svelte';
     import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
@@ -223,7 +225,20 @@
                 <div>
                     <p class="font-bold">Your Wallet</p>
                     <div class="mt-1">
-                        <TruncatedAddress address={$contractId} />
+                        <div class="overflow-hidden flex items-center gap-3">
+                            <TruncatedAddress address={$contractId} />
+                            <input
+                                type="hidden"
+                                bind:value={$contractId}
+                                data-clipboard="stellarAddress"
+                            />
+                            <button
+                                type="button"
+                                class="btn-icon btn-icon-sm variant-soft-surface"
+                                use:clipboard={{ input: 'stellarAddress' }}
+                                ><Copy size="14" /></button
+                            >
+                        </div>
                     </div>
                 </div>
                 <hr class="opacity-50" />
