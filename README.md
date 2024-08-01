@@ -1,11 +1,20 @@
-# Ye Olde Guestbook
+# Ye Olde Guestbook <!-- omit from toc -->
 
 A passkey powered dapp that acts like a smart contract version of the [internet
 guestbooks](https://en.wikipedia.org/wiki/Guestbook) from the olden days!
 
-![guestbook screenshot](screenshot.png)
+## Table of Contents <!-- omit from toc -->
+
+- [Give it a Spin](#give-it-a-spin)
+- [Passkeys](#passkeys)
+- [Anatomy of the Repository](#anatomy-of-the-repository)
+  - [Smart Contract](#smart-contract)
+  - [Frontend](#frontend)
+- [More Info](#more-info)
 
 ## Give it a Spin
+
+![guestbook screenshot](screenshot.png)
 
 You can get to a Testnet version of the dapp here:
 
@@ -46,9 +55,13 @@ included in the `/src/lib` directory.
 
 ## More Info
 
-- [Developer
-  Documentation](https://developers.stellar.org/docs/build/apps/smart-wallets)
-- [passkey-kit](https://github.com/kalepail/passkey-kit)
-- [Super Peach](https://github.com/kalepail/superpeach)
+- Source Code: <https://github.com/elliotfriend/ye-olde-guestbook>
+- Testnet Dapp: <https://ye-olde-guestbook.vercel.app>
+- Developer Documentation:
+  <https://developers.stellar.org/docs/build/apps/smart-wallets>
+- Passkey-kit: <https://github.com/kalepail/passkey-kit>
+- Superpeach: <https://github.com/kalepail/superpeach>
+- Launchtube: <https://github.com/kalepail/launchtube>
+- Mercury Data Indexer: <https://www.mercurydata.app>
 - [Join us on Discord](https://discord.gg/stellardev), and ask questions in the
-  `#passkeys` channel.
+  `#passkeys` channel
