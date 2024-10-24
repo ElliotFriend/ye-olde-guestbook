@@ -1,34 +1,27 @@
 /// <reference types="node" resolution-mode="require"/>
-import { Buffer } from 'buffer';
-import {
-    AssembledTransaction,
-    Client as ContractClient,
-    ClientOptions as ContractClientOptions,
-    Result,
-} from '@stellar/stellar-sdk/contract';
+/// <reference types="node" resolution-mode="require"/>
+import { Buffer } from "buffer";
+import { AssembledTransaction, Client as ContractClient, ClientOptions as ContractClientOptions, Result } from '@stellar/stellar-sdk/contract';
 import type { u32 } from '@stellar/stellar-sdk/contract';
 export * from '@stellar/stellar-sdk';
 export * as contract from '@stellar/stellar-sdk/contract';
 export * as rpc from '@stellar/stellar-sdk/rpc';
 export declare const networks: {
     readonly testnet: {
-        readonly networkPassphrase: 'Test SDF Network ; September 2015';
-        readonly contractId: 'CCSM7JUIKHQU7L4VPP34HBUYDQ4AOA2T4HBWOV4LLCK76SH5GE6C3OR2';
+        readonly networkPassphrase: "Test SDF Network ; September 2015";
+        readonly contractId: "CCI3ZI5J45L2NPJOINBTO2IB42HMXXHEY5N6Q4JLLCGAW27SCUOHMBTO";
     };
 };
-export type DataKey =
-    | {
-          tag: 'Admin';
-          values: void;
-      }
-    | {
-          tag: 'MessageCount';
-          values: void;
-      }
-    | {
-          tag: 'Message';
-          values: readonly [u32];
-      };
+export type DataKey = {
+    tag: "Admin";
+    values: void;
+} | {
+    tag: "MessageCount";
+    values: void;
+} | {
+    tag: "Message";
+    values: readonly [u32];
+};
 export interface Message {
     author: string;
     ledger: u32;
@@ -55,110 +48,175 @@ export declare const Errors: {
 export interface Client {
     /**
      * Construct and simulate a initialize transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     * Initializes the guestbook with a warm welcome message for prospective
+     * signers to read.
+     *
+     * # Arguments
+     *
+     * * `admin` - The address which will be the owner and administrator of the
+     * guestbook.
+     * * `title` - The title or subject of the welcome message.
+     * * `text` - The body or contents of the welcome message.
+     *
+     * # Panics
+     *
+     * * If the contract is already initialized.
+     * * If the `title` argument is empty or missing.
+     * * If the `text` argument is empty or missing.
      */
-    initialize: (
-        {
-            admin,
-            title,
-            text,
-        }: {
-            admin: string;
-            title: string;
-            text: string;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<Result<u32>>>;
+    initialize: ({ admin, title, text }: {
+        admin: string;
+        title: string;
+        text: string;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<Result<u32>>>;
     /**
      * Construct and simulate a upgrade transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     * Upgrade the contract's Wasm bytecode.
+     *
+     * # Arguments
+     *
+     * * `new_wasm_hash` - Hash identifier for the bytecode that should be
+     * henceforth used by this contract. The bytecode must already be
+     * installed and present on-chain.
+     *
+     * # Panics
+     *
+     * * If the contract is not initialized.
+     * * If the Wasm bytecode is not already installed on-chain.
      */
-    upgrade: (
-        {
-            new_wasm_hash,
-        }: {
-            new_wasm_hash: Buffer;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<Result<void>>>;
+    upgrade: ({ new_wasm_hash }: {
+        new_wasm_hash: Buffer;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<Result<void>>>;
     /**
      * Construct and simulate a write_message transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     * Write a message to the guestbook.
+     *
+     * # Arguments
+     *
+     * * `author` - The sender of the message.
+     * * `title` - The title or subject of the guestbook message.
+     * * `text` - The body or contents of the guestbook message.
+     *
+     * # Panics
+     *
+     * * If the contract is not initialized.
+     * * If the `title` argument is empty or missing.
+     * * If the `text` argument is empty or missing.
      */
-    write_message: (
-        {
-            author,
-            title,
-            text,
-        }: {
-            author: string;
-            title: string;
-            text: string;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<Result<u32>>>;
+    write_message: ({ author, title, text }: {
+        author: string;
+        title: string;
+        text: string;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<Result<u32>>>;
+    /**
+     * Construct and simulate a edit_message transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     * Edit a specified message in the guestbook.
+     *
+     * # Arguments
+     *
+     * * `message_id` - The ID number of the message to edit.
+     * * `title` - The title or subject of the guestbook message.
+     * * `text` - The body or contents of the guestbook message.
+     *
+     * # Panics
+     *
+     * * If the contract is not initialized.
+     * * If both the `title` AND `text` arguments are empty or missing.
+     * * If there is no authorization from the original message author.
+     */
+    edit_message: ({ message_id, title, text }: {
+        message_id: u32;
+        title: string;
+        text: string;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<Result<void>>>;
     /**
      * Construct and simulate a read_message transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     * Read a specified message from the guestbook.
+     *
+     * # Arguments
+     *
+     * * `message_id` - The ID number of the message to retrieve.
+     *
+     * # Panics
+     *
+     * * If the contract is not initialized.
+     * * If the message ID is not associated with a message.
      */
-    read_message: (
-        {
-            message_id,
-        }: {
-            message_id: u32;
-        },
-        options?: {
-            /**
-             * The fee to pay for the transaction. Default: BASE_FEE
-             */
-            fee?: number;
-            /**
-             * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
-             */
-            timeoutInSeconds?: number;
-            /**
-             * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
-             */
-            simulate?: boolean;
-        },
-    ) => Promise<AssembledTransaction<Result<Message>>>;
+    read_message: ({ message_id }: {
+        message_id: u32;
+    }, options?: {
+        /**
+         * The fee to pay for the transaction. Default: BASE_FEE
+         */
+        fee?: number;
+        /**
+         * The maximum amount of time to wait for the transaction to complete. Default: DEFAULT_TIMEOUT
+         */
+        timeoutInSeconds?: number;
+        /**
+         * Whether to automatically simulate the transaction when constructing the AssembledTransaction. Default: true
+         */
+        simulate?: boolean;
+    }) => Promise<AssembledTransaction<Result<Message>>>;
     /**
      * Construct and simulate a read_latest transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
+     * Read the latest message to be sent to the guestbook.
+     *
+     * # Panics
+     *
+     * * If the contract is not initialized.
      */
     read_latest: (options?: {
         /**
@@ -179,30 +237,11 @@ export declare class Client extends ContractClient {
     readonly options: ContractClientOptions;
     constructor(options: ContractClientOptions);
     readonly fromJSON: {
-        initialize: (
-            json: string,
-        ) => AssembledTransaction<
-            Result<number, import('@stellar/stellar-sdk/contract').ErrorMessage>
-        >;
-        upgrade: (
-            json: string,
-        ) => AssembledTransaction<
-            Result<void, import('@stellar/stellar-sdk/contract').ErrorMessage>
-        >;
-        write_message: (
-            json: string,
-        ) => AssembledTransaction<
-            Result<number, import('@stellar/stellar-sdk/contract').ErrorMessage>
-        >;
-        read_message: (
-            json: string,
-        ) => AssembledTransaction<
-            Result<Message, import('@stellar/stellar-sdk/contract').ErrorMessage>
-        >;
-        read_latest: (
-            json: string,
-        ) => AssembledTransaction<
-            Result<Message, import('@stellar/stellar-sdk/contract').ErrorMessage>
-        >;
+        initialize: (json: string) => AssembledTransaction<Result<number, import("@stellar/stellar-sdk/contract").ErrorMessage>>;
+        upgrade: (json: string) => AssembledTransaction<Result<void, import("@stellar/stellar-sdk/contract").ErrorMessage>>;
+        write_message: (json: string) => AssembledTransaction<Result<number, import("@stellar/stellar-sdk/contract").ErrorMessage>>;
+        edit_message: (json: string) => AssembledTransaction<Result<void, import("@stellar/stellar-sdk/contract").ErrorMessage>>;
+        read_message: (json: string) => AssembledTransaction<Result<Message, import("@stellar/stellar-sdk/contract").ErrorMessage>>;
+        read_latest: (json: string) => AssembledTransaction<Result<Message, import("@stellar/stellar-sdk/contract").ErrorMessage>>;
     };
 }
