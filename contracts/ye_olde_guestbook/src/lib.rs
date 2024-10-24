@@ -132,8 +132,8 @@ impl YeOldGuestbookContract {
     /// # Arguments
     ///
     /// * `author` - The sender of the message.
-    /// * `title` - The title or subject of the welcome message.
-    /// * `text` - The body or contents of the welcome message.
+    /// * `title` - The title or subject of the guestbook message.
+    /// * `text` - The body or contents of the guestbook message.
     ///
     /// # Panics
     ///
@@ -160,6 +160,44 @@ impl YeOldGuestbookContract {
 
         let message_id = save_message(&env, new_message);
         return Ok(message_id);
+    }
+
+    /// Edit a specified message in the guestbook.
+    ///
+    /// # Arguments
+    ///
+    /// * `message_id` - The ID number of the message to edit.
+    /// * `title` - The title or subject of the guestbook message.
+    /// * `text` - The body or contents of the guestbook message.
+    ///
+    /// # Panics
+    ///
+    /// * If the contract is not initialized.
+    /// * If both the `title` AND `text` arguments are empty or missing.
+    /// * If there is no authorization from the original message author.
+    pub fn edit_message(env: Env, message_id: u32, title: String, text: String) -> Result<(), Error> {
+        check_is_init(&env);
+
+        if title.is_empty() {
+            check_string_not_empty(&env, &text);
+        }
+
+        if text.is_empty() {
+            check_string_not_empty(&env, &title);
+        }
+
+        let mut message = get_message(&env, message_id);
+        message.author.require_auth();
+
+        let edited_title = if title.is_empty() { message.title } else { title };
+        let edited_text = if text.is_empty() { message.text } else { text };
+
+        message.title = edited_title;
+        message.text = edited_text;
+        message.ledger = env.ledger().sequence();
+
+        env.storage().persistent().set(&DataKey::Message(message_id), &message);
+        return Ok(());
     }
 
     /// Read a specified message from the guestbook.

@@ -87,11 +87,21 @@
                 "bytes": "0000000000000000000000000000000000000000000000000000000000000001"
               },
               {
-                "symbol": "read_message"
+                "symbol": "edit_message"
               }
             ],
             "data": {
-              "u32": 123
+              "vec": [
+                {
+                  "u32": 1
+                },
+                {
+                  "string": "Updated Hello World"
+                },
+                {
+                  "string": "Lorem Ipsum STILL ain't got nothin' on me!"
+                }
+              ]
             }
           }
         }
@@ -203,12 +213,18 @@
                   "string": "contract call failed"
                 },
                 {
-                  "symbol": "read_message"
+                  "symbol": "edit_message"
                 },
                 {
                   "vec": [
                     {
-                      "u32": 123
+                      "u32": 1
+                    },
+                    {
+                      "string": "Updated Hello World"
+                    },
+                    {
+                      "string": "Lorem Ipsum STILL ain't got nothin' on me!"
                     }
                   ]
                 }
