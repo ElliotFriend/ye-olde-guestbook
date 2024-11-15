@@ -1,7 +1,7 @@
 import * as Client from 'ye_olde_guestbook';
-import { RPC_URL } from '$lib/contracts/util';
+import { PUBLIC_STELLAR_RPC_URL } from '$env/static/public';
 
 export default new Client.Client({
     ...Client.networks.testnet,
-    rpcUrl: RPC_URL,
+    rpcUrl: PUBLIC_STELLAR_RPC_URL,
 });

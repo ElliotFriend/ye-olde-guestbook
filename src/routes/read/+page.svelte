@@ -5,16 +5,8 @@
     import type { PageData } from './$types';
     export let data: PageData;
 
-    let welcomeMessage = data.messages
-        .filter(
-            (message) =>
-                message.author === 'GCFCP362XXHRMQIOPWXN45TQWHGR6GQDEBK5PJZY7EDNC5HH3LTUIAQP',
-        )
-        .pop();
-    let messages = data.messages.filter(
-        (message) => message.author !== 'GCFCP362XXHRMQIOPWXN45TQWHGR6GQDEBK5PJZY7EDNC5HH3LTUIAQP',
-    );
     let sortNewestFirst = true;
+    let messages = data.messages;
 
     $: if (sortNewestFirst) {
         messages = messages.sort((a, b) => b.ledger - a.ledger);
@@ -35,11 +27,9 @@
     </div>
 </div>
 
-{#if welcomeMessage}
-    <GuestbookMessage message={welcomeMessage} />
-    <hr class="!border-t-2" />
-{/if}
+<GuestbookMessage message={data.welcomeMessage} messageId={1} />
+<hr class="!border-t-2" />
 
-{#each messages as message}
-    <GuestbookMessage {message} />
+{#each messages as message, i (message.ledger)}
+    <GuestbookMessage {message} messageId={i + 2} />
 {/each}

@@ -7,6 +7,7 @@ import {
     PUBLIC_FACTORY_CONTRACT_ADDRESS,
     PUBLIC_NATIVE_CONTRACT_ADDRESS,
 } from '$env/static/public';
+import type { Tx } from '@stellar/stellar-sdk/contract';
 
 export const rpc = new SorobanRpc.Server(PUBLIC_STELLAR_RPC_URL);
 
@@ -23,11 +24,11 @@ export const sac = new SACClient({
 
 export const native = sac.getSACClient(PUBLIC_NATIVE_CONTRACT_ADDRESS);
 
-export async function send(xdr: string) {
+export async function send(tx: Tx) {
     return fetch('/api/send', {
         method: 'POST',
         body: JSON.stringify({
-            xdr,
+            xdr: tx.toXDR(),
         }),
     }).then(async (res) => {
         if (res.ok) return res.json();

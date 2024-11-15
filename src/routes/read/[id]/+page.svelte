@@ -11,4 +11,4 @@
     <a class="anchor" href="/read">read all of them here</a>, as well.
 </p>
 
-<GuestbookMessage message={data.message} />
+<GuestbookMessage message={data.message} messageId={parseInt(data.id)} />

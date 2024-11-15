@@ -7,7 +7,7 @@ import {
 } from '$env/static/public';
 import {
     PRIVATE_LAUNCHTUBE_JWT,
-    PRIVATE_MERCURY_JWT,
+    PRIVATE_MERCURY_KEY,
 } from '$env/static/private';
 
 export const server = new PasskeyServer({
@@ -15,5 +15,5 @@ export const server = new PasskeyServer({
     launchtubeUrl: PUBLIC_LAUNCHTUBE_URL,
     launchtubeJwt: PRIVATE_LAUNCHTUBE_JWT,
     mercuryUrl: PUBLIC_MERCURY_URL,
-    mercuryJwt: PRIVATE_MERCURY_JWT,
+    mercuryKey: PRIVATE_MERCURY_KEY,
 });

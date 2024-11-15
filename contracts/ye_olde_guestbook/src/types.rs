@@ -26,4 +26,5 @@ pub enum Error {
     InvalidMessage = 3,     // The provided message is malformed in some way.
     NoSuchMessage = 4,      // The message requested does not exist.
     UnauthorizedToEdit = 5, // Address is not allowed to edit this message.
+    NoDonations = 6,        // Contract has no donations to claim.
 }

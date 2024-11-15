@@ -1,9 +1,9 @@
-import { getAllMessages } from '$lib/server/getLedgerEntries';
+import { getAllMessages, getWelcomeMessage } from '$lib/server/getLedgerEntries';
 import type { PageServerLoad } from './$types';
 
-export const load: PageServerLoad = async ({ parent }) => {
-    const { messageCount } = await parent();
+export const load: PageServerLoad = async () => {
     return {
-        messages: await getAllMessages(messageCount),
+        welcomeMessage: await getWelcomeMessage(),
+        messages: await getAllMessages(),
     };
 };

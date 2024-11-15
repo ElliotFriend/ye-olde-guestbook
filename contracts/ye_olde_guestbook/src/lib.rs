@@ -1,7 +1,7 @@
 #![no_std]
 
 use soroban_sdk::{
-    contract, contractimpl, contractmeta, panic_with_error, Address, BytesN, Env, String,
+    contract, contractimpl, contractmeta, panic_with_error, token, Address, BytesN, Env, String
 };
 use types::*;
 
@@ -232,6 +232,28 @@ impl YeOldGuestbookContract {
             .unwrap();
         let latest_message = get_message(&env, latest_id);
         Ok(latest_message)
+    }
+
+    /// Claim any donations that have been made to the guestbook contract.
+    ///
+    /// # Panics
+    ///
+    /// * If the contract is not initialized.
+    /// * If the contract is not holding any donations balance.
+    pub fn claim_donations(env: Env, token: Address) -> Result<i128, Error> {
+        check_is_init(&env);
+
+        let token_client = token::TokenClient::new(&env, &token);
+        let contract_balance = token_client.balance(&env.current_contract_address());
+
+        if contract_balance == 0 {
+            panic_with_error!(&env, Error::NoDonations);
+        }
+
+        let admin_address: Address = env.storage().instance().get(&DataKey::Admin).unwrap();
+        token_client.transfer(&env.current_contract_address(), &admin_address, &contract_balance);
+
+        Ok(contract_balance)
     }
 }
 

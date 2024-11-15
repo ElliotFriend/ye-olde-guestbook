@@ -4,7 +4,6 @@
         getModalStore,
         getToastStore,
         popup,
-        type ModalComponent,
         type ModalSettings,
         type PopupSettings,
     } from '@skeletonlabs/skeleton';
@@ -13,8 +12,6 @@
 
     import { error } from '@sveltejs/kit';
     import { account, send, getContractId, native, fundContract } from '$lib/passkeyClient';
-    import { PUBLIC_SITE_NAME, PUBLIC_SUPERPEACH_URL } from '$env/static/public';
-    import base64url from 'base64url';
     import { keyId } from '$lib/stores/keyId';
     import { contractId } from '$lib/stores/contractId';
     import Settings from 'lucide-svelte/icons/settings';
@@ -25,7 +22,6 @@
     import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
     import { seContractLink } from '$lib/stellarExpert';
     import { networks } from 'ye_olde_guestbook';
-    import SuperpeachEmbed from './ui/SuperpeachEmbed.svelte';
 
     let balance: string = '0';
     let isFunding: boolean = false;
@@ -33,6 +29,7 @@
     let popupWindow: Window | null;
 
     async function getBalance() {
+        console.log('fetching balances')
         try {
             const { result } = await native.balance({ id: $contractId });
             balance = result.toString();
@@ -47,22 +44,21 @@
 
     async function signup() {
         try {
+            console.log('signing up')
             const {
-                keyId: kid,
+                keyId_base64,
                 contractId: cid,
-                xdr,
-            } = await account.createWallet(PUBLIC_SITE_NAME, 'Guestbook Author');
-
-            const keyId_b64 = base64url(kid);
-            keyId.set(keyId_b64);
+                built,
+            } = await account.createWallet('Ye Olde Guestbook', 'Guestbook Author');
+            keyId.set(keyId_base64);
             contractId.set(cid);
 
-            if (!xdr) {
+            if (!built) {
                 error(500, {
-                    message: 'XDR transaction missing',
+                    message: 'built transaction missing',
                 });
             }
-            await send(xdr);
+            await send(built);
             await fundContract($contractId);
             getBalance();
         } catch (err) {
@@ -75,18 +71,17 @@
     }
 
     async function login() {
+        console.log('logging in')
         try {
-            const { keyId: kid, contractId: cid } = await account.connectWallet({
+            const { keyId_base64, contractId: cid } = await account.connectWallet({
                 getContractId,
             });
 
-            const keyId_base64url = base64url(kid);
-
-            keyId.set(keyId_base64url);
-            console.log(keyId_base64url);
+            keyId.set(keyId_base64);
+            console.log($keyId);
 
             contractId.set(cid);
-            console.log(cid);
+            console.log($contractId);
         } catch (err) {
             console.log(err);
             toastStore.trigger({
@@ -97,6 +92,7 @@
     }
 
     async function fund() {
+        console.log('funding wallet')
         isFunding = true;
         const toastId = toastStore.trigger({
             message: 'You got it! Awaiting airdrop.',
@@ -125,6 +121,7 @@
     }
 
     async function donate() {
+        console.log('starting donation process')
         isDonating = true;
         let toastId: string = '';
         try {
@@ -150,20 +147,20 @@
                     autohide: false,
                 });
 
-                const { built } = await native.transfer({
+                const at = await native.transfer({
                     to: networks.testnet.contractId,
                     from: $contractId,
                     amount: BigInt(donation * 10_000_000),
                 });
 
-                const xdr = await account.sign(built!, { keyId: $keyId });
-                const res = await send(xdr);
+                await account.sign(at, { keyId: $keyId });
+                const res = await send(at.built!);
 
                 console.log(res);
 
                 toastStore.close(toastId);
                 toastStore.trigger({
-                    message: 'Donation received! You reall ARE the goat.',
+                    message: 'Donation received! You really ARE the goat.',
                     background: 'variant-filled-success',
                 });
                 getBalance();
@@ -197,112 +194,6 @@
         }
     }
 
-
-    async function superpeach() {
-        let kid: Buffer;
-        let superpeachUrl: string
-
-        async function messenger(event: MessageEvent<any>) {
-            try {
-                console.log('event here', event)
-                if (
-                    event.data.name === 'superpeach'
-                    && event.data.message === 'OK'
-                    && event.origin === superpeachUrl
-                ) {
-                    popupWindow?.close()
-
-                    const { contractId: cid } = await account.connectWallet({
-                        keyId: $keyId,
-                        getContractId,
-                    })
-
-                    contractId.set(cid)
-                    console.log(cid)
-
-                    window.removeEventListener("message", messenger)
-                }
-            } catch (err) {
-                console.log(err)
-            }
-        }
-
-        window.addEventListener('message', messenger)
-
-        try {
-            new Promise<string>((resolve) => {
-                const modal: ModalSettings = {
-                    type: 'prompt',
-                    title: 'Connect Existing Wallet',
-                    body: 'You already have a smart wallet? Amazing! Enter the URL here, and we can get you connected!',
-                    value: PUBLIC_SUPERPEACH_URL,
-                    valueAttr: {
-                        type: 'string',
-                        required: true,
-                    },
-                    response: (spUrl: string) => {
-                        resolve(spUrl)
-                    }
-                }
-                modalStore.trigger(modal);
-            }).then(async (spUrl: any) => {
-                if (!spUrl) {
-                    throw 400
-                } else {
-                    console.log('spurl', spUrl)
-                    superpeachUrl = spUrl
-                }
-            }).then(async () => {
-                const wallet = await account.createKey(PUBLIC_SITE_NAME, "Guestbook Author")
-                kid = wallet.keyId
-
-                const w = 400;
-                const h = 500;
-                const left = window.screenX + (window.outerWidth - w) / 2;
-                const top = window.screenY + (window.outerHeight - h) / 2;
-
-                const windowFeatures = `width=${w},height=${h},left=${left},top=${top},resizable=no,scrollbars=no,menubar=no,toolbar=no,location=no,status=no`;
-
-                popupWindow = window.open(
-                    `${superpeachUrl}/add-signer?from=${encodeURIComponent(location.origin)}&keyId=${base64url(kid)}&publicKey=${base64url(wallet.publicKey)}`,
-                    "Connect Super Peach",
-                    windowFeatures,
-                )
-
-                if (!popupWindow) {
-                    toastStore.trigger({
-                        message: 'Popup was blocked by the browser. Please try again.',
-                        background: 'variant-filled-error',
-                    });
-                } else {
-                    popupWindow.focus()
-                }
-
-                keyId.set(base64url(kid))
-
-                // const modal: ModalSettings = {
-                //     type: 'component',
-                //     component: {ref: SuperpeachEmbed},
-                //     meta: {
-                //         kid: base64url(kid),
-                //         publicKey: base64url(wallet.publicKey),
-                //         spUrl: spUrl,
-                //     },
-                //     response: (cid: string) => {
-                //         resolve(cid)
-                //     }
-                // }
-                // modalStore.trigger(modal)
-            })
-        } catch (err) {
-            console.log(err)
-            toastStore.trigger({
-                message: 'Something went wrong super peaching. Please try again later.',
-                background: 'variant-filled-error',
-            });
-        }
-    }
-
     const popupFeatured: PopupSettings = {
         event: 'click',
         target: 'popupFeatured',
@@ -312,7 +203,6 @@
 
 <div class="flex space-x-1 md:space-x-2">
     {#if !$contractId}
-        <button class="btn variant-outline-primary" on:click={superpeach}>Superpeach</button>
         <button class="btn variant-filled-primary" on:click={signup}>Signup</button>
         <button class="btn variant-soft-primary" on:click={login}>Login</button>
     {:else}

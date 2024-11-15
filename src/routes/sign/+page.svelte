@@ -8,6 +8,8 @@
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
     import { account, send } from '$lib/passkeyClient';
     import { keyId } from '$lib/stores/keyId';
+    import { xdr } from '@stellar/stellar-sdk';
+    import { goto } from '$app/navigation';
 
     let messageTitle: string;
     let messageText: string;
@@ -18,23 +20,25 @@
     async function signGuestbook() {
         try {
             isLoading = true;
-            const { built } = await ye_olde_guestbook.write_message({
+            const at = await ye_olde_guestbook.write_message({
                 author: $contractId,
                 title: messageTitle,
                 text: messageText,
             });
 
-            const xdr = await account.sign(built!, { keyId: $keyId });
-            await send(xdr);
+            await account.sign(at, { keyId: $keyId });
+            const { returnValue } = await send(at.built!);
+            const messageId = xdr.ScVal.fromXDR(returnValue, 'base64').u32()
 
             toastStore.trigger({
                 message: 'Huzzah!! You signed my guestbook! Thanks.',
                 background: 'variant-filled-success',
             });
+            goto(`/read/${messageId}`)
         } catch (err) {
             console.log(err);
             toastStore.trigger({
-                message: 'Something went wrong logging out. Please try again later.',
+                message: 'Something went wrong signing the guestbook. Please try again later.',
                 background: 'variant-filled-error',
             });
         } finally {

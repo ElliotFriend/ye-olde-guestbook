@@ -18,12 +18,9 @@
         "@stellar/stellar-sdk": "^13.0.0-beta.1",
         "buffer": "^6.0.3",
         "lucide-svelte": "^0.453.0",
-        "passkey-kit": "^0.10.0",
+        "passkey-kit": "0.9.4",
         "svelte-persisted-store": "^0.11.0"
     },
-    "workspaces": [
-        "packages/*"
-    ],
     "devDependencies": {
         "@skeletonlabs/skeleton": "^2.10.3",
         "@skeletonlabs/tw-plugin": "^0.4.0",
@@ -37,10 +34,12 @@
         "@typescript-eslint/eslint-plugin": "^8.11.0",
         "@typescript-eslint/parser": "^8.11.0",
         "autoprefixer": "^10.4.20",
+        "base64url": "^3.0.1",
         "dotenv": "^16.4.5",
         "eslint": "^9.13.0",
         "eslint-config-prettier": "^9.1.0",
         "eslint-plugin-svelte": "^2.46.0",
+        "ye_olde_guestbook": "file:./packages/ye_olde_guestbook",
         "glob": "^11.0.0",
         "postcss": "^8.4.47",
         "prettier": "^3.3.3",
@@ -52,5 +51,10 @@
         "typescript": "^5.6.3",
         "vite": "^5.4.10",
         "vite-plugin-tailwind-purgecss": "^0.3.3"
+    },
+    "pnpm": {
+        "overrides": {
+            "@stellar/stellar-sdk": "$@stellar/stellar-sdk"
+        }
     }
 }

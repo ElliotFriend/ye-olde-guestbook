@@ -1,6 +1,5 @@
-import { PUBLIC_STELLAR_RPC_URL } from '$env/static/public';
+import { rpc } from '$lib/passkeyClient'
 import {
-    rpc,
     Address,
     networks,
     Contract,
@@ -9,10 +8,8 @@ import {
     scValToNative,
 } from 'ye_olde_guestbook';
 
-const server = new rpc.Server(PUBLIC_STELLAR_RPC_URL);
-
 export async function getMessageCount() {
-    const result = await server.getLedgerEntries(
+    const result = await rpc.getLedgerEntries(
         new Contract(networks.testnet.contractId).getFootprint(),
     );
 
@@ -26,13 +23,19 @@ export async function getMessageCount() {
     return messageCount![0].val().value() as number;
 }
 
-export async function getAllMessages(totalCount: number): Promise<Message[]> {
+export async function getWelcomeMessage(): Promise<Message> {
+    const result = await rpc.getLedgerEntries(buildMessageLedgerKey(1))
+    return scValToNative(result.entries[0].val.contractData().val());
+}
+
+export async function getAllMessages(): Promise<Message[]> {
+    const totalCount = await getMessageCount();
     const ledgerKeysArray = [];
-    for (let messageId = 1; messageId <= totalCount; messageId++) {
+    for (let messageId = 2; messageId <= totalCount; messageId++) {
         ledgerKeysArray.push(buildMessageLedgerKey(messageId));
     }
 
-    const result = await server.getLedgerEntries(...ledgerKeysArray);
+    const result = await rpc.getLedgerEntries(...ledgerKeysArray);
     const messages = result.entries.map((message) => {
         return {
             ...scValToNative(message.val.contractData().val()),
