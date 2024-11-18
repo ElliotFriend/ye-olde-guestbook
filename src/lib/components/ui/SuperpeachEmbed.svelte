@@ -8,28 +8,32 @@
     const modalStore = getModalStore();
 
     onMount(async () => {
-        window.addEventListener("message", messenger)
-    })
+        window.addEventListener('message', messenger);
+    });
 
     function close() {
-        window.removeEventListener("message", messenger)
-        parent.onClose()
+        window.removeEventListener('message', messenger);
+        parent.onClose();
     }
 
     async function messenger(event: MessageEvent<any>) {
         try {
-            console.log('here is an event!', event)
-            if (event.data.name === 'superpeach' && event.data.message === 'OK' && event.origin === spUrl) {
-                console.log('am i here now?')
+            console.log('here is an event!', event);
+            if (
+                event.data.name === 'superpeach' &&
+                event.data.message === 'OK' &&
+                event.origin === spUrl
+            ) {
+                console.log('am i here now?');
                 const wallet = await account.connectWallet({
                     keyId: $modalStore[0].meta.kid,
                     getContractId,
-                })
+                });
 
-                $modalStore[0].response!({ contractId: wallet.contractId })
+                $modalStore[0].response!({ contractId: wallet.contractId });
             }
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
     }
 
@@ -37,12 +41,12 @@
     const cButton = 'absolute -top-3 -right-3 z-1 btn-icon variant-filled';
     const cIframe = 'bg-white w-full rounded-container-token overflow-hidden';
 
-    $: spUrl = $modalStore[0].meta.spUrl || PUBLIC_SUPERPEACH_URL
-    $: iframeUrl = `${spUrl}/add-signer?from=${encodeURIComponent(location.origin)}&keyId=${$modalStore[0].meta.kid}&publicKey=${$modalStore[0].meta.publicKey}`
+    $: spUrl = $modalStore[0].meta.spUrl || PUBLIC_SUPERPEACH_URL;
+    $: iframeUrl = `${spUrl}/add-signer?from=${encodeURIComponent(location.origin)}&keyId=${$modalStore[0].meta.kid}&publicKey=${$modalStore[0].meta.publicKey}`;
 </script>
 
 {#if $modalStore[0]}
-    <div class="{cBase}">
+    <div class={cBase}>
         <button class={cButton} on:click={close}>✕</button>
         <iframe
             class={cIframe}

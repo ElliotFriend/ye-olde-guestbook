@@ -5,7 +5,7 @@
     import StellarExpertLink from './ui/StellarExpertLink.svelte';
     import SquarePen from 'lucide-svelte/icons/square-pen';
     import Check from 'lucide-svelte/icons/check';
-    import X from 'lucide-svelte/icons/x'
+    import X from 'lucide-svelte/icons/x';
     import { contractId } from '$lib/stores/contractId';
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
     import { account, send } from '$lib/passkeyClient';
@@ -16,14 +16,14 @@
     export let message: Message;
     export let messageId: number;
     let editing: boolean;
-    let messageTitle = message.title
-    let messageText = message.text
+    let messageTitle = message.title;
+    let messageText = message.text;
 
     const cancelEdit = () => {
-        messageTitle = message.title
-        messageText = message.text
-        editing = false
-    }
+        messageTitle = message.title;
+        messageText = message.text;
+        editing = false;
+    };
 
     const submitEdit = async () => {
         console.log('submitting message edit');
@@ -33,10 +33,10 @@
                 message_id: messageId,
                 title: messageTitle,
                 text: messageText,
-            })
+            });
 
-            await account.sign(at, { keyId: $keyId })
-            await send(at.built!)
+            const txn = await account.sign(at.built!, { keyId: $keyId });
+            await send(txn.built!);
 
             toastStore.trigger({
                 message: 'Message edited successfully.',
@@ -52,7 +52,7 @@
             editing = false;
             isLoading.set(false);
         }
-    }
+    };
 </script>
 
 <section class="card w-full variant-soft-primary">
@@ -62,11 +62,21 @@
                 {#if editing}
                     <label class="label">
                         <span>Message Title</span>
-                        <input class="input" title="Message Title" type="text" bind:value={messageTitle} />
+                        <input
+                            class="input"
+                            title="Message Title"
+                            type="text"
+                            bind:value={messageTitle}
+                        />
                     </label>
                     <label class="label">
                         <span>Message Text</span>
-                        <textarea class="textarea" rows="4" title="Message Text" bind:value={messageText} />
+                        <textarea
+                            class="textarea"
+                            rows="4"
+                            title="Message Text"
+                            bind:value={messageText}
+                        ></textarea>
                     </label>
                 {:else}
                     <h3 class="h3">
@@ -80,10 +90,30 @@
             {#if $contractId && $contractId === message.author}
                 <div class="flex flex-row space-x-2">
                     {#if editing}
-                        <div><button type="button" class="btn-icon btn-icon-sm variant-soft-error" on:click={cancelEdit} disabled={$isLoading}><X size={16} /></button></div>
-                        <div><button type="button" class="btn-icon btn-icon-sm variant-soft-success" on:click={submitEdit} disabled={$isLoading}><Check size={16} /></button></div>
+                        <div>
+                            <button
+                                type="button"
+                                class="btn-icon btn-icon-sm variant-soft-error"
+                                on:click={cancelEdit}
+                                disabled={$isLoading}><X size={16} /></button
+                            >
+                        </div>
+                        <div>
+                            <button
+                                type="button"
+                                class="btn-icon btn-icon-sm variant-soft-success"
+                                on:click={submitEdit}
+                                disabled={$isLoading}><Check size={16} /></button
+                            >
+                        </div>
                     {:else}
-                        <div><button type="button" class="btn-icon btn-icon-sm variant-soft" on:click={() => editing = true}><SquarePen size={16} /></button></div>
+                        <div>
+                            <button
+                                type="button"
+                                class="btn-icon btn-icon-sm variant-soft"
+                                on:click={() => (editing = true)}><SquarePen size={16} /></button
+                            >
+                        </div>
                     {/if}
                 </div>
             {/if}

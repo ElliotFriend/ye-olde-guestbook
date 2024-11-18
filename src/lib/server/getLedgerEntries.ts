@@ -1,12 +1,5 @@
-import { rpc } from '$lib/passkeyClient'
-import {
-    Address,
-    networks,
-    Contract,
-    type Message,
-    xdr,
-    scValToNative,
-} from 'ye_olde_guestbook';
+import { rpc } from '$lib/passkeyClient';
+import { Address, networks, Contract, type Message, xdr, scValToNative } from 'ye_olde_guestbook';
 
 export async function getMessageCount() {
     const result = await rpc.getLedgerEntries(
@@ -24,7 +17,7 @@ export async function getMessageCount() {
 }
 
 export async function getWelcomeMessage(): Promise<Message> {
-    const result = await rpc.getLedgerEntries(buildMessageLedgerKey(1))
+    const result = await rpc.getLedgerEntries(buildMessageLedgerKey(1));
     return scValToNative(result.entries[0].val.contractData().val());
 }
 

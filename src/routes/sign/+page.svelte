@@ -25,16 +25,17 @@
                 title: messageTitle,
                 text: messageText,
             });
+            console.log(at.needsNonInvokerSigningBy());
 
-            await account.sign(at, { keyId: $keyId });
-            const { returnValue } = await send(at.built!);
-            const messageId = xdr.ScVal.fromXDR(returnValue, 'base64').u32()
+            let txn = await account.sign(at.built!, { keyId: $keyId });
+            const { returnValue } = await send(txn.built!);
+            const messageId = xdr.ScVal.fromXDR(returnValue, 'base64').u32();
 
             toastStore.trigger({
                 message: 'Huzzah!! You signed my guestbook! Thanks.',
                 background: 'variant-filled-success',
             });
-            goto(`/read/${messageId}`)
+            goto(`/read/${messageId}`);
         } catch (err) {
             console.log(err);
             toastStore.trigger({
@@ -62,7 +63,7 @@
         class="textarea"
         rows="4"
         placeholder="Write your message here"
-    />
+    ></textarea>
 </label>
 
 <button

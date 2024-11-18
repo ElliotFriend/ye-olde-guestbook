@@ -5,12 +5,12 @@ guestbooks](https://en.wikipedia.org/wiki/Guestbook) from the olden days!
 
 ## Table of Contents <!-- omit from toc -->
 
-- [Give it a Spin](#give-it-a-spin)
-- [Passkeys](#passkeys)
-- [Anatomy of the Repository](#anatomy-of-the-repository)
-  - [Smart Contract](#smart-contract)
-  - [Frontend](#frontend)
-- [More Info](#more-info)
+-   [Give it a Spin](#give-it-a-spin)
+-   [Passkeys](#passkeys)
+-   [Anatomy of the Repository](#anatomy-of-the-repository)
+    -   [Smart Contract](#smart-contract)
+    -   [Frontend](#frontend)
+-   [More Info](#more-info)
 
 ## Give it a Spin
 
@@ -18,7 +18,7 @@ guestbooks](https://en.wikipedia.org/wiki/Guestbook) from the olden days!
 
 You can get to a Testnet version of the dapp here:
 
-- [ye-olde-guestbook.vercel.app](https://ye-olde-guestbook.vercel.app)
+-   [ye-olde-guestbook.vercel.app](https://ye-olde-guestbook.vercel.app)
 
 ## Passkeys
 
@@ -55,13 +55,13 @@ included in the `/src/lib` directory.
 
 ## More Info
 
-- Source Code: <https://github.com/elliotfriend/ye-olde-guestbook>
-- Testnet Dapp: <https://ye-olde-guestbook.vercel.app>
-- Developer Documentation:
-  <https://developers.stellar.org/docs/build/apps/smart-wallets>
-- Passkey-kit: <https://github.com/kalepail/passkey-kit>
-- Superpeach: <https://github.com/kalepail/superpeach>
-- Launchtube: <https://github.com/kalepail/launchtube>
-- Mercury Data Indexer: <https://www.mercurydata.app>
-- [Join us on Discord](https://discord.gg/stellardev), and ask questions in the
-  `#passkeys` channel
+-   Source Code: <https://github.com/elliotfriend/ye-olde-guestbook>
+-   Testnet Dapp: <https://ye-olde-guestbook.vercel.app>
+-   Developer Documentation:
+    <https://developers.stellar.org/docs/build/apps/smart-wallets>
+-   Passkey-kit: <https://github.com/kalepail/passkey-kit>
+-   Superpeach: <https://github.com/kalepail/superpeach>
+-   Launchtube: <https://github.com/kalepail/launchtube>
+-   Mercury Data Indexer: <https://www.mercurydata.app>
+-   [Join us on Discord](https://discord.gg/stellardev), and ask questions in the
+    `#passkeys` channel

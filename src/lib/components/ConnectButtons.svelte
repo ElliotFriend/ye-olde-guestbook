@@ -17,7 +17,11 @@
     import Settings from 'lucide-svelte/icons/settings';
     import ChevronDown from 'lucide-svelte/icons/chevron-down';
     import Copy from 'lucide-svelte/icons/copy';
-    import { Wallet, CircleDollarSign, HelpingHand, LogOut, LoaderCircle } from 'lucide-svelte';
+    import Wallet from 'lucide-svelte/icons/Wallet';
+    import CircleDollarSign from 'lucide-svelte/icons/circle-dollar-sign';
+    import HelpingHand from 'lucide-svelte/icons/helping-hand';
+    import LogOut from 'lucide-svelte/icons/log-out';
+    import LoaderCircle from 'lucide-svelte/icons/loader-circle';
     import Identicon from '$lib/components/ui/Identicon.svelte';
     import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
     import { seContractLink } from '$lib/stellarExpert';
@@ -26,10 +30,9 @@
     let balance: string = '0';
     let isFunding: boolean = false;
     let isDonating: boolean = false;
-    let popupWindow: Window | null;
 
     async function getBalance() {
-        console.log('fetching balances')
+        console.log('fetching balances');
         try {
             const { result } = await native.balance({ id: $contractId });
             balance = result.toString();
@@ -43,8 +46,8 @@
     }
 
     async function signup() {
+        console.log('signing up');
         try {
-            console.log('signing up')
             const {
                 keyId_base64,
                 contractId: cid,
@@ -71,7 +74,7 @@
     }
 
     async function login() {
-        console.log('logging in')
+        console.log('logging in');
         try {
             const { keyId_base64, contractId: cid } = await account.connectWallet({
                 getContractId,
@@ -92,7 +95,7 @@
     }
 
     async function fund() {
-        console.log('funding wallet')
+        console.log('funding wallet');
         isFunding = true;
         const toastId = toastStore.trigger({
             message: 'You got it! Awaiting airdrop.',
@@ -121,7 +124,7 @@
     }
 
     async function donate() {
-        console.log('starting donation process')
+        console.log('starting donation process');
         isDonating = true;
         let toastId: string = '';
         try {
@@ -137,9 +140,9 @@
                     },
                     response: (donation: number) => {
                         resolve(donation);
-                    }
-                }
-                modalStore.trigger(modal)
+                    },
+                };
+                modalStore.trigger(modal);
             }).then(async (donation: number) => {
                 toastId = toastStore.trigger({
                     message: 'Submitting donation. Much appreciated!',
@@ -164,7 +167,7 @@
                     background: 'variant-filled-success',
                 });
                 getBalance();
-            })
+            });
         } catch (err) {
             console.log(err);
             toastStore.trigger({
@@ -203,8 +206,8 @@
 
 <div class="flex space-x-1 md:space-x-2">
     {#if !$contractId}
-        <button class="btn variant-filled-primary" on:click={signup}>Signup</button>
-        <button class="btn variant-soft-primary" on:click={login}>Login</button>
+        <button class="btn variant-filled-primary" onclick={signup}>Signup</button>
+        <button class="btn variant-soft-primary" onclick={login}>Login</button>
     {:else}
         <button class="btn hover:variant-soft-primary" use:popup={popupFeatured}>
             <span><Settings /></span>
@@ -255,7 +258,7 @@
                         <li>
                             <button
                                 class="btn variant-soft-success w-full"
-                                on:click={fund}
+                                onclick={fund}
                                 disabled={isFunding}
                             >
                                 <span>
@@ -279,7 +282,7 @@
                             >
                         </li>
                         <li>
-                            <button class="btn variant-soft-surface w-full" on:click={donate}>
+                            <button class="btn variant-soft-surface w-full" onclick={donate}>
                                 <span>
                                     {#if isDonating}
                                         <LoaderCircle class="animate-spin" />
@@ -291,7 +294,7 @@
                             </button>
                         </li>
                         <li>
-                            <button class="btn variant-soft-error w-full" on:click={logout}>
+                            <button class="btn variant-soft-error w-full" onclick={logout}>
                                 <span><LogOut /></span>
                                 <span>Logout</span></button
                             >

@@ -29,7 +29,7 @@ function exe(command) {
 }
 
 function fundAll() {
-    exe(`${cli} keys generate ${process.env.STELLAR_ACCOUNT}`);
+    exe(`${cli} keys generate --overwrite ${process.env.STELLAR_ACCOUNT}`);
 }
 
 function removeFiles(pattern) {
@@ -94,10 +94,10 @@ function importContract({ id, alias }) {
 
     const importContent =
         `import * as Client from '${alias}';\n` +
-        `import { RPC_URL } from '$lib/contracts/util';\n\n` +
+        `import { PUBLIC_STELLAR_RPC_URL } from '$env/static/public';\n\n` +
         `export default new Client.Client({\n` +
         `    ...Client.networks.${process.env.STELLAR_NETWORK},\n` +
-        `    rpcUrl: RPC_URL,\n` +
+        `    rpcUrl: PUBLIC_STELLAR_RPC_URL,\n` +
         `});\n`;
 
     const outputPath = `${outputDir}/${alias}.ts`;
