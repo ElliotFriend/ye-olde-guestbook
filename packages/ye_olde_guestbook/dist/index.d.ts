@@ -6,10 +6,13 @@ import {
     Result,
 } from '@stellar/stellar-sdk/contract';
 import type { u32, i128 } from '@stellar/stellar-sdk/contract';
+export * from '@stellar/stellar-sdk';
+export * as contract from '@stellar/stellar-sdk/contract';
+export * as rpc from '@stellar/stellar-sdk/rpc';
 export declare const networks: {
     readonly testnet: {
         readonly networkPassphrase: 'Test SDF Network ; September 2015';
-        readonly contractId: 'CCYHQDLSV2PTRFL2WUJZLVDZHCOFD4RDJF46WNZ6KABGZ2KUKSQ557ZW';
+        readonly contractId: 'CDYMLCNYA6N4DKFHUBYZR76JQTZN5PUOWWCRWHB6GFKVGPXZED5JNYH3';
     };
 };
 export type DataKey =
