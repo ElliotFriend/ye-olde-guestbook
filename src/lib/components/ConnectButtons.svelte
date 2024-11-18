@@ -17,7 +17,7 @@
     import Settings from 'lucide-svelte/icons/settings';
     import ChevronDown from 'lucide-svelte/icons/chevron-down';
     import Copy from 'lucide-svelte/icons/copy';
-    import Wallet from 'lucide-svelte/icons/Wallet';
+    import Wallet from 'lucide-svelte/icons/wallet';
     import CircleDollarSign from 'lucide-svelte/icons/circle-dollar-sign';
     import HelpingHand from 'lucide-svelte/icons/helping-hand';
     import LogOut from 'lucide-svelte/icons/log-out';
