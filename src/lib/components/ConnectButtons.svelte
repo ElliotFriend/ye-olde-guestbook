@@ -30,6 +30,7 @@
     let balance: string = '0';
     let isFunding: boolean = false;
     let isDonating: boolean = false;
+    let userName: string = '';
 
     async function getBalance() {
         console.log('fetching balances');
@@ -48,11 +49,22 @@
     async function signup() {
         console.log('signing up');
         try {
+            await new Promise<string>((resolve) => {
+                const modal: ModalSettings = {
+                    type: 'prompt',
+                    title: 'Enter Name',
+                    body: 'Please provide a username below.',
+                    valueAttr: { type: 'text', required: true },
+                    response: (r: string) => resolve(r),
+                }
+                modalStore.trigger(modal);
+            }).then((r: string) => userName = r)
+
             const {
                 keyId_base64,
                 contractId: cid,
                 built,
-            } = await account.createWallet('Ye Olde Guestbook', 'Guestbook Author');
+            } = await account.createWallet('Ye Olde Guestbook', userName);
             keyId.set(keyId_base64);
             contractId.set(cid);
 

@@ -1,4 +1,4 @@
-import { SorobanRpc } from '@stellar/stellar-sdk';
+import { Server } from '@stellar/stellar-sdk/rpc';
 import { PasskeyKit, SACClient } from 'passkey-kit';
 
 import {
@@ -9,7 +9,7 @@ import {
 } from '$env/static/public';
 import type { Tx } from '@stellar/stellar-sdk/contract';
 
-export const rpc = new SorobanRpc.Server(PUBLIC_STELLAR_RPC_URL);
+export const rpc = new Server(PUBLIC_STELLAR_RPC_URL);
 
 export const account = new PasskeyKit({
     rpcUrl: PUBLIC_STELLAR_RPC_URL,
@@ -37,7 +37,7 @@ export async function send(tx: Tx) {
 }
 
 export async function getContractId(signer: string) {
-    return fetch(`/api/contract-id/${signer}`).then(async (res) => {
+    return fetch(`/api/contract/${signer}`).then(async (res) => {
         if (res.ok) return res.text();
         else throw await res.text();
     });
