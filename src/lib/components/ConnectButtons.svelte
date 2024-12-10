@@ -56,9 +56,9 @@
                     body: 'Please provide a username below.',
                     valueAttr: { type: 'text', required: true },
                     response: (r: string) => resolve(r),
-                }
+                };
                 modalStore.trigger(modal);
-            }).then((r: string) => userName = r)
+            }).then((r: string) => (userName = r));
 
             const {
                 keyId_base64,
