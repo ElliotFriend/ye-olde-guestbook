@@ -6,81 +6,64 @@ use soroban_sdk::{testutils::Address as _, Env};
 #[test]
 fn test_initialize() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
-    let first_id = client.initialize(&admin, &hello_world, &lorem_ipsum);
-    assert_eq!(first_id, 1u32);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
 }
 
 #[test]
 #[should_panic(expected = "Error(Contract, #3")]
 fn test_initialize_empty_title() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let hello_world: String = String::from_str(&env, "");
+    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
 }
 
 #[test]
 #[should_panic(expected = "Error(Contract, #3")]
 fn test_initialize_empty_text() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
+    env.mock_all_auths();
 
+    let admin = Address::generate(&env);
     let hello_world: String = String::from_str(&env, "Hello World");
     let lorem_ipsum: String = String::from_str(&env, "");
 
-    env.mock_all_auths();
-
-    let admin = Address::generate(&env);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
-}
-
-#[test]
-#[should_panic(expected = "Error(Contract, #2")]
-fn test_initialize_already_initialized() {
-    let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
-    env.mock_all_auths();
-
-    let admin = Address::generate(&env);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
 }
 
 #[test]
 fn test_write_message() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
     let newer_id = client.write_message(&author, &hello_world, &lorem_ipsum);
@@ -91,18 +74,19 @@ fn test_write_message() {
 #[should_panic(expected = "Error(Contract, #3")]
 fn test_write_message_empty_title() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
     let author = Address::generate(&env);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
 
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
+
     client.write_message(&author, &String::from_str(&env, ""), &lorem_ipsum);
 }
 
@@ -110,52 +94,38 @@ fn test_write_message_empty_title() {
 #[should_panic(expected = "Error(Contract, #3")]
 fn test_write_message_empty_text() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
     let author = Address::generate(&env);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
 
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
-    client.write_message(&author, &hello_world, &String::from_str(&env, ""));
-}
-
-#[test]
-#[should_panic(expected = "Error(Contract, #1")]
-fn test_write_message_not_initialized() {
-    let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
     let client = YeOldGuestbookContractClient::new(&env, &contract_id);
 
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
-    env.mock_all_auths();
-
-    let author = Address::generate(&env);
-    client.write_message(&author, &hello_world, &lorem_ipsum);
+    client.write_message(&author, &hello_world, &String::from_str(&env, ""));
 }
 
 #[test]
 fn test_read_message() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
     let author = Address::generate(&env);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
 
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
+
     client.write_message(&author, &hello_world, &lorem_ipsum);
 
     let first_message = client.read_message(&1u32);
@@ -175,42 +145,26 @@ fn test_read_message() {
 #[should_panic(expected = "Error(Contract, #4")]
 fn test_read_message_non_existent_id() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
     let author = Address::generate(&env);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
 
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
-    client.write_message(&author, &hello_world, &lorem_ipsum);
-
-    client.read_message(&3u32);
-}
-
-#[test]
-#[should_panic(expected = "Error(Contract, #1")]
-fn test_read_message_not_initialized() {
-    let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
     let client = YeOldGuestbookContractClient::new(&env, &contract_id);
 
-    client.read_message(&123u32);
+    client.write_message(&author, &hello_world, &lorem_ipsum);
+    client.read_message(&3u32);
 }
 
 #[test]
 fn test_read_latest() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
@@ -218,7 +172,15 @@ fn test_read_latest() {
     let author2 = Address::generate(&env);
     let author3 = Address::generate(&env);
 
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
+
     client.write_message(&author1, &hello_world, &lorem_ipsum);
     client.write_message(&author2, &hello_world, &lorem_ipsum);
 
@@ -234,34 +196,26 @@ fn test_read_latest() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #1")]
-fn test_read_latest_not_initialized() {
-    let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    client.read_latest();
-}
-
-#[test]
 fn test_edit_message() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
     let message_id = client.write_message(&author, &hello_world, &lorem_ipsum);
 
     let new_hello_world: String = String::from_str(&env, "Updated Hello World");
-    let new_lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum STILL ain't got nothin' on me!");
+    let new_lorem_ipsum: String =
+        String::from_str(&env, "Lorem Ipsum STILL ain't got nothin' on me!");
 
     client.edit_message(&message_id, &new_hello_world, &new_lorem_ipsum);
     let newly_read_message = client.read_message(&message_id);
@@ -270,38 +224,27 @@ fn test_edit_message() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #1")]
-fn test_edit_message_not_initialized() {
-    let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let new_hello_world: String = String::from_str(&env, "Updated Hello World");
-    let new_lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum STILL ain't got nothin' on me!");
-
-    client.edit_message(&1, &new_hello_world, &new_lorem_ipsum);
-}
-
-#[test]
 #[should_panic(expected = "Error(Contract, #4")]
 fn test_edit_message_bad_message_id() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
     let message_id = client.write_message(&author, &hello_world, &lorem_ipsum);
 
     let new_hello_world: String = String::from_str(&env, "Updated Hello World");
-    let new_lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum STILL ain't got nothin' on me!");
+    let new_lorem_ipsum: String =
+        String::from_str(&env, "Lorem Ipsum STILL ain't got nothin' on me!");
 
     client.edit_message(&(message_id + 1), &new_hello_world, &new_lorem_ipsum);
 }
@@ -309,21 +252,23 @@ fn test_edit_message_bad_message_id() {
 #[test]
 fn test_edit_message_empty_title() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
     let message_id = client.write_message(&author, &hello_world, &lorem_ipsum);
 
-    let new_lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum STILL ain't got nothin' on me!");
+    let new_lorem_ipsum: String =
+        String::from_str(&env, "Lorem Ipsum STILL ain't got nothin' on me!");
 
     client.edit_message(&message_id, &String::from_str(&env, ""), &new_lorem_ipsum);
     let edited_message = client.read_message(&message_id);
@@ -334,16 +279,17 @@ fn test_edit_message_empty_title() {
 #[test]
 fn test_edit_message_empty_text() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
     let message_id = client.write_message(&author, &hello_world, &lorem_ipsum);
@@ -360,19 +306,24 @@ fn test_edit_message_empty_text() {
 #[should_panic(expected = "Error(Contract, #3")]
 fn test_edit_message_empty_title_and_text() {
     let env = Env::default();
-    let contract_id = env.register_contract(None, YeOldGuestbookContract);
-    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
-
-    let hello_world: String = String::from_str(&env, "Hello World");
-    let lorem_ipsum: String = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
-
     env.mock_all_auths();
 
     let admin = Address::generate(&env);
-    client.initialize(&admin, &hello_world, &lorem_ipsum);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
 
     let author = Address::generate(&env);
     let message_id = client.write_message(&author, &hello_world, &lorem_ipsum);
 
-    client.edit_message(&message_id, &String::from_str(&env, ""), &String::from_str(&env, ""));
+    client.edit_message(
+        &message_id,
+        &String::from_str(&env, ""),
+        &String::from_str(&env, ""),
+    );
 }

@@ -1,7 +1,7 @@
 #![no_std]
 
 use soroban_sdk::{
-    contract, contractimpl, contractmeta, panic_with_error, token, Address, BytesN, Env, String
+    contract, contractimpl, contractmeta, panic_with_error, token, Address, BytesN, Env, String,
 };
 use types::*;
 
@@ -9,13 +9,6 @@ contractmeta!(
     key = "Ye Olde Guestbook",
     val = "A smart contract guestbook. Just like in the olden days of the internet."
 );
-
-// Make sure the contract is initialized.
-fn check_is_init(env: &Env) {
-    if !env.storage().instance().has(&DataKey::Admin) {
-        panic_with_error!(env, Error::NotInitialized);
-    }
-}
 
 // Make sure the provided string is not empty.
 fn check_string_not_empty(env: &Env, sus_string: &String) {
@@ -80,13 +73,14 @@ impl YeOldGuestbookContract {
     ///
     /// # Panics
     ///
-    /// * If the contract is already initialized.
     /// * If the `title` argument is empty or missing.
     /// * If the `text` argument is empty or missing.
-    pub fn initialize(env: Env, admin: Address, title: String, text: String) -> Result<u32, Error> {
-        if env.storage().instance().has(&DataKey::Admin) {
-            return Err(Error::AlreadyInitialized);
-        }
+    pub fn __constructor(
+        env: Env,
+        admin: Address,
+        title: String,
+        text: String,
+    ) -> Result<(), Error> {
         check_string_not_empty(&env, &title);
         check_string_not_empty(&env, &text);
 
@@ -100,8 +94,8 @@ impl YeOldGuestbookContract {
             text,
         };
 
-        let message_num = save_message(&env, first_message);
-        Ok(message_num)
+        save_message(&env, first_message);
+        Ok(())
     }
 
     /// Upgrade the contract's Wasm bytecode.
@@ -114,13 +108,8 @@ impl YeOldGuestbookContract {
     ///
     /// # Panics
     ///
-    /// * If the contract is not initialized.
     /// * If the Wasm bytecode is not already installed on-chain.
     pub fn upgrade(env: Env, new_wasm_hash: BytesN<32>) -> Result<(), Error> {
-        if !env.storage().instance().has(&DataKey::Admin) {
-            return Err(Error::NotInitialized);
-        }
-
         let admin: Address = env.storage().instance().get(&DataKey::Admin).unwrap();
         admin.require_auth();
         env.deployer().update_current_contract_wasm(new_wasm_hash);
@@ -137,7 +126,6 @@ impl YeOldGuestbookContract {
     ///
     /// # Panics
     ///
-    /// * If the contract is not initialized.
     /// * If the `title` argument is empty or missing.
     /// * If the `text` argument is empty or missing.
     pub fn write_message(
@@ -146,7 +134,6 @@ impl YeOldGuestbookContract {
         title: String,
         text: String,
     ) -> Result<u32, Error> {
-        check_is_init(&env);
         check_string_not_empty(&env, &title);
         check_string_not_empty(&env, &text);
         author.require_auth();
@@ -175,9 +162,12 @@ impl YeOldGuestbookContract {
     /// * If the contract is not initialized.
     /// * If both the `title` AND `text` arguments are empty or missing.
     /// * If there is no authorization from the original message author.
-    pub fn edit_message(env: Env, message_id: u32, title: String, text: String) -> Result<(), Error> {
-        check_is_init(&env);
-
+    pub fn edit_message(
+        env: Env,
+        message_id: u32,
+        title: String,
+        text: String,
+    ) -> Result<(), Error> {
         if title.is_empty() {
             check_string_not_empty(&env, &text);
         }
@@ -189,14 +179,20 @@ impl YeOldGuestbookContract {
         let mut message = get_message(&env, message_id);
         message.author.require_auth();
 
-        let edited_title = if title.is_empty() { message.title } else { title };
+        let edited_title = if title.is_empty() {
+            message.title
+        } else {
+            title
+        };
         let edited_text = if text.is_empty() { message.text } else { text };
 
         message.title = edited_title;
         message.text = edited_text;
         message.ledger = env.ledger().sequence();
 
-        env.storage().persistent().set(&DataKey::Message(message_id), &message);
+        env.storage()
+            .persistent()
+            .set(&DataKey::Message(message_id), &message);
         return Ok(());
     }
 
@@ -211,8 +207,6 @@ impl YeOldGuestbookContract {
     /// * If the contract is not initialized.
     /// * If the message ID is not associated with a message.
     pub fn read_message(env: Env, message_id: u32) -> Result<Message, Error> {
-        check_is_init(&env);
-
         let message = get_message(&env, message_id);
         Ok(message)
     }
@@ -223,8 +217,6 @@ impl YeOldGuestbookContract {
     ///
     /// * If the contract is not initialized.
     pub fn read_latest(env: Env) -> Result<Message, Error> {
-        check_is_init(&env);
-
         let latest_id = env
             .storage()
             .instance()
@@ -241,8 +233,6 @@ impl YeOldGuestbookContract {
     /// * If the contract is not initialized.
     /// * If the contract is not holding any donations balance.
     pub fn claim_donations(env: Env, token: Address) -> Result<i128, Error> {
-        check_is_init(&env);
-
         let token_client = token::TokenClient::new(&env, &token);
         let contract_balance = token_client.balance(&env.current_contract_address());
 
@@ -251,7 +241,11 @@ impl YeOldGuestbookContract {
         }
 
         let admin_address: Address = env.storage().instance().get(&DataKey::Admin).unwrap();
-        token_client.transfer(&env.current_contract_address(), &admin_address, &contract_balance);
+        token_client.transfer(
+            &env.current_contract_address(),
+            &admin_address,
+            &contract_balance,
+        );
 
         Ok(contract_balance)
     }
