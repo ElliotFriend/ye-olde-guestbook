@@ -159,7 +159,6 @@ impl YeOldGuestbookContract {
     ///
     /// # Panics
     ///
-    /// * If the contract is not initialized.
     /// * If both the `title` AND `text` arguments are empty or missing.
     /// * If there is no authorization from the original message author.
     pub fn edit_message(
@@ -204,7 +203,6 @@ impl YeOldGuestbookContract {
     ///
     /// # Panics
     ///
-    /// * If the contract is not initialized.
     /// * If the message ID is not associated with a message.
     pub fn read_message(env: Env, message_id: u32) -> Result<Message, Error> {
         let message = get_message(&env, message_id);
@@ -212,10 +210,6 @@ impl YeOldGuestbookContract {
     }
 
     /// Read the latest message to be sent to the guestbook.
-    ///
-    /// # Panics
-    ///
-    /// * If the contract is not initialized.
     pub fn read_latest(env: Env) -> Result<Message, Error> {
         let latest_id = env
             .storage()
@@ -230,7 +224,6 @@ impl YeOldGuestbookContract {
     ///
     /// # Panics
     ///
-    /// * If the contract is not initialized.
     /// * If the contract is not holding any donations balance.
     pub fn claim_donations(env: Env, token: Address) -> Result<i128, Error> {
         let token_client = token::TokenClient::new(&env, &token);

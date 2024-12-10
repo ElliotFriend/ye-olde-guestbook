@@ -19,7 +19,7 @@ fn test_initialize() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #3")]
+#[should_panic(expected = "Error(Contract, #1")]
 fn test_initialize_empty_title() {
     let env = Env::default();
     env.mock_all_auths();
@@ -35,7 +35,7 @@ fn test_initialize_empty_title() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #3")]
+#[should_panic(expected = "Error(Contract, #1")]
 fn test_initialize_empty_text() {
     let env = Env::default();
     env.mock_all_auths();
@@ -71,7 +71,7 @@ fn test_write_message() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #3")]
+#[should_panic(expected = "Error(Contract, #1")]
 fn test_write_message_empty_title() {
     let env = Env::default();
     env.mock_all_auths();
@@ -91,7 +91,7 @@ fn test_write_message_empty_title() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #3")]
+#[should_panic(expected = "Error(Contract, #1")]
 fn test_write_message_empty_text() {
     let env = Env::default();
     env.mock_all_auths();
@@ -142,7 +142,7 @@ fn test_read_message() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #4")]
+#[should_panic(expected = "Error(Contract, #2")]
 fn test_read_message_non_existent_id() {
     let env = Env::default();
     env.mock_all_auths();
@@ -224,7 +224,7 @@ fn test_edit_message() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #4")]
+#[should_panic(expected = "Error(Contract, #2")]
 fn test_edit_message_bad_message_id() {
     let env = Env::default();
     env.mock_all_auths();
@@ -303,7 +303,7 @@ fn test_edit_message_empty_text() {
 }
 
 #[test]
-#[should_panic(expected = "Error(Contract, #3")]
+#[should_panic(expected = "Error(Contract, #1")]
 fn test_edit_message_empty_title_and_text() {
     let env = Env::default();
     env.mock_all_auths();
