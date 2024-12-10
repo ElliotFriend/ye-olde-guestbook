@@ -25,7 +25,6 @@
                 title: messageTitle,
                 text: messageText,
             });
-            console.log(at.needsNonInvokerSigningBy());
 
             let txn = await account.sign(at.built!, { keyId: $keyId });
             const { returnValue } = await send(txn.built!);
