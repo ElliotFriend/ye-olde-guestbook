@@ -19,9 +19,6 @@ console.log('###################### Initializing ########################');
 const __filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(__filename);
 
-// variable for later setting pinned version of soroban in "$(dirname/target/bin/soroban)"
-const cli = 'stellar';
-
 // Function to execute and log shell commands
 function exe(command) {
     console.log(command);
@@ -29,7 +26,14 @@ function exe(command) {
 }
 
 function fundAll() {
-    exe(`${cli} keys generate --overwrite ${process.env.STELLAR_ACCOUNT}`);
+    exe(`stellar keys generate ${process.env.STELLAR_ACCOUNT} | true`);
+    if (
+        process.env.STELLAR_NETWORK_PASSPHRASE !== 'Public Global Stellar Network ; September 2015'
+    ) {
+        exe(
+            `stellar keys fund ${process.env.STELLAR_ACCOUNT} --network ${process.env.STELLAR_NETWORK}`,
+        );
+    }
 }
 
 function removeFiles(pattern) {
@@ -40,7 +44,7 @@ function removeFiles(pattern) {
 function buildAll() {
     removeFiles(`${dirname}/target/wasm32-unknown-unknown/release/*.wasm`);
     removeFiles(`${dirname}/target/wasm32-unknown-unknown/release/*.d`);
-    exe(`${cli} contract build`);
+    exe(`stellar contract build`);
 }
 
 function filenameNoExtension(filename) {
@@ -49,12 +53,12 @@ function filenameNoExtension(filename) {
 
 function deploy(wasm) {
     exe(
-        `${cli} contract deploy --wasm ${wasm} --ignore-checks --alias ${filenameNoExtension(wasm)} -- --admin ${process.env.STELLAR_ACCOUNT} --title "Hello, Initialized Contract!" --text "I would be most honored if you would please sign my humble guestbook."`,
+        `stellar contract deploy --wasm ${wasm} --alias ${filenameNoExtension(wasm)} --salt 05e04211b7f13ae334fb3d7f3a7927591f7b95b87d5a4d9fd2793434936c2718 -- --admin ${process.env.STELLAR_ACCOUNT} --title "Hello, Initialized Contract!" --text "I would be most honored if you would please sign my humble guestbook."`,
     );
 }
 
 function deployAll() {
-    const contractsDir = `${dirname}/.soroban/contract-ids`;
+    const contractsDir = `${dirname}/.stellar/contract-ids`;
     mkdirSync(contractsDir, { recursive: true });
 
     const wasmFiles = glob(`${dirname}/target/wasm32-unknown-unknown/release/*.wasm`);
@@ -63,7 +67,7 @@ function deployAll() {
 }
 
 function contracts() {
-    const contractFiles = glob(`${dirname}/.soroban/contract-ids/*.json`);
+    const contractFiles = glob(`${dirname}/.stellar/contract-ids/*.json`);
 
     return contractFiles
         .map((path) => ({
@@ -79,7 +83,7 @@ function contracts() {
 
 function bind({ alias, id }) {
     exe(
-        `${cli} contract bindings typescript --id ${id} --output-dir ${dirname}/packages/${alias} --overwrite`,
+        `stellar contract bindings typescript --id ${id} --output-dir ${dirname}/packages/${alias} --overwrite`,
     );
 }
 

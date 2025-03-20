@@ -12,17 +12,17 @@ importers:
         specifier: ^1.6.12
         version: 1.6.12
       '@stellar/stellar-sdk':
-        specifier: ^13.0.0
-        version: 13.0.0
+        specifier: ^13.1.0
+        version: 13.1.0
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
       lucide-svelte:
-        specifier: ^0.464.0
-        version: 0.464.0(svelte@5.5.2)
+        specifier: ^0.483.0
+        version: 0.483.0(svelte@5.5.2)
       passkey-kit:
-        specifier: ^0.10.4
-        version: 0.10.4
+        specifier: ^0.10.19
+        version: 0.10.19
       svelte-persisted-store:
         specifier: ^0.12.0
         version: 0.12.0(svelte@5.5.2)
@@ -476,11 +476,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@simplewebauthn/browser@11.0.0':
-    resolution: {integrity: sha512-KEGCStrl08QC2I561BzxqGiwoknblP6O1YW7jApdXLPtIqZ+vgJYAv8ssLCdm1wD8HGAHd49CJLkUF8X70x/pg==}
-
-  '@simplewebauthn/types@11.0.0':
-    resolution: {integrity: sha512-b2o0wC5u2rWts31dTgBkAtSNKGX0cvL6h8QedNsKmj8O4QoLFQFR3DBVBUlpyVEhYKA+mXGUaXbcOc4JdQ3HzA==}
+  '@simplewebauthn/browser@13.1.0':
+    resolution: {integrity: sha512-WuHZ/PYvyPJ9nxSzgHtOEjogBhwJfC8xzYkPC+rR/+8chl/ft4ngjiK8kSU5HtRJfczupyOh33b25TjYbvwAcg==}
 
   '@skeletonlabs/skeleton@2.10.3':
     resolution: {integrity: sha512-O1RecF68zEVvZl3GgRS4emqWMUIQLHvTOFoqGOw/2OXCPE06IxUQrHQf2hnxCPxtGZNXY2YX8UNV38l+eH8GNQ==}
@@ -501,11 +498,11 @@ packages:
   '@stellar/stellar-base@13.0.1':
     resolution: {integrity: sha512-Xbd12mc9Oj/130Tv0URmm3wXG77XMshZtZ2yNCjqX5ZbMD5IYpbBs3DVCteLU/4SLj/Fnmhh1dzhrQXnk4r+pQ==}
 
-  '@stellar/stellar-sdk@13.0.0':
-    resolution: {integrity: sha512-+wvmKi+XWwu27nLYTM17EgBdpbKohEkOfCIK4XKfsI4WpMXAqvnqSm98i9h5dAblNB+w8BJqzGs1JY0PtTGm4A==}
-
   '@stellar/stellar-sdk@13.0.0-beta.1':
     resolution: {integrity: sha512-yJN2HzibhZFJsdLRU83bkUwb9dq1sZRRiQptTJyunVv0hQsF+tTldrP3hHst3LROv/2GWTn20tmAqnp0hkzOhg==}
+
+  '@stellar/stellar-sdk@13.1.0':
+    resolution: {integrity: sha512-ARQkUdyGefXdTgwSF0eONkzv/geAqUfyfheJ9Nthz6GAr5b41fNwWW9UtE8JpXC4IpvE3t5elIUN5hKJzASN9w==}
 
   '@sveltejs/adapter-auto@3.3.1':
     resolution: {integrity: sha512-5Sc7WAxYdL6q9j/+D0jJKjGREGlfIevDyHSQ2eNETHcB1TKlQWHcAo8AS8H1QdjNvSXpvOwNjykDUHPEAyGgdQ==}
@@ -686,6 +683,9 @@ packages:
 
   axios@1.7.8:
     resolution: {integrity: sha512-Uu0wb7KNqK2t5K+YQyVCLM76prD5sRFjKHbJYCP1J7JFGEQ6nN7HWn9+04LAeiJ3ji54lgS/gZCH1oxyrf1SPw==}
+
+  axios@1.8.4:
+    resolution: {integrity: sha512-eBSYY4Y68NNlHbHBMdeDmKNtDgXWhQsJcGqzO3iLUM0GraQFSS9cVgPX5I9b3lbdFKyYoAEGAZF1DwhTaljNAw==}
 
   axobject-query@4.1.0:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
@@ -977,6 +977,9 @@ packages:
   feaxios@0.0.20:
     resolution: {integrity: sha512-g3hm2YDNffNxA3Re3Hd8ahbpmDee9Fv1Pb1C/NoWsjY7mtD8nyNeJytUzn+DK0Hyl9o6HppeWOrtnqgmhOYfWA==}
 
+  feaxios@0.0.23:
+    resolution: {integrity: sha512-eghR0A21fvbkcQBgZuMfQhrXxJzC0GNUGC9fXhBge33D+mFDTwl0aJ35zoQQn575BhyjQitRc5N4f+L4cP708g==}
+
   file-entry-cache@8.0.0:
     resolution: {integrity: sha512-XXTUwCvisa5oacNGRP9SfNtYBNAMi+RPwBFmblZEF7N7swHYQS6/Zfk7SRwx4D5j3CH211YNRco1DEMNVfZCnQ==}
     engines: {node: '>=16.0.0'}
@@ -1189,8 +1192,8 @@ packages:
     resolution: {integrity: sha512-123qHRfJBmo2jXDbo/a5YOQrJoHF/GNQTLzQ5+IdK5pWpceK17yRc6ozlWd25FxvGKQbIUs91fDFkXmDHTKcyA==}
     engines: {node: 20 || >=22}
 
-  lucide-svelte@0.464.0:
-    resolution: {integrity: sha512-yTLUIff++ydIYVN6hnfQCGUsR5Y56T6cvM3CyXrVNsExRsDKCZAifcIg3C8Bxcb7cO2h+fuCPPzvGsQfEl3TBA==}
+  lucide-svelte@0.483.0:
+    resolution: {integrity: sha512-MyMgEVLlFfPbyodGpkB+KCpyPkpjI7EKiFw1crA92B1ZXRK5hq5vTsGWAm9Nt3GAKHunoNc5MVsq3EOCz0DZSQ==}
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
 
@@ -1305,14 +1308,11 @@ packages:
   parse5@7.2.1:
     resolution: {integrity: sha512-BuBYQYlv1ckiPdQi/ohiivi9Sagc9JG+Ozs0r7b/0iK3sKmrb0b9FdWdBbOdx6hBCM/F9Ir82ofnBhtZOjCRPQ==}
 
-  passkey-factory-sdk@0.6.1:
-    resolution: {integrity: sha512-tVZ54n5Y3s6WbFU7/RCFC85I7fw3XmgYm369ftfS03dRtLTHgoLNeNefDa3Awlar9/F5HVUEmLNZD5zHgrBV/A==}
+  passkey-kit-sdk@0.6.6:
+    resolution: {integrity: sha512-SxDcuh1T8pEldsQyql47ddjMdwVImIgeoVmG4vbUq6Q747N8eDr7jLmosXUc9vImkIwJAGAdSDTwI2GrBoRYXw==}
 
-  passkey-kit-sdk@0.6.1:
-    resolution: {integrity: sha512-RLHvdOn9U6lr259bci+SrspDUIulkCjwTqHL6C6T7LNgj0wJsUM90y+bKye6VkldeDuaANFJuYhQZy+lxojHnA==}
-
-  passkey-kit@0.10.4:
-    resolution: {integrity: sha512-vminjkfzYc3KLbWPLIaNrVmOmWKnzNOCavZjAx5CTIoB4bVwHbf58YeN8h5Z/R5m21iKX2jrEIZZeaV6ySqS/w==}
+  passkey-kit@0.10.19:
+    resolution: {integrity: sha512-bHCDQwj1zdoqBd1CRKTe31F/99RpBzjoAk5Yd/riK+MAc/rExy3OJza7ZSYqzS1Y2P5na57F2e2ZSz7yAI2q9g==}
 
   path-exists@4.0.0:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
@@ -1483,8 +1483,8 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
-  sac-sdk@0.3.1:
-    resolution: {integrity: sha512-CoAwOTe6MSVAyWM6ivYxbLsQnS9HYemBiQXRhhttx3/F/Y0DlClbxNeo0vIpe9jqKWDkmvCY+OfUK48QmDua0A==}
+  sac-sdk@0.3.6:
+    resolution: {integrity: sha512-VNPzvSdQT4FeYBouzDoZHFZs7rEm5ShjCVpyu2f0gK5aMbyhowfX/H+D0YRpaza/30ucf+SQwURdtZWABa2V/g==}
 
   sade@1.8.1:
     resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}
@@ -1992,11 +1992,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.28.0':
     optional: true
 
-  '@simplewebauthn/browser@11.0.0':
-    dependencies:
-      '@simplewebauthn/types': 11.0.0
-
-  '@simplewebauthn/types@11.0.0': {}
+  '@simplewebauthn/browser@13.1.0': {}
 
   '@skeletonlabs/skeleton@2.10.3(svelte@5.5.2)':
     dependencies:
@@ -2031,9 +2027,9 @@ snapshots:
     optionalDependencies:
       sodium-native: 4.3.1
 
-  '@stellar/stellar-sdk@13.0.0':
+  '@stellar/stellar-sdk@13.0.0-beta.1':
     dependencies:
-      '@stellar/stellar-base': 13.0.1
+      '@stellar/stellar-base': 13.0.0-beta.1
       axios: 1.7.8
       bignumber.js: 9.1.2
       eventsource: 2.0.2
@@ -2044,13 +2040,13 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@stellar/stellar-sdk@13.0.0-beta.1':
+  '@stellar/stellar-sdk@13.1.0':
     dependencies:
-      '@stellar/stellar-base': 13.0.0-beta.1
-      axios: 1.7.8
+      '@stellar/stellar-base': 13.0.1
+      axios: 1.8.4
       bignumber.js: 9.1.2
       eventsource: 2.0.2
-      feaxios: 0.0.20
+      feaxios: 0.0.23
       randombytes: 2.1.0
       toml: 3.0.0
       urijs: 1.19.11
@@ -2265,6 +2261,14 @@ snapshots:
       postcss-value-parser: 4.2.0
 
   axios@1.7.8:
+    dependencies:
+      follow-redirects: 1.15.9
+      form-data: 4.0.1
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
+  axios@1.8.4:
     dependencies:
       follow-redirects: 1.15.9
       form-data: 4.0.1
@@ -2578,6 +2582,10 @@ snapshots:
     dependencies:
       is-retry-allowed: 3.0.0
 
+  feaxios@0.0.23:
+    dependencies:
+      is-retry-allowed: 3.0.0
+
   file-entry-cache@8.0.0:
     dependencies:
       flat-cache: 4.0.1
@@ -2756,7 +2764,7 @@ snapshots:
 
   lru-cache@11.0.2: {}
 
-  lucide-svelte@0.464.0(svelte@5.5.2):
+  lucide-svelte@0.483.0(svelte@5.5.2):
     dependencies:
       svelte: 5.5.2
 
@@ -2856,29 +2864,21 @@ snapshots:
     dependencies:
       entities: 4.5.0
 
-  passkey-factory-sdk@0.6.1:
+  passkey-kit-sdk@0.6.6:
     dependencies:
-      '@stellar/stellar-sdk': 13.0.0
+      '@stellar/stellar-sdk': 13.1.0
       buffer: 6.0.3
     transitivePeerDependencies:
       - debug
 
-  passkey-kit-sdk@0.6.1:
+  passkey-kit@0.10.19:
     dependencies:
-      '@stellar/stellar-sdk': 13.0.0
-      buffer: 6.0.3
-    transitivePeerDependencies:
-      - debug
-
-  passkey-kit@0.10.4:
-    dependencies:
-      '@simplewebauthn/browser': 11.0.0
-      '@stellar/stellar-sdk': 13.0.0
+      '@simplewebauthn/browser': 13.1.0
+      '@stellar/stellar-sdk': 13.1.0
       base64url: 3.0.1
       buffer: 6.0.3
-      passkey-factory-sdk: 0.6.1
-      passkey-kit-sdk: 0.6.1
-      sac-sdk: 0.3.1
+      passkey-kit-sdk: 0.6.6
+      sac-sdk: 0.3.6
     transitivePeerDependencies:
       - debug
 
@@ -3042,9 +3042,9 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
-  sac-sdk@0.3.1:
+  sac-sdk@0.3.6:
     dependencies:
-      '@stellar/stellar-sdk': 13.0.0
+      '@stellar/stellar-sdk': 13.1.0
       buffer: 6.0.3
     transitivePeerDependencies:
       - debug
@@ -3296,7 +3296,7 @@ snapshots:
 
   ye_olde_guestbook@file:packages/ye_olde_guestbook:
     dependencies:
-      '@stellar/stellar-sdk': 13.0.0
+      '@stellar/stellar-sdk': 13.1.0
       buffer: 6.0.3
     transitivePeerDependencies:
       - debug

@@ -4,7 +4,7 @@ import { PasskeyKit, SACClient } from 'passkey-kit';
 import {
     PUBLIC_STELLAR_RPC_URL,
     PUBLIC_STELLAR_NETWORK_PASSPHRASE,
-    PUBLIC_FACTORY_CONTRACT_ADDRESS,
+    PUBLIC_WALLET_WASM_HASH,
     PUBLIC_NATIVE_CONTRACT_ADDRESS,
 } from '$env/static/public';
 import type { Tx } from '@stellar/stellar-sdk/contract';
@@ -14,7 +14,7 @@ export const rpc = new Server(PUBLIC_STELLAR_RPC_URL);
 export const account = new PasskeyKit({
     rpcUrl: PUBLIC_STELLAR_RPC_URL,
     networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
-    factoryContractId: PUBLIC_FACTORY_CONTRACT_ADDRESS,
+    walletWasmHash: PUBLIC_WALLET_WASM_HASH,
 });
 
 export const sac = new SACClient({

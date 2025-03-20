@@ -8,8 +8,8 @@ guestbooks](https://en.wikipedia.org/wiki/Guestbook) from the olden days!
 - [Give it a Spin](#give-it-a-spin)
 - [Passkeys](#passkeys)
 - [Anatomy of the Repository](#anatomy-of-the-repository)
-  - [Smart Contract](#smart-contract)
-  - [Frontend](#frontend)
+    - [Smart Contract](#smart-contract)
+    - [Frontend](#frontend)
 - [More Info](#more-info)
 
 ## Give it a Spin

@@ -61,19 +61,19 @@
             }).then((r: string) => (userName = r));
 
             const {
-                keyId_base64,
+                keyIdBase64,
                 contractId: cid,
-                built,
+                signedTx,
             } = await account.createWallet('Ye Olde Guestbook', userName);
-            keyId.set(keyId_base64);
+            keyId.set(keyIdBase64);
             contractId.set(cid);
 
-            if (!built) {
+            if (!signedTx) {
                 error(500, {
                     message: 'built transaction missing',
                 });
             }
-            await send(built);
+            await send(signedTx);
             await fundContract($contractId);
             getBalance();
         } catch (err) {
@@ -88,11 +88,11 @@
     async function login() {
         console.log('logging in');
         try {
-            const { keyId_base64, contractId: cid } = await account.connectWallet({
+            const { keyIdBase64, contractId: cid } = await account.connectWallet({
                 getContractId,
             });
 
-            keyId.set(keyId_base64);
+            keyId.set(keyIdBase64);
             console.log($keyId);
 
             contractId.set(cid);

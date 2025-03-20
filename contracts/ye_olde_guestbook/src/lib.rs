@@ -5,8 +5,9 @@ use soroban_sdk::{
 };
 use types::*;
 
+contractmeta!(key = "title", val = "Ye Olde Guestbook");
 contractmeta!(
-    key = "Ye Olde Guestbook",
+    key = "desc",
     val = "A smart contract guestbook. Just like in the olden days of the internet."
 );
 

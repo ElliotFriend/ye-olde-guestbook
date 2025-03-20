@@ -3,6 +3,7 @@ import {
     AssembledTransaction,
     Client as ContractClient,
     ClientOptions as ContractClientOptions,
+    MethodOptions,
     Result,
 } from '@stellar/stellar-sdk/contract';
 import type { u32, i128 } from '@stellar/stellar-sdk/contract';
@@ -12,7 +13,7 @@ export * as rpc from '@stellar/stellar-sdk/rpc';
 export declare const networks: {
     readonly testnet: {
         readonly networkPassphrase: 'Test SDF Network ; September 2015';
-        readonly contractId: 'CCEMPEEL2NFCCSN2WKSX5AWQSIZLIX4YI2ZLVZGELH7MGRNECQXSIYSH';
+        readonly contractId: 'CDNMYIT7G6QZ7WQAYOD3DMZ7IEQRZYUHI6MD67AOP2CBJXTKP6NCBOOK';
     };
 };
 export type DataKey =
@@ -45,12 +46,6 @@ export declare const Errors: {
         message: string;
     };
     4: {
-        message: string;
-    };
-    5: {
-        message: string;
-    };
-    6: {
         message: string;
     };
 };
@@ -142,7 +137,6 @@ export interface Client {
      *
      * # Panics
      *
-     * * If the contract is not initialized.
      * * If both the `title` AND `text` arguments are empty or missing.
      * * If there is no authorization from the original message author.
      */
@@ -181,7 +175,6 @@ export interface Client {
      *
      * # Panics
      *
-     * * If the contract is not initialized.
      * * If the message ID is not associated with a message.
      */
     read_message: (
@@ -208,10 +201,6 @@ export interface Client {
     /**
      * Construct and simulate a read_latest transaction. Returns an `AssembledTransaction` object which will have a `result` field containing the result of the simulation. If this transaction changes contract state, you will need to call `signAndSend()` on the returned object.
      * Read the latest message to be sent to the guestbook.
-     *
-     * # Panics
-     *
-     * * If the contract is not initialized.
      */
     read_latest: (options?: {
         /**
@@ -233,7 +222,6 @@ export interface Client {
      *
      * # Panics
      *
-     * * If the contract is not initialized.
      * * If the contract is not holding any donations balance.
      */
     claim_donations: (
@@ -260,6 +248,28 @@ export interface Client {
 }
 export declare class Client extends ContractClient {
     readonly options: ContractClientOptions;
+    static deploy<T = Client>(
+        /** Constructor/Initialization Args for the contract's `__constructor` method */
+        {
+            admin,
+            title,
+            text,
+        }: {
+            admin: string;
+            title: string;
+            text: string;
+        },
+        /** Options for initalizing a Client as well as for calling a method, with extras specific to deploying. */
+        options: MethodOptions &
+            Omit<ContractClientOptions, 'contractId'> & {
+                /** The hash of the Wasm blob, which must already be installed on-chain. */
+                wasmHash: Buffer | string;
+                /** Salt used to generate the contract's ID. Passed through to {@link Operation.createCustomContract}. Default: random. */
+                salt?: Buffer | Uint8Array;
+                /** The format used to decode `wasmHash`, if it's provided as a string. */
+                format?: 'hex' | 'base64';
+            },
+    ): Promise<AssembledTransaction<T>>;
     constructor(options: ContractClientOptions);
     readonly fromJSON: {
         upgrade: (
