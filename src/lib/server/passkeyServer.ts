@@ -1,4 +1,5 @@
 import { PasskeyServer } from 'passkey-kit';
+import { version } from '../../../package.json'
 
 import {
     PUBLIC_LAUNCHTUBE_URL,
@@ -14,4 +15,8 @@ export const server = new PasskeyServer({
     mercuryProjectName: 'smart-wallets-next-dima',
     mercuryUrl: PUBLIC_MERCURY_URL,
     mercuryKey: PRIVATE_MERCURY_KEY,
+    launchtubeHeaders: {
+        'X-Client-Name': 'ye-olde-guestbook',
+        'X-Client-Version': version,
+    },
 });
