@@ -1,8 +1,12 @@
 <script lang="ts">
     import { Avatar } from '@skeletonlabs/skeleton';
     import { drawIdenticon } from '$lib/stellarExpert';
-    export let address: string;
-    export let width: string = 'w-8';
+    interface Props {
+        address: string;
+        width?: string;
+    }
+
+    let { address, width = 'w-8' }: Props = $props();
 </script>
 
 <Avatar {width}>

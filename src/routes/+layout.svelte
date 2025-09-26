@@ -11,6 +11,11 @@
     storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
     import { initializeStores, Toast, Modal } from '@skeletonlabs/skeleton';
+    interface Props {
+        children?: import('svelte').Snippet;
+    }
+
+    let { children }: Props = $props();
     initializeStores();
 </script>
 
@@ -21,7 +26,7 @@
 <div class="w-full h-screen flex flex-col overflow-hidden">
     <Header />
     <PageContent>
-        <slot />
+        {@render children?.()}
     </PageContent>
     <Footer />
 </div>

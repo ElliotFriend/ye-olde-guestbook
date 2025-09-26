@@ -1,4 +1,7 @@
 <script lang="ts">
+    import { createBubbler } from 'svelte/legacy';
+
+    const bubble = createBubbler();
     import { getDrawerStore, Drawer } from '@skeletonlabs/skeleton';
     import BookOpenText from 'lucide-svelte/icons/book-open-text';
     import Signature from 'lucide-svelte/icons/signature';
@@ -30,10 +33,10 @@
                     <a
                         href={item.href}
                         class="btn variant-soft-surface"
-                        on:keypress
-                        on:click={() => onClickSidebarItem()}
+                        onkeypress={bubble('keypress')}
+                        onclick={() => onClickSidebarItem()}
                     >
-                        <span><svelte:component this={item.icon} /></span>
+                        <span><item.icon /></span>
                         <span>{item.name}</span>
                     </a>
                 {/each}

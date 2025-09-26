@@ -2,7 +2,11 @@
     import GuestbookMessage from '$lib/components/GuestbookMessage.svelte';
     import type { PageData } from './$types';
 
-    export let data: PageData;
+    interface Props {
+        data: PageData;
+    }
+
+    let { data }: Props = $props();
 </script>
 
 <h1 class="h1">Read Message {data.id}</h1>

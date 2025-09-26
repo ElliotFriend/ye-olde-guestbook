@@ -4,7 +4,11 @@
     import { getModalStore } from '@skeletonlabs/skeleton';
     import { onDestroy, onMount, type SvelteComponent } from 'svelte';
 
-    export let parent: SvelteComponent;
+    interface Props {
+        parent: SvelteComponent;
+    }
+
+    let { parent }: Props = $props();
     const modalStore = getModalStore();
 
     onMount(async () => {
@@ -41,13 +45,13 @@
     const cButton = 'absolute -top-3 -right-3 z-1 btn-icon variant-filled';
     const cIframe = 'bg-white w-full rounded-container-token overflow-hidden';
 
-    $: spUrl = $modalStore[0].meta.spUrl || PUBLIC_SUPERPEACH_URL;
-    $: iframeUrl = `${spUrl}/add-signer?from=${encodeURIComponent(location.origin)}&keyId=${$modalStore[0].meta.kid}&publicKey=${$modalStore[0].meta.publicKey}`;
+    let spUrl = $derived($modalStore[0].meta.spUrl || PUBLIC_SUPERPEACH_URL);
+    let iframeUrl = $derived(`${spUrl}/add-signer?from=${encodeURIComponent(location.origin)}&keyId=${$modalStore[0].meta.kid}&publicKey=${$modalStore[0].meta.publicKey}`);
 </script>
 
 {#if $modalStore[0]}
     <div class={cBase}>
-        <button class={cButton} on:click={close}>✕</button>
+        <button class={cButton} onclick={close}>✕</button>
         <iframe
             class={cIframe}
             src={iframeUrl}

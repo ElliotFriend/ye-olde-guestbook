@@ -11,11 +11,11 @@
     import { xdr } from '@stellar/stellar-sdk';
     import { goto } from '$app/navigation';
 
-    let messageTitle: string;
-    let messageText: string;
-    let isLoading: boolean = false;
+    let messageTitle: string = $state('');
+    let messageText: string = $state('');
+    let isLoading: boolean = $state(false);
 
-    $: signButtonDisabled = isLoading || !$contractId;
+    let signButtonDisabled = $derived(isLoading || !$contractId);
 
     async function signGuestbook() {
         try {
@@ -66,7 +66,7 @@
 </label>
 
 <button
-    on:click={signGuestbook}
+    onclick={signGuestbook}
     type="button"
     class="btn variant-filled-primary"
     disabled={signButtonDisabled}

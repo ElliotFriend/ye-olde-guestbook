@@ -27,9 +27,9 @@
     import { seContractLink } from '$lib/stellarExpert';
     import { networks } from 'ye_olde_guestbook';
 
-    let balance: string = '0';
-    let isFunding: boolean = false;
-    let isDonating: boolean = false;
+    let balance: string = $state('0');
+    let isFunding: boolean = $state(false);
+    let isDonating: boolean = $state(false);
     let userName: string = '';
 
     async function getBalance() {

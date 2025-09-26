@@ -13,11 +13,15 @@
     import { isLoading } from '$lib/stores/isLoading';
     const toastStore = getToastStore();
 
-    export let message: Message;
-    export let messageId: number;
-    let editing: boolean;
-    let messageTitle = message.title;
-    let messageText = message.text;
+    interface Props {
+        message: Message;
+        messageId: number;
+    }
+
+    let { message, messageId }: Props = $props();
+    let editing: boolean = $state();
+    let messageTitle = $state(message.title);
+    let messageText = $state(message.text);
 
     const cancelEdit = () => {
         messageTitle = message.title;
@@ -94,7 +98,7 @@
                             <button
                                 type="button"
                                 class="btn-icon btn-icon-sm variant-soft-error"
-                                on:click={cancelEdit}
+                                onclick={cancelEdit}
                                 disabled={$isLoading}><X size={16} /></button
                             >
                         </div>
@@ -102,7 +106,7 @@
                             <button
                                 type="button"
                                 class="btn-icon btn-icon-sm variant-soft-success"
-                                on:click={submitEdit}
+                                onclick={submitEdit}
                                 disabled={$isLoading}><Check size={16} /></button
                             >
                         </div>
@@ -111,7 +115,7 @@
                             <button
                                 type="button"
                                 class="btn-icon btn-icon-sm variant-soft"
-                                on:click={() => (editing = true)}><SquarePen size={16} /></button
+                                onclick={() => (editing = true)}><SquarePen size={16} /></button
                             >
                         </div>
                     {/if}

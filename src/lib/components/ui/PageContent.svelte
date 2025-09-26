@@ -1,3 +1,11 @@
+<script lang="ts">
+    interface Props {
+        children?: import('svelte').Snippet;
+    }
+
+    let { children }: Props = $props();
+</script>
+
 <div class="flex-auto w-full h-full flex overflow-hidden">
     <!-- aside goes here if we want a sidebar -->
     <div
@@ -8,7 +16,7 @@
         <main id="page-content" class="flex-auto">
             <div class="flex items-start gap-10 relative p-10">
                 <div class="mx-auto w-full max-w-4xl space-y-4">
-                    <slot />
+                    {@render children?.()}
                 </div>
             </div>
         </main>

@@ -1,5 +1,6 @@
 import { rpc } from '$lib/passkeyClient';
-import { Address, networks, Contract, type Message, xdr, scValToNative } from 'ye_olde_guestbook';
+import { networks, type Message } from 'ye_olde_guestbook'
+import { Address, Contract, xdr, scValToNative } from '@stellar/stellar-sdk';
 
 export async function getMessageCount() {
     const result = await rpc.getLedgerEntries(

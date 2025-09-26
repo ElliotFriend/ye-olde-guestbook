@@ -1,5 +1,9 @@
 <script lang="ts">
-    export let address: string;
+    interface Props {
+        address: string;
+    }
+
+    let { address }: Props = $props();
 </script>
 
 <span class="code flex flex-1 min-w-0 p-1">
