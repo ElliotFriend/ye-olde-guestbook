@@ -7,19 +7,19 @@
 
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-10 items-center">
     <div class="flex flex-col items-center xl:items-start text-center xl:text-left space-y-4">
-        <h1 class="h1 !text-6xl max-w-[600px]">
+        <h1 class="h1 text-6xl! max-w-[600px]">
             <span
-                class="bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
+                class="bg-linear-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
                 style="font-family: 'Jacquard 12';">Ye Olde</span
             >
         </h1>
-        <h1 class="h1 !text-6xl md:!text-4xl max-w-[600px]">
+        <h1 class="h1 text-6xl! md:text-4xl! max-w-[600px]">
             <span
-                class="bg-gradient-to-br from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
+                class="bg-linear-to-br from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
                 >Guestbook</span
             >
         </h1>
-        <p class="!text-xl max-w-[475px]">
+        <p class="text-xl! max-w-[475px]">
             I cut my teeth on the internet in the days of <a
                 class="anchor"
                 href="https://www.angelfire.com"
@@ -28,7 +28,7 @@
             activity. There was no way of knowing who (if anybody) was reading your site. It was chaos,
             and we loved it!
         </p>
-        <p class="!text-xl max-w-[475px]">
+        <p class="text-xl! max-w-[475px]">
             Then, the humble <a
                 class="anchor"
                 href="https://en.wikipedia.org/wiki/Guestbook"
@@ -38,7 +38,7 @@
             trolls) could leave messages on your site. Publicly available for all to see! It was the
             dawn of a new era.
         </p>
-        <p class="!text-xl max-w-[475px]">Today, we recreate that magic.</p>
+        <p class="text-xl! max-w-[475px]">Today, we recreate that magic.</p>
         <div class="flex gap-4">
             <a href="/sign" class="btn variant-filled-primary">
                 <span>Sign Now</span>

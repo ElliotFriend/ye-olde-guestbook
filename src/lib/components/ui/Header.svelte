@@ -25,7 +25,7 @@
 <header class="flex-none shadow-xl z-5">
     <div class="flex flex-col bg-surface-100-800-token space-y-4 p-3 md:p-4">
         <div class="grid grid-cols-[auto_1fr_auto] gap-2 md:gap-8">
-            <div class="md:!hidden self-center">
+            <div class="md:hidden! self-center">
                 <button class="btn-icon btn-icon-sm" onclick={() => drawerStore.open()}>
                     <Menu />
                 </button>
@@ -34,13 +34,13 @@
                 <a href="/" title="Ye Olde Guestbook Home">
                     <span class="text-lg md:text-xl"
                         ><div
-                            class="leading-5 bg-gradient-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
+                            class="leading-5 bg-linear-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
                             style="font-family: 'Jacquard 12';"
                         >
                             Ye Olde
                         </div>
                         <div
-                            class="leading-5 bg-gradient-to-br from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
+                            class="leading-5 bg-linear-to-br from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
                         >
                             Guestbook
                         </div></span

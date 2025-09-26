@@ -36,7 +36,7 @@
 </div>
 
 <GuestbookMessage message={data.welcomeMessage} messageId={1} />
-<hr class="!border-t-2" />
+<hr class="border-t-2!" />
 
 {#each messages as message, i (message.ledger)}
     <GuestbookMessage {message} messageId={i + 2} />
