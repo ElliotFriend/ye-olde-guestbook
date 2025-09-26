@@ -1,5 +1,5 @@
 import { PasskeyServer } from 'passkey-kit';
-import { version } from '../../../package.json'
+import { version } from '../../../package.json';
 
 import {
     PUBLIC_LAUNCHTUBE_URL,

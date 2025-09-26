@@ -1,5 +1,4 @@
 import { Buffer } from 'buffer';
-import { Address } from '@stellar/stellar-sdk';
 import {
     AssembledTransaction,
     Client as ContractClient,
@@ -8,22 +7,7 @@ import {
     Result,
     Spec as ContractSpec,
 } from '@stellar/stellar-sdk/contract';
-import type {
-    u32,
-    i32,
-    u64,
-    i64,
-    u128,
-    i128,
-    u256,
-    i256,
-    Option,
-    Typepoint,
-    Duration,
-} from '@stellar/stellar-sdk/contract';
-export * from '@stellar/stellar-sdk';
-export * as contract from '@stellar/stellar-sdk/contract';
-export * as rpc from '@stellar/stellar-sdk/rpc';
+import type { u32, i128 } from '@stellar/stellar-sdk/contract';
 
 if (typeof window !== 'undefined') {
     //@ts-ignore Buffer exists
@@ -51,11 +35,8 @@ export interface Message {
 
 export const Errors = {
     1: { message: 'InvalidMessage' },
-
     2: { message: 'NoSuchMessage' },
-
     3: { message: 'UnauthorizedToEdit' },
-
     4: { message: 'NoDonations' },
 };
 
@@ -249,7 +230,7 @@ export class Client extends ContractClient {
     static async deploy<T = Client>(
         /** Constructor/Initialization Args for the contract's `__constructor` method */
         { admin, title, text }: { admin: string; title: string; text: string },
-        /** Options for initalizing a Client as well as for calling a method, with extras specific to deploying. */
+        /** Options for initializing a Client as well as for calling a method, with extras specific to deploying. */
         options: MethodOptions &
             Omit<ContractClientOptions, 'contractId'> & {
                 /** The hash of the Wasm blob, which must already be installed on-chain. */
