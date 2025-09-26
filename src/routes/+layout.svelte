@@ -3,7 +3,7 @@
     import SidebarDrawer from '$lib/components/ui/SidebarDrawer.svelte';
     import PageContent from '$lib/components/ui/PageContent.svelte';
     import Footer from '$lib/components/ui/Footer.svelte';
-    import '../app.postcss';
+    import '../app.css';
 
     // Floating UI for Popups
     import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';

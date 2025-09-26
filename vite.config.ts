@@ -1,4 +1,3 @@
-import { purgeCss } from 'vite-plugin-tailwind-purgecss';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
 
@@ -8,5 +7,5 @@ export default defineConfig({
             allow: ['./packages'],
         },
     },
-    plugins: [sveltekit(), purgeCss()],
+    plugins: [sveltekit()],
 });
