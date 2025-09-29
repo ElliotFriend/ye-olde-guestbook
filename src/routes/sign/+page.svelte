@@ -48,33 +48,35 @@
 <h1 class="h1">Sign the Book</h1>
 <p>Join in on the age-old tradition, and sign my guestbook! Please.</p>
 
-<label class="label">
-    <span>Title</span>
-    <input bind:value={messageTitle} class="input" type="text" placeholder="Title" />
-</label>
+<form class="mx-auto w-full space-y-4">
+    <label class="label">
+        <span class="label-text">Title</span>
+        <input bind:value={messageTitle} class="input" type="text" placeholder="Title" />
+    </label>
 
-<label class="label">
-    <span>Message</span>
-    <textarea
-        bind:value={messageText}
-        class="textarea"
-        rows="4"
-        placeholder="Write your message here"
-    ></textarea>
-</label>
+    <label class="label">
+        <span class="label-text">Message</span>
+        <textarea
+            bind:value={messageText}
+            class="textarea"
+            rows="4"
+            placeholder="Write your message here"
+        ></textarea>
+    </label>
 
-<button
-    onclick={signGuestbook}
-    type="button"
-    class="btn preset-filled-primary-500"
-    disabled={signButtonDisabled}
->
-    <span>
-        {#if isLoading}
-            <LoaderCircle class="animate-spin" />
-        {:else}
-            <Signature />
-        {/if}
-    </span>
-    <span>Sign!</span>
-</button>
+    <button
+        onclick={signGuestbook}
+        type="button"
+        class="btn preset-filled-primary-500"
+        disabled={signButtonDisabled}
+    >
+        <span>
+            {#if isLoading}
+                <LoaderCircle class="animate-spin" />
+            {:else}
+                <Signature />
+            {/if}
+        </span>
+        <span>Sign!</span>
+    </button>
+</form>

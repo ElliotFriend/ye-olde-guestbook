@@ -59,7 +59,7 @@
             <div class="space-y-2 grow">
                 {#if editing}
                     <label class="label">
-                        <span>Message Title</span>
+                        <span class="label-text">Message Title</span>
                         <input
                             class="input"
                             title="Message Title"
@@ -68,7 +68,7 @@
                         />
                     </label>
                     <label class="label">
-                        <span>Message Text</span>
+                        <span class="label-text">Message Text</span>
                         <textarea
                             class="textarea"
                             rows="4"

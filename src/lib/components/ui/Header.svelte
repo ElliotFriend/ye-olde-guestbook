@@ -1,5 +1,11 @@
 <script module lang="ts">
-    export const menuItems: { name: string; href: string; icon: typeof IconType }[] = [
+    export interface IMenuItem {
+        name: string;
+        href: string;
+        icon: typeof IconType;
+    }
+
+    export const menuItems: IMenuItem[] = [
         {
             name: 'Sign',
             href: '/sign',

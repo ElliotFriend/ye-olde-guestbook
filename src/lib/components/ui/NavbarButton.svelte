@@ -1,12 +1,18 @@
 <script lang="ts">
+    import type { IMenuItem } from '$lib/components/ui/Header.svelte';
     import { page } from '$app/state';
-    let { item } = $props();
-    let className = $derived(
-        `btn hover:variant-soft-primary${page.url.pathname.startsWith(item.href) ? ' preset-tonal-primary' : ''}`,
-    );
+
+    let { item }: { item: IMenuItem } = $props();
+    const Icon = item.icon;
 </script>
 
-<a href={item.href} class={className}>
-    <span><item.icon /></span>
+<a
+    href={item.href}
+    class={[
+        'btn hover:preset-tonal-primary',
+        page.url.pathname.startsWith(item.href) && 'preset-tonal-primary',
+    ]}
+>
+    <span><Icon /></span>
     <span>{item.name}</span>
 </a>

@@ -1,10 +1,8 @@
 <script lang="ts">
-    import { run } from 'svelte/legacy';
-
     import { Switch } from '@skeletonlabs/skeleton-svelte';
     import GuestbookMessage from '$lib/components/GuestbookMessage.svelte';
-
     import type { PageData } from './$types';
+
     interface Props {
         data: PageData;
     }
@@ -14,7 +12,7 @@
     let sortNewestFirst = $state(true);
     let messages = $state(data.messages);
 
-    run(() => {
+    $effect(() => {
         if (sortNewestFirst) {
             messages = messages.sort((a, b) => b.ledger - a.ledger);
         } else {
@@ -29,7 +27,7 @@
         <p>Take a gander at all these messages!</p>
     </div>
     <div class="md:self-end">
-        <Switch name="sort" bind:checked={sortNewestFirst} active="bg-primary-500" size="sm"
+        <Switch name="sort" checked={sortNewestFirst} onCheckedChange={(e) => sortNewestFirst = e.checked}
             >Showing <code class="code">{sortNewestFirst ? 'Newest' : 'Oldest'}</code> First</Switch
         >
     </div>

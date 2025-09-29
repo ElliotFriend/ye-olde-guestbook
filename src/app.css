@@ -1,12 +1,12 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
 
 @import '@skeletonlabs/skeleton';
 @import '@skeletonlabs/skeleton/optional/presets';
 @import '@skeletonlabs/skeleton/themes/rocket';
 @source "../node_modules/@skeletonlabs/skeleton-svelte/dist";
 
-@plugin '@tailwindcss/forms';
-@plugin '@tailwindcss/typography';
 
 @source '../node_modules/.pnpm/@skeletonlabs+skeleton@2.11.0_svelte@5.39.6/node_modules/@skeletonlabs/skeleton/dist/**/*.{html,js,svelte,ts}';
 
@@ -34,6 +34,17 @@
 }
 
 /* rocket theme */
+[data-theme="rocket"] main {
+    background-image:
+        radial-gradient(at 0% 0%, color-mix(in oklab, var(--color-primary-500) 33%, transparent) 0px, transparent 30%),
+        radial-gradient(at 45% 10%, color-mix(in oklab, var(--color-success-500) 8%, transparent) 0px, transparent 45%),
+        radial-gradient(at 100% 0%, color-mix(in oklab, var(--color-error-500) 33%, transparent) 0px, transparent 25%);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 @font-face {
     font-family: 'Space Grotesk';
     src: url('/fonts/SpaceGrotesk.ttf');
