@@ -49,14 +49,13 @@
     </div>
     <div class="max-w-[650px] mx-auto">
         <Avatar
-            name="knightWriting"
+            src={knightWriting}
+            name="Knight Writing"
             imageClasses="[filter:url(#BlueNight)]"
             size="w-96"
             shadow="shadow-xl"
             rounded="rounded-3xl"
-        >
-            <img alt="A brave knight bravely writes in an ancient guestbook." src={knightWriting} />
-        </Avatar>
+        />
     </div>
 </div>
 

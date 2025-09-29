@@ -1,10 +1,7 @@
 <script lang="ts">
     import { page } from '$app/state';
-    interface Props {
-        children?: import('svelte').Snippet;
-    }
 
-    let { children }: Props = $props();
+    let { children } = $props();
 </script>
 
 <ol class="flex items-center gap-4">

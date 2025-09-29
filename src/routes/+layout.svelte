@@ -7,11 +7,7 @@
     import PageContent from '$lib/components/ui/PageContent.svelte';
     import Footer from '$lib/components/ui/Footer.svelte';
 
-    interface Props {
-        children: import('svelte').Snippet;
-    }
-
-    let { children }: Props = $props();
+    let { children } = $props();
 </script>
 
 <Toaster {toaster} />
