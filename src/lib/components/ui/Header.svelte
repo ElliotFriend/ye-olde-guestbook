@@ -1,14 +1,5 @@
-<script lang="ts">
-    import { getDrawerStore } from '@skeletonlabs/skeleton';
-    const drawerStore = getDrawerStore();
-
-    import BookOpenText from 'lucide-svelte/icons/book-open-text';
-    import Menu from 'lucide-svelte/icons/menu';
-    import Signature from 'lucide-svelte/icons/signature';
-    import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
-    import ConnectButtons from '$lib/components/ConnectButtons.svelte';
-
-    const menuItems = [
+<script module lang="ts">
+    export const menuItems: { name: string; href: string; icon: typeof IconType }[] = [
         {
             name: 'Sign',
             href: '/sign',
@@ -22,13 +13,21 @@
     ];
 </script>
 
+<script lang="ts">
+    import BookOpenText from '@lucide/svelte/icons/book-open-text';
+    import Signature from '@lucide/svelte/icons/signature';
+    import { Icon as IconType } from '@lucide/svelte';
+    import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
+
+    import ConnectButtons from '$lib/components/ConnectButtons.svelte';
+    import SidebarDrawer from '$lib/components/ui/SidebarDrawer.svelte';
+</script>
+
 <header class="flex-none shadow-xl z-5">
-    <div class="flex flex-col bg-surface-100-800-token space-y-4 p-3 md:p-4">
+    <div class="flex flex-col bg-surface-100-900 space-y-4 p-3 md:p-4">
         <div class="grid grid-cols-[auto_1fr_auto] gap-2 md:gap-8">
             <div class="md:hidden! self-center">
-                <button class="btn-icon btn-icon-sm" onclick={() => drawerStore.open()}>
-                    <Menu />
-                </button>
+                <SidebarDrawer />
             </div>
             <div class="flex-none flex items-center">
                 <a href="/" title="Ye Olde Guestbook Home">

@@ -8,8 +8,5 @@ export default defineConfig({
             allow: ['./packages'],
         },
     },
-    plugins: [
-        tailwindcss(),
-        sveltekit(),
-    ],
+    plugins: [tailwindcss(), sveltekit()],
 });

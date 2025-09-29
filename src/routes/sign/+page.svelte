@@ -1,13 +1,11 @@
 <script lang="ts">
-    import { getToastStore } from '@skeletonlabs/skeleton';
-    const toastStore = getToastStore();
-
-    import Signature from 'lucide-svelte/icons/signature';
-    import LoaderCircle from 'lucide-svelte/icons/loader-circle';
+    import Signature from '@lucide/svelte/icons/signature';
+    import LoaderCircle from '@lucide/svelte/icons/loader-circle';
     import { contractId } from '$lib/stores/contractId';
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
     import { account, send } from '$lib/passkeyClient';
     import { keyId } from '$lib/stores/keyId';
+    import { toaster } from '$lib/toaster';
     import { xdr } from '@stellar/stellar-sdk';
     import { goto } from '$app/navigation';
 
@@ -30,16 +28,16 @@
             const { returnValue } = await send(txn.built!);
             const messageId = xdr.ScVal.fromXDR(returnValue, 'base64').u32();
 
-            toastStore.trigger({
-                message: 'Huzzah!! You signed my guestbook! Thanks.',
-                background: 'variant-filled-success',
+            toaster.success({
+                title: 'Success',
+                description: 'Huzzah!! You signed my guestbook! Thanks.',
             });
             goto(`/read/${messageId}`);
         } catch (err) {
             console.log(err);
-            toastStore.trigger({
-                message: 'Something went wrong signing the guestbook. Please try again later.',
-                background: 'variant-filled-error',
+            toaster.error({
+                title: 'Error',
+                description: 'Something went wrong signing the guestbook. Please try again later.',
             });
         } finally {
             isLoading = false;
@@ -68,7 +66,7 @@
 <button
     onclick={signGuestbook}
     type="button"
-    class="btn variant-filled-primary"
+    class="btn preset-filled-primary-500"
     disabled={signButtonDisabled}
 >
     <span>

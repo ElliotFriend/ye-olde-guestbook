@@ -1,25 +1,19 @@
 <script lang="ts">
-    import { getToastStore } from '@skeletonlabs/skeleton';
     import Identicon from '$lib/components/ui/Identicon.svelte';
     import type { Message } from 'ye_olde_guestbook';
     import StellarExpertLink from './ui/StellarExpertLink.svelte';
-    import SquarePen from 'lucide-svelte/icons/square-pen';
-    import Check from 'lucide-svelte/icons/check';
-    import X from 'lucide-svelte/icons/x';
+    import SquarePen from '@lucide/svelte/icons/square-pen';
+    import Check from '@lucide/svelte/icons/check';
+    import X from '@lucide/svelte/icons/x';
     import { contractId } from '$lib/stores/contractId';
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
     import { account, send } from '$lib/passkeyClient';
     import { keyId } from '$lib/stores/keyId';
     import { isLoading } from '$lib/stores/isLoading';
-    const toastStore = getToastStore();
+    import { toaster } from '$lib/toaster';
 
-    interface Props {
-        message: Message;
-        messageId: number;
-    }
-
-    let { message, messageId }: Props = $props();
-    let editing: boolean = $state();
+    let { message, messageId }: { message: Message; messageId: number; } = $props();
+    let editing: boolean = $state(false);
     let messageTitle = $state(message.title);
     let messageText = $state(message.text);
 
@@ -42,15 +36,15 @@
             const txn = await account.sign(at.built!, { keyId: $keyId });
             await send(txn.built!);
 
-            toastStore.trigger({
-                message: 'Message edited successfully.',
-                background: 'variant-filled-success',
+            toaster.success({
+                title: 'Success',
+                description: 'Message edited successfully.',
             });
         } catch (err) {
             console.log(err);
-            toastStore.trigger({
-                message: 'Something went wrong editing your message. Please try again later.',
-                background: 'variant-filled-error',
+            toaster.error({
+                title: 'Error',
+                description: 'Something went wrong editing your message. Please try again later.',
             });
         } finally {
             editing = false;
@@ -59,7 +53,7 @@
     };
 </script>
 
-<section class="card w-full variant-soft-primary">
+<section class="card w-full preset-tonal-primary">
     <div class="p-4 space-y-4">
         <div class="flex gap-8 justify-between">
             <div class="space-y-2 grow">
@@ -97,7 +91,7 @@
                         <div>
                             <button
                                 type="button"
-                                class="btn-icon btn-icon-sm variant-soft-error"
+                                class="btn-icon btn-icon-sm preset-tonal-error"
                                 onclick={cancelEdit}
                                 disabled={$isLoading}><X size={16} /></button
                             >
@@ -105,7 +99,7 @@
                         <div>
                             <button
                                 type="button"
-                                class="btn-icon btn-icon-sm variant-soft-success"
+                                class="btn-icon btn-icon-sm preset-tonal-success"
                                 onclick={submitEdit}
                                 disabled={$isLoading}><Check size={16} /></button
                             >
@@ -114,7 +108,7 @@
                         <div>
                             <button
                                 type="button"
-                                class="btn-icon btn-icon-sm variant-soft"
+                                class="btn-icon btn-icon-sm preset-tonal"
                                 onclick={() => (editing = true)}><SquarePen size={16} /></button
                             >
                         </div>

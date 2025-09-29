@@ -1,7 +1,7 @@
 <script lang="ts">
-    import { filter, BlueNight, Avatar } from '@skeletonlabs/skeleton';
+    import { Avatar } from '@skeletonlabs/skeleton-svelte';
 
-    import ArrowRight from 'lucide-svelte/icons/arrow-right';
+    import ArrowRight from '@lucide/svelte/icons/arrow-right';
     import knightWriting from '$lib/assets/knight-writing.png';
 </script>
 
@@ -40,22 +40,32 @@
         </p>
         <p class="text-xl! max-w-[475px]">Today, we recreate that magic.</p>
         <div class="flex gap-4">
-            <a href="/sign" class="btn variant-filled-primary">
+            <a href="/sign" class="btn preset-filled-primary-500">
                 <span>Sign Now</span>
                 <span><ArrowRight /></span>
             </a>
-            <a href="/read" class="btn variant-soft-primary">Read Messages</a>
+            <a href="/read" class="btn preset-tonal-primary">Read Messages</a>
         </div>
     </div>
     <div class="max-w-[650px] mx-auto">
-        <Avatar actionParams="#BlueNight" width="w-96" shadow="shadow-xl" rounded="rounded-3xl">
+        <Avatar name="knightWriting" imageClasses="[filter:url(#BlueNight)]" size="w-96" shadow="shadow-xl" rounded="rounded-3xl">
             <img
                 alt="A brave knight bravely writes in an ancient guestbook."
                 src={knightWriting}
-                use:filter={'#BlueNight'}
             />
         </Avatar>
     </div>
 </div>
 
-<BlueNight />
+<!-- BlueNight: `filter: url(#BlueNight)` -->
+<svg id="svg-filter-bluenight" class="filter absolute -left-full w-0 h-0">
+    <filter id="BlueNight" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+        <feColorMatrix
+            type="matrix"
+            values="1.000 0.000 0.000 0.000 0.000
+                    0.000 1.000 0.000 0.000 0.05
+                    0.000 0.000 1.000 0.000 0.400
+                    0.000 0.000 0.000 1.000 0.000"
+        ></feColorMatrix>
+    </filter>
+</svg>

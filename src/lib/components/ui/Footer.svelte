@@ -3,7 +3,7 @@
     import StellarExpertLink from './StellarExpertLink.svelte';
 </script>
 
-<footer class="flex-none bg-surface-100-800-token p-6">
+<footer class="flex-none bg-surface-100-900 p-6">
     <div class="flex flex-col md:flex-row justify-around align-center mx-auto">
         <div class="space-y-1">
             <h6 class="h6">View Contract</h6>

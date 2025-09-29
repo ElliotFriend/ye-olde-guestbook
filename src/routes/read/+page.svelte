@@ -1,7 +1,7 @@
 <script lang="ts">
     import { run } from 'svelte/legacy';
 
-    import { SlideToggle } from '@skeletonlabs/skeleton';
+    import { Switch } from '@skeletonlabs/skeleton-svelte';
     import GuestbookMessage from '$lib/components/GuestbookMessage.svelte';
 
     import type { PageData } from './$types';
@@ -29,8 +29,8 @@
         <p>Take a gander at all these messages!</p>
     </div>
     <div class="md:self-end">
-        <SlideToggle name="sort" bind:checked={sortNewestFirst} active="bg-primary-500" size="sm"
-            >Showing <code class="code">{sortNewestFirst ? 'Newest' : 'Oldest'}</code> First</SlideToggle
+        <Switch name="sort" bind:checked={sortNewestFirst} active="bg-primary-500" size="sm"
+            >Showing <code class="code">{sortNewestFirst ? 'Newest' : 'Oldest'}</code> First</Switch
         >
     </div>
 </div>

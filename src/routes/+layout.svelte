@@ -7,26 +7,24 @@
 
     // Floating UI for Popups
     import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
-    import { storePopup } from '@skeletonlabs/skeleton';
-    storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
+    // storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 
-    import { initializeStores, Toast, Modal } from '@skeletonlabs/skeleton';
+    import { Toaster } from '@skeletonlabs/skeleton-svelte';
+    import { toaster } from '$lib/toaster';
     interface Props {
-        children?: import('svelte').Snippet;
+        children: import('svelte').Snippet;
     }
 
     let { children }: Props = $props();
-    initializeStores();
 </script>
 
-<Toast />
-<SidebarDrawer />
-<Modal />
+<Toaster {toaster} />
+<!-- <Modal /> -->
 
 <div class="w-full h-screen flex flex-col overflow-hidden">
     <Header />
     <PageContent>
-        {@render children?.()}
+        {@render children()}
     </PageContent>
     <Footer />
 </div>
