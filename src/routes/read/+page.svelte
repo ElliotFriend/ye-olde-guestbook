@@ -27,7 +27,10 @@
         <p>Take a gander at all these messages!</p>
     </div>
     <div class="md:self-end">
-        <Switch name="sort" checked={sortNewestFirst} onCheckedChange={(e) => sortNewestFirst = e.checked}
+        <Switch
+            name="sort"
+            checked={sortNewestFirst}
+            onCheckedChange={(e) => (sortNewestFirst = e.checked)}
             >Showing <code class="code">{sortNewestFirst ? 'Newest' : 'Oldest'}</code> First</Switch
         >
     </div>
