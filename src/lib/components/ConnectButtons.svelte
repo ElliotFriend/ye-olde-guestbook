@@ -30,7 +30,7 @@
     let username: string = $state('');
 
     function popoverClose() {
-        settingsOpenState = false
+        settingsOpenState = false;
     }
 
     // async function promptDonationAmount() {
@@ -66,9 +66,7 @@
         }
     }
 
-    async function testModal() {
-
-    }
+    async function testModal() {}
 
     async function signup() {
         console.log('signing up');
@@ -146,7 +144,7 @@
             error: () => ({
                 title: 'Error',
                 description: 'Something went funding smart wallet. Please try again later.',
-            })
+            }),
         });
 
         isFunding = false;
@@ -211,7 +209,7 @@
 
 <div class="flex space-x-1 md:space-x-2">
     {#if !$contractId}
-         <SignupButton {username} {getBalance} />
+        <SignupButton {username} {getBalance} />
         <button class="btn preset-tonal-primary" onclick={login}>Login</button>
     {:else}
         <Popover
@@ -255,9 +253,7 @@
                                 bind:value={$contractId}
                                 data-clipboard="stellarAddress"
                             />
-                            <button
-                                type="button"
-                                class="btn-icon btn-icon-sm preset-tonal-surface"
+                            <button type="button" class="btn-icon btn-icon-sm preset-tonal-surface"
                                 ><Copy size="14" /></button
                             >
                         </div>

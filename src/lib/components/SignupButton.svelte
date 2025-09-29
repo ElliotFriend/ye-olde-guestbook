@@ -1,12 +1,15 @@
 <script lang="ts">
     import { error } from '@sveltejs/kit';
-    import { Modal } from "@skeletonlabs/skeleton-svelte";
+    import { Modal } from '@skeletonlabs/skeleton-svelte';
     import { toaster } from '$lib/toaster';
-    import { account, send, fundContract } from "$lib/passkeyClient";
-    import { keyId } from "$lib/stores/keyId";
-    import { contractId } from "$lib/stores/contractId";
+    import { account, send, fundContract } from '$lib/passkeyClient';
+    import { keyId } from '$lib/stores/keyId';
+    import { contractId } from '$lib/stores/contractId';
 
-    let { username = $bindable(), getBalance = $bindable() }: { username: string; getBalance: () => Promise<void> } = $props();
+    let {
+        username = $bindable(),
+        getBalance = $bindable(),
+    }: { username: string; getBalance: () => Promise<void> } = $props();
     let openState = $state(false);
 
     function modalClose() {

@@ -12,7 +12,7 @@
     import { isLoading } from '$lib/stores/isLoading';
     import { toaster } from '$lib/toaster';
 
-    let { message, messageId }: { message: Message; messageId: number; } = $props();
+    let { message, messageId }: { message: Message; messageId: number } = $props();
     let editing: boolean = $state(false);
     let messageTitle = $state(message.title);
     let messageText = $state(message.text);

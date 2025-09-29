@@ -48,18 +48,26 @@
         </div>
     </div>
     <div class="max-w-[650px] mx-auto">
-        <Avatar name="knightWriting" imageClasses="[filter:url(#BlueNight)]" size="w-96" shadow="shadow-xl" rounded="rounded-3xl">
-            <img
-                alt="A brave knight bravely writes in an ancient guestbook."
-                src={knightWriting}
-            />
+        <Avatar
+            name="knightWriting"
+            imageClasses="[filter:url(#BlueNight)]"
+            size="w-96"
+            shadow="shadow-xl"
+            rounded="rounded-3xl"
+        >
+            <img alt="A brave knight bravely writes in an ancient guestbook." src={knightWriting} />
         </Avatar>
     </div>
 </div>
 
 <!-- BlueNight: `filter: url(#BlueNight)` -->
 <svg id="svg-filter-bluenight" class="filter absolute -left-full w-0 h-0">
-    <filter id="BlueNight" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <filter
+        id="BlueNight"
+        filterUnits="objectBoundingBox"
+        primitiveUnits="userSpaceOnUse"
+        color-interpolation-filters="sRGB"
+    >
         <feColorMatrix
             type="matrix"
             values="1.000 0.000 0.000 0.000 0.000

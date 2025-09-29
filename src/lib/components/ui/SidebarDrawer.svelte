@@ -2,7 +2,7 @@
     import { Modal } from '@skeletonlabs/skeleton-svelte';
     let drawerState: boolean = $state(false);
 
-    import { menuItems } from '$lib/components/ui/Header.svelte'
+    import { menuItems } from '$lib/components/ui/Header.svelte';
 
     // A very simple function to close the expanded drawer menu when a button in
     // the menu is clicked.
