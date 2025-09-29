@@ -7,11 +7,11 @@
     let { children }: Props = $props();
 </script>
 
-<ol class="breadcrumb">
-    <li class="crumb"><a class="anchor" href="/">Home</a></li>
-    <li class="crumb-separator" aria-hidden="true">/</li>
-    <li class="crumb"><a class="anchor" href="/read">Read</a></li>
-    <li class="crumb-separator" aria-hidden="true">/</li>
+<ol class="flex items-center gap-4">
+    <li><a class="opacity-60 anchor" href="/">Home</a></li>
+    <li class="opacity-50" aria-hidden="true">&rsaquo;</li>
+    <li><a class="opacity-60 anchor" href="/read">Read</a></li>
+    <li class="opacity-50" aria-hidden="true">&rsaquo;</li>
     <li>Message {page.params.id}</li>
 </ol>
 
