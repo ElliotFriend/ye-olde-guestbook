@@ -3,9 +3,9 @@ use soroban_sdk::{contracterror, contracttype, Address, String};
 #[contracttype]
 #[derive(Clone)]
 pub enum DataKey {
-    Admin,
-    MessageCount,
-    Message(u32),
+    Admin,        // : address
+    MessageCount, // : u32
+    Message(u32), // : Message
 }
 
 #[contracttype]
