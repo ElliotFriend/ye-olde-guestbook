@@ -1,35 +1,29 @@
 <script lang="ts">
-    import { run } from 'svelte/legacy';
-
     import {
         seAccountLink,
         seContractLink,
         seLedgerLink,
         seTransactionLink,
     } from '$lib/stellarExpert';
-    import TruncatedAddress from './TruncatedAddress.svelte';
+    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
+
     interface Props {
         target: string | number;
     }
-
     let { target }: Props = $props();
-    let targetHref: string = $state();
 
-    run(() => {
+    let targetHref: string = $derived.by(() => {
         switch (typeof target) {
             case 'number':
-                targetHref = seLedgerLink(target);
-                break;
+                return seLedgerLink(target);
             case 'string':
-                targetHref = target.startsWith('C')
+                return target.startsWith('C')
                     ? seContractLink(target)
                     : target.startsWith('G')
                       ? seAccountLink(target)
                       : seTransactionLink(target);
-                break;
             default:
-                targetHref = 'https://stellar.expert';
-                break;
+                return 'https://stellar.expert';
         }
     });
 </script>

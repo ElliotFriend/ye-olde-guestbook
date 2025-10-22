@@ -1,6 +1,7 @@
-import { server } from '$lib/server/passkeyServer';
-import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
+import { json } from '@sveltejs/kit';
+
+import { server } from '$lib/server/passkeyServer';
 
 export const POST: RequestHandler = async ({ request }) => {
     const { xdr } = await request.json();

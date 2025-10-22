@@ -1,30 +1,34 @@
 <script lang="ts">
-    import Signature from '@lucide/svelte/icons/signature';
-    import LoaderCircle from '@lucide/svelte/icons/loader-circle';
-    import { contractId } from '$lib/stores/contractId';
-    import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
-    import { account, send } from '$lib/passkeyClient';
-    import { keyId } from '$lib/stores/keyId';
-    import { toaster } from '$lib/toaster';
     import { xdr } from '@stellar/stellar-sdk';
     import { goto } from '$app/navigation';
+
+    import Signature from '@lucide/svelte/icons/signature';
+    import LoaderCircle from '@lucide/svelte/icons/loader-circle';
+
+    import { account, send } from '$lib/passkeyClient';
+    import { toaster } from '$lib/toaster';
+    import { user } from '$lib/state/UserState.svelte';
+    import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
 
     let messageTitle: string = $state('');
     let messageText: string = $state('');
     let isLoading: boolean = $state(false);
 
-    let signButtonDisabled = $derived(isLoading || !$contractId);
+    let signButtonDisabled = $derived(isLoading || !user.contractAddress);
 
     async function signGuestbook() {
+        isLoading = true;
         try {
-            isLoading = true;
+            if (!user.keyId || !user.contractAddress) {
+                throw 'user missing keyId';
+            }
             const at = await ye_olde_guestbook.write_message({
-                author: $contractId,
+                author: user.contractAddress,
                 title: messageTitle,
                 text: messageText,
             });
 
-            let txn = await account.sign(at.built!, { keyId: $keyId });
+            let txn = await account.sign(at.built!, { keyId: user.keyId });
             const { returnValue } = await send(txn.built!);
             const messageId = xdr.ScVal.fromXDR(returnValue, 'base64').u32();
 
@@ -34,7 +38,7 @@
             });
             goto(`/read/${messageId}`);
         } catch (err) {
-            console.log(err);
+            console.error(err);
             toaster.error({
                 title: 'Error',
                 description: 'Something went wrong signing the guestbook. Please try again later.',

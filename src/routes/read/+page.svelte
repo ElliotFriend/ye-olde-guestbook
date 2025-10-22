@@ -14,9 +14,9 @@
 
     $effect(() => {
         if (sortNewestFirst) {
-            messages = messages.sort((a, b) => b.ledger - a.ledger);
+            messages = messages.sort((a, b) => b.id - a.id);
         } else {
-            messages = messages.sort((a, b) => a.ledger - b.ledger);
+            messages = messages.sort((a, b) => a.id - b.id);
         }
     });
 </script>
@@ -39,6 +39,6 @@
 <GuestbookMessage message={data.welcomeMessage} messageId={1} />
 <hr class="border-t-2!" />
 
-{#each messages as message, i (message.ledger)}
-    <GuestbookMessage {message} messageId={i + 2} />
+{#each messages as message (message.id)}
+    <GuestbookMessage {message} messageId={message.id} />
 {/each}

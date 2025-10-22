@@ -1,6 +1,6 @@
 <script lang="ts">
-    import type { IMenuItem } from '$lib/components/ui/Header.svelte';
     import { page } from '$app/state';
+    import type { IMenuItem } from '$lib/components/ui/Header.svelte';
 
     let { item }: { item: IMenuItem } = $props();
     const Icon = item.icon;

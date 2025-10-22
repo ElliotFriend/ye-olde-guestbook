@@ -1,7 +1,7 @@
 <script lang="ts">
     import GuestbookMessage from '$lib/components/GuestbookMessage.svelte';
-    import type { PageProps } from './$types';
 
+    import type { PageProps } from './$types';
     let { data }: PageProps = $props();
 </script>
 

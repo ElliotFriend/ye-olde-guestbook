@@ -1,13 +1,8 @@
 <script lang="ts">
-    interface Props {
-        children?: import('svelte').Snippet;
-    }
-
-    let { children }: Props = $props();
+    let { children } = $props();
 </script>
 
 <div class="flex-auto w-full h-full flex overflow-hidden">
-    <!-- aside goes here if we want a sidebar -->
     <div
         id="page"
         class="scroll-smooth flex-1 overflow-x-hidden flex flex-col"

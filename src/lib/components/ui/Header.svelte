@@ -23,9 +23,9 @@
     import BookOpenText from '@lucide/svelte/icons/book-open-text';
     import Signature from '@lucide/svelte/icons/signature';
     import { Icon as IconType } from '@lucide/svelte';
-    import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
 
-    import ConnectButtons from '$lib/components/ConnectButtons.svelte';
+    import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
+    import ConnectButtons from '$lib/components/ConnectButtons/ConnectButtons.svelte';
     import SidebarDrawer from '$lib/components/ui/SidebarDrawer.svelte';
 </script>
 

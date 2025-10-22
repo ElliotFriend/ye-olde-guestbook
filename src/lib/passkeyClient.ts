@@ -5,10 +5,13 @@ import {
     PUBLIC_STELLAR_RPC_URL,
     PUBLIC_STELLAR_NETWORK_PASSPHRASE,
     PUBLIC_WALLET_WASM_HASH,
-    PUBLIC_NATIVE_CONTRACT_ADDRESS,
 } from '$env/static/public';
+import { Asset } from '@stellar/stellar-sdk';
 import type { Tx } from '@stellar/stellar-sdk/contract';
 
+/**
+ * A configured Stellar RPC server instance used to interact with the network
+ */
 export const rpc = new Server(PUBLIC_STELLAR_RPC_URL);
 
 export const account = new PasskeyKit({
@@ -18,13 +21,30 @@ export const account = new PasskeyKit({
     timeoutInSeconds: 30,
 });
 
+/**
+ * A client allowing us to easily create SAC clients for any asset on the
+ * network.
+ */
 export const sac = new SACClient({
     rpcUrl: PUBLIC_STELLAR_RPC_URL,
     networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
 });
 
-export const native = sac.getSACClient(PUBLIC_NATIVE_CONTRACT_ADDRESS);
+/**
+ * A SAC client for the native XLM asset.
+ */
+export const native = sac.getSACClient(
+    Asset.native().contractId(PUBLIC_STELLAR_NETWORK_PASSPHRASE),
+);
 
+/**
+ * A wrapper function so it's easier for our client-side code to access the
+ * `/api/send` endpoint we have created.
+ *
+ * @param tx - The built, signed transaction. This transaction
+ * **must** contain a Soroban operation
+ * @returns JSON object containing the RPC's response
+ */
 export async function send(tx: Tx) {
     return fetch('/api/send', {
         method: 'POST',
@@ -37,13 +57,12 @@ export async function send(tx: Tx) {
     });
 }
 
-export async function getContractId(signer: string) {
-    return fetch(`/api/contract/${signer}`).then(async (res) => {
-        if (res.ok) return res.text();
-        else throw await res.text();
-    });
-}
-
+/**
+ * A wrapper function so it's easier for our client-side code to access the
+ * `/api/fund/[address]` endpoint we have created.
+ *
+ * @param address - The contract address to fund on the Testnet
+ */
 export async function fundContract(address: string) {
     return fetch(`/api/fund/${address}`).then(async (res) => {
         if (res.ok) return res.json();

@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
     return {
-        welcomeMessage: await getWelcomeMessage(),
         messages: await getAllMessages(),
+        welcomeMessage: await getWelcomeMessage(),
     };
 };

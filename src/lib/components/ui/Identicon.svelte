@@ -1,15 +1,15 @@
 <script lang="ts">
     import { Avatar } from '@skeletonlabs/skeleton-svelte';
+
     import { drawIdenticon } from '$lib/stellarExpert';
+
     interface Props {
         address: string;
-        width?: string;
+        size?: string;
     }
-
-    let { address, width = 'w-8' }: Props = $props();
+    let { address, size = '8' }: Props = $props();
 </script>
 
-<Avatar {width}>
-    <!-- eslint-disable-next-line svelte/no-at-html-tags -->
+<Avatar name={`${address} identicon`} {size}>
     {@html drawIdenticon(address)}
 </Avatar>
