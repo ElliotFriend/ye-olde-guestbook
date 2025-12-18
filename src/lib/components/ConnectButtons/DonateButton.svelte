@@ -76,13 +76,17 @@
     <Portal>
         <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/50 backdrop-blur-sm" />
         <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center p-4">
-            <Dialog.Content class="card bg-surface-100-900 p-4 space-y-4 shadow-xl w-sm max-w-screen-sm z-100">
+            <Dialog.Content
+                class="card bg-surface-100-900 p-4 space-y-4 shadow-xl w-sm max-w-screen-sm z-100"
+            >
                 <header class="flex justify-between items-center">
-                    <Dialog.Title class="text-lg font-bold">Your Generosity Knows No Bounds!</Dialog.Title>
+                    <Dialog.Title class="text-lg font-bold"
+                        >Your Generosity Knows No Bounds!</Dialog.Title
+                    >
                 </header>
                 <Dialog.Description>
-                    Donations help this guestbook stay alive. Please enter the quantity of XLM you would
-                    like to donate.
+                    Donations help this guestbook stay alive. Please enter the quantity of XLM you
+                    would like to donate.
                 </Dialog.Description>
                 <label class="label">
                     <span class="label-text">Donation Amount</span>
@@ -90,7 +94,9 @@
                 </label>
                 <footer class="flex justify-end gap-4">
                     <Dialog.CloseTrigger class="btn preset-tonal">Cancel</Dialog.CloseTrigger>
-                    <Dialog.CloseTrigger class="btn preset-filled" onclick={donate}>Confirm</Dialog.CloseTrigger>
+                    <Dialog.CloseTrigger class="btn preset-filled" onclick={donate}
+                        >Confirm</Dialog.CloseTrigger
+                    >
                 </footer>
             </Dialog.Content>
         </Dialog.Positioner>

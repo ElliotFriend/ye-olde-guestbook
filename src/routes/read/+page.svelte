@@ -28,11 +28,16 @@
     </div>
     {#if data.messages.length > -1}
         <div class="md:self-end">
-            <Switch checked={sortNewestFirst} onCheckedChange={(details) => (sortNewestFirst = details.checked)}>
+            <Switch
+                checked={sortNewestFirst}
+                onCheckedChange={(details) => (sortNewestFirst = details.checked)}
+            >
                 <Switch.Control>
                     <Switch.Thumb />
                 </Switch.Control>
-                <Switch.Label>Showing <code class="code">{sortNewestFirst ? 'Newest' : 'Oldest'}</code> First</Switch.Label>
+                <Switch.Label
+                    >Showing <code class="code">{sortNewestFirst ? 'Newest' : 'Oldest'}</code> First</Switch.Label
+                >
                 <Switch.HiddenInput />
             </Switch>
         </div>

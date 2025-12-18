@@ -12,7 +12,7 @@
 
 <Toast.Group {toaster}>
     {#snippet children(toast)}
-        <Toast toast={toast}>
+        <Toast {toast}>
             <Toast.Message>
                 <Toast.Title>{toast.title}</Toast.Title>
                 <Toast.Description>{toast.description}</Toast.Description>

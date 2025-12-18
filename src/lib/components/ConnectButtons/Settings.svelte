@@ -90,7 +90,9 @@
                         {#await getBalance() then}
                             <div>
                                 <h4 class="h4">
-                                    {parseFloat((Number(balance) / 1e7).toFixed(2))}<small>XLM</small>
+                                    {parseFloat((Number(balance) / 1e7).toFixed(2))}<small
+                                        >XLM</small
+                                    >
                                 </h4>
                             </div>
                         {/await}
@@ -113,7 +115,11 @@
                 </div>
                 <hr class="opacity-50" />
                 <nav class="flex flex-col gap-2">
-                    <button class="btn preset-tonal-success w-full" onclick={fund} disabled={isFunding}>
+                    <button
+                        class="btn preset-tonal-success w-full"
+                        onclick={fund}
+                        disabled={isFunding}
+                    >
                         <span>
                             {#if isFunding}
                                 <LoaderCircle class="animate-spin" />

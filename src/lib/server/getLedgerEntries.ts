@@ -32,7 +32,7 @@ export async function getAllMessages(): Promise<MessageWithIndex[]> {
 
     // if the total count is only 1, then we have just the welcome message
     if (totalCount < 2) {
-        return []
+        return [];
     }
 
     for (let messageId = 2; messageId <= totalCount; messageId++) {

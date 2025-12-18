@@ -18,7 +18,7 @@
         },
     ];
 
-    export const dappTitle = "Ye Olde Guestbook";
+    export const dappTitle = 'Ye Olde Guestbook';
 </script>
 
 <script lang="ts">
