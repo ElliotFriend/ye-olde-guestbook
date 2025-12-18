@@ -15,17 +15,16 @@
     },
     "dependencies": {
         "@floating-ui/dom": "^1.7.1",
-        "@lucide/svelte": "^0.544.0",
-        "@stellar/stellar-sdk": "^14.2.0",
-        "@tailwindcss/vite": "^4.1.13",
+        "@lucide/svelte": "^0.562.0",
+        "@stellar/stellar-sdk": "^14.4.2",
+        "@tailwindcss/vite": "^4.1.18",
         "buffer": "^6.0.3",
-        "passkey-kit": "^0.11.1",
-        "svelte-persisted-store": "^0.12.0"
+        "passkey-kit": "^0.11.3"
     },
     "devDependencies": {
-        "@skeletonlabs/skeleton": "^3.2.2",
-        "@skeletonlabs/skeleton-svelte": "^1.5.2",
-        "@sveltejs/adapter-auto": "^6.1.0",
+        "@skeletonlabs/skeleton": "^4.8.0",
+        "@skeletonlabs/skeleton-svelte": "^4.8.0",
+        "@sveltejs/adapter-auto": "^7.0.0",
         "@sveltejs/kit": "^2.43.5",
         "@sveltejs/vite-plugin-svelte": "^6.2.1",
         "@tailwindcss/forms": "^0.5.10",
