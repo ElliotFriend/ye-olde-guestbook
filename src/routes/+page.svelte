@@ -48,14 +48,13 @@
         </div>
     </div>
     <div class="max-w-[650px] mx-auto">
-        <Avatar
-            src={knightWriting}
-            name="Knight Writing"
-            imageClasses="[filter:url(#BlueNight)]"
-            size="w-96"
-            shadow="shadow-xl"
-            rounded="rounded-3xl"
-        />
+        <Avatar class="w-96 h-full shadow-xl rounded-3xl">
+            <Avatar.Image
+                src={knightWriting}
+                alt="Knight Writing"
+                class="filter-[url(#BlueNight)]"
+            />
+        </Avatar>
     </div>
 </div>
 

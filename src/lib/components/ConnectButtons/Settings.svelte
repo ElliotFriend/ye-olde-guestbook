@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Popover } from '@skeletonlabs/skeleton-svelte';
+    import { Popover, Portal } from '@skeletonlabs/skeleton-svelte';
 
     import Settings from '@lucide/svelte/icons/settings';
     import ChevronDown from '@lucide/svelte/icons/chevron-down';
@@ -18,7 +18,6 @@
     import DonateButton from '$lib/components/ConnectButtons/DonateButton.svelte';
 
     let balance: string = $state('0');
-    let settingsOpenState: boolean = $state(false);
     let isFunding: boolean = $state(false);
 
     async function getBalance() {
@@ -74,74 +73,71 @@
     }
 </script>
 
-<Popover
-    open={settingsOpenState}
-    onOpenChange={(e) => (settingsOpenState = e.open)}
-    positioning={{ placement: 'bottom' }}
-    triggerBase="btn hover:preset-tonal-primary"
-    contentBase="card shadow-lg bg-surface-200-800 p-4 space-y-4 max-w-[320px]"
-    zIndex="10"
->
-    {#snippet trigger()}
+<Popover>
+    <Popover.Trigger class="btn hover:preset-tonal-primary">
         <span><Settings /></span>
         <span><ChevronDown size="18" /></span>
-    {/snippet}
-    {#snippet content()}
-        <div class="flex gap-4 w-full justify-between">
-            <div>
-                <Identicon size="w-12" address={user.contractAddress!} />
-            </div>
-            <div class="flex flex-col gap-0.25">
-                <div class="text-right"><small>Balance</small></div>
-                {#await getBalance() then}
+    </Popover.Trigger>
+    <Portal>
+        <Popover.Positioner>
+            <Popover.Content class="card shadow-lg bg-surface-200-800 p-4 space-y-4 max-w-[320px]">
+                <div class="flex gap-4 w-full justify-between">
                     <div>
-                        <h4 class="h4">
-                            {parseFloat((Number(balance) / 1e7).toFixed(2))}<small>XLM</small>
-                        </h4>
+                        <Identicon address={user.contractAddress!} />
                     </div>
-                {/await}
-            </div>
-        </div>
-        <div>
-            <p class="font-bold">Your Wallet</p>
-            <div class="mt-1">
-                <div class="overflow-hidden flex items-center gap-3">
-                    <TruncatedAddress address={user.contractAddress!} />
-                    <!-- TODO: this copy/pasting doesn't work... :shrug: -->
-                    <input type="hidden" bind:value={user.contractAddress} data-address />
-                    <button
-                        type="button"
-                        class="btn-icon btn-icon-sm preset-tonal-surface"
-                        data-copy-address><Copy size="14" /></button
-                    >
+                    <div class="flex flex-col gap-0.25">
+                        <div class="text-right"><small>Balance</small></div>
+                        {#await getBalance() then}
+                            <div>
+                                <h4 class="h4">
+                                    {parseFloat((Number(balance) / 1e7).toFixed(2))}<small>XLM</small>
+                                </h4>
+                            </div>
+                        {/await}
+                    </div>
                 </div>
-            </div>
-        </div>
-        <hr class="opacity-50" />
-        <nav class="flex flex-col gap-2">
-            <button class="btn preset-tonal-success w-full" onclick={fund} disabled={isFunding}>
-                <span>
-                    {#if isFunding}
-                        <LoaderCircle class="animate-spin" />
-                    {:else}
-                        <CircleDollarSign />
-                    {/if}
-                </span>
-                <span>Fund Wallet</span>
-            </button>
-            <a
-                href={seContractLink(user.contractAddress!)}
-                class="btn preset-tonal-surface"
-                target="_blank"
-            >
-                <span><Wallet /></span>
-                <span>View Wallet</span></a
-            >
-            <DonateButton {getBalance} />
-            <button class="btn preset-tonal-error w-full" onclick={logout}>
-                <span><LogOut /></span>
-                <span>Logout</span></button
-            >
-        </nav>
-    {/snippet}
+                <div>
+                    <p class="font-bold">Your Wallet</p>
+                    <div class="mt-1">
+                        <div class="overflow-hidden flex items-center gap-3">
+                            <TruncatedAddress address={user.contractAddress!} />
+                            <!-- TODO: this copy/pasting doesn't work... :shrug: -->
+                            <input type="hidden" bind:value={user.contractAddress} data-address />
+                            <button
+                                type="button"
+                                class="btn-icon btn-icon-sm preset-tonal-surface"
+                                data-copy-address><Copy size="14" /></button
+                            >
+                        </div>
+                    </div>
+                </div>
+                <hr class="opacity-50" />
+                <nav class="flex flex-col gap-2">
+                    <button class="btn preset-tonal-success w-full" onclick={fund} disabled={isFunding}>
+                        <span>
+                            {#if isFunding}
+                                <LoaderCircle class="animate-spin" />
+                            {:else}
+                                <CircleDollarSign />
+                            {/if}
+                        </span>
+                        <span>Fund Wallet</span>
+                    </button>
+                    <a
+                        href={seContractLink(user.contractAddress!)}
+                        class="btn preset-tonal-surface"
+                        target="_blank"
+                    >
+                        <span><Wallet /></span>
+                        <span>View Wallet</span></a
+                    >
+                    <DonateButton {getBalance} />
+                    <button class="btn preset-tonal-error w-full" onclick={logout}>
+                        <span><LogOut /></span>
+                        <span>Logout</span></button
+                    >
+                </nav>
+            </Popover.Content>
+        </Popover.Positioner>
+    </Portal>
 </Popover>

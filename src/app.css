@@ -3,9 +3,8 @@
 @plugin '@tailwindcss/typography';
 
 @import '@skeletonlabs/skeleton';
-@import '@skeletonlabs/skeleton/optional/presets';
 @import '@skeletonlabs/skeleton/themes/rocket';
-@source "../node_modules/@skeletonlabs/skeleton-svelte/dist";
+@import '@skeletonlabs/skeleton-svelte';
 
 @source '../node_modules/.pnpm/@skeletonlabs+skeleton@2.11.0_svelte@5.39.6/node_modules/@skeletonlabs/skeleton/dist/**/*.{html,js,svelte,ts}';
 

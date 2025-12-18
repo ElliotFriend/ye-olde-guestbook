@@ -22,18 +22,21 @@
 </script>
 
 <div class="flex flex-col md:flex-row justify-start md:justify-between space-y-4">
-    <div class="space-y-4">
+    <div class="space-y-4 mb-0">
         <h1 class="h1">Read the Book</h1>
         <p>Take a gander at all these messages!</p>
     </div>
-    <div class="md:self-end">
-        <Switch
-            name="sort"
-            checked={sortNewestFirst}
-            onCheckedChange={(e) => (sortNewestFirst = e.checked)}
-            >Showing <code class="code">{sortNewestFirst ? 'Newest' : 'Oldest'}</code> First</Switch
-        >
-    </div>
+    {#if data.messages.length > -1}
+        <div class="md:self-end">
+            <Switch checked={sortNewestFirst} onCheckedChange={(details) => (sortNewestFirst = details.checked)}>
+                <Switch.Control>
+                    <Switch.Thumb />
+                </Switch.Control>
+                <Switch.Label>Showing <code class="code">{sortNewestFirst ? 'Newest' : 'Oldest'}</code> First</Switch.Label>
+                <Switch.HiddenInput />
+            </Switch>
+        </div>
+    {/if}
 </div>
 
 <GuestbookMessage message={data.welcomeMessage} messageId={1} />

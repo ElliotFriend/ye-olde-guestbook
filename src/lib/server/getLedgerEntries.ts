@@ -29,6 +29,12 @@ export async function getWelcomeMessage(): Promise<Message> {
 export async function getAllMessages(): Promise<MessageWithIndex[]> {
     const totalCount = await getMessageCount();
     const ledgerKeysArray = [];
+
+    // if the total count is only 1, then we have just the welcome message
+    if (totalCount < 2) {
+        return []
+    }
+
     for (let messageId = 2; messageId <= totalCount; messageId++) {
         ledgerKeysArray.push(buildMessageLedgerKey(messageId));
     }

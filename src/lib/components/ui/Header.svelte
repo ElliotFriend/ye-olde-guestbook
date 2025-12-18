@@ -17,6 +17,8 @@
             icon: BookOpenText,
         },
     ];
+
+    export const dappTitle = "Ye Olde Guestbook";
 </script>
 
 <script lang="ts">
@@ -29,7 +31,7 @@
     import SidebarDrawer from '$lib/components/ui/SidebarDrawer.svelte';
 </script>
 
-<header class="flex-none shadow-xl z-5">
+<header class="flex-none shadow-xl">
     <div class="flex flex-col bg-surface-100-900 space-y-4 p-3 md:p-4">
         <div class="grid grid-cols-[auto_1fr_auto] gap-2 md:gap-8">
             <div class="md:hidden! self-center">

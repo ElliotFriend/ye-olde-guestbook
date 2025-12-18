@@ -1,40 +1,39 @@
 <script lang="ts">
-    import { Modal } from '@skeletonlabs/skeleton-svelte';
+    import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
     import Menu from '@lucide/svelte/icons/menu';
-    import { menuItems } from '$lib/components/ui/Header.svelte';
+    import XIcon from '@lucide/svelte/icons/x'
+    import { dappTitle, menuItems } from '$lib/components/ui/Header.svelte';
 
     let drawerState: boolean = $state(false);
 
-    // A very simple function to close the expanded drawer menu when a button in
-    // the menu is clicked.
-    function drawerClose() {
-        drawerState = false;
-    }
+    const animBackdrop = 'transition transition-discrete opacity-0 starting:data-[state=open]:opacity-0 data-[state=open]:opacity-100';
+	const animModal = 'transition transition-discrete opacity-0 -translate-x-full starting:data-[state=open]:opacity-0 starting:data-[state=open]:-translate-x-full data-[state=open]:opacity-100 data-[state=open]:translate-x-0';
 </script>
 
-<Modal
-    open={drawerState}
-    onOpenChange={(e) => (drawerState = e.open)}
-    triggerBase="btn-icon hover:preset-tonal"
-    contentBase="bg-surface-100-900 p-4 space-y-4 shadow-xl w-[480px] h-screen"
-    positionerJustify="justify-start"
-    positionerAlign=""
-    positionerPadding=""
-    transitionsPositionerIn={{ x: -480, duration: 200 }}
-    transitionsPositionerOut={{ x: -480, duration: 200 }}
->
-    {#snippet trigger()}
-        <Menu />
-    {/snippet}
-    {#snippet content()}
-        <nav class="flex flex-col gap-2">
-            {#each menuItems as item}
-                {@const Icon = item.icon}
-                <a href={item.href} class="btn preset-tonal-surface" onclick={drawerClose}>
-                    <span><Icon /></span>
-                    <span>{item.name}</span>
-                </a>
-            {/each}
-        </nav>
-    {/snippet}
-</Modal>
+<Dialog>
+    <Dialog.Trigger class="btn-icon preset-tonal"><Menu /></Dialog.Trigger>
+    <Portal>
+        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/50 transition transition-discrete {animBackdrop}" />
+        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-start">
+			<Dialog.Content class="h-screen card bg-surface-100-900 w-sm p-4 space-y-4 shadow-xl {animModal}">
+				<header class="flex justify-between items-center">
+					<Dialog.Title class="text-2xl font-bold">{dappTitle}</Dialog.Title>
+					<Dialog.CloseTrigger class="btn-icon preset-tonal">
+						<XIcon />
+					</Dialog.CloseTrigger>
+				</header>
+				<nav class="flex flex-col gap-2">
+                    {#each menuItems as item}
+                        {@const Icon = item.icon}
+                        <Dialog.CloseTrigger>
+                            <a href={item.href} class="btn preset-tonal w-full">
+                                <span><Icon /></span>
+                                <span>{item.name}</span>
+                            </a>
+                        </Dialog.CloseTrigger>
+                    {/each}
+                </nav>
+			</Dialog.Content>
+		</Dialog.Positioner>
+    </Portal>
+</Dialog>

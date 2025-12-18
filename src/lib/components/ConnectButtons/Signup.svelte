@@ -1,6 +1,6 @@
 <script lang="ts">
     import { error } from '@sveltejs/kit';
-    import { Modal } from '@skeletonlabs/skeleton-svelte';
+    import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
     import { toaster } from '$lib/toaster';
     import { account, send, fundContract } from '$lib/passkeyClient';
     import { user } from '$lib/state/UserState.svelte';
@@ -52,27 +52,24 @@
     }
 </script>
 
-<Modal
-    open={openState}
-    onOpenChange={(e) => (openState = e.open)}
-    triggerBase="btn preset-filled-primary-500"
-    contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl w-sm max-w-screen-sm z-100"
-    backdropClasses="backdrop-blur-sm"
->
-    {#snippet trigger()}Signup{/snippet}
-    {#snippet content()}
-        <header class="flex justify-between">
-            <h2 class="h2">Enter Name</h2>
-        </header>
-        <article>
-            <label class="label">
-                <span class="label-text">Please provide a username below.</span>
+<Dialog>
+    <Dialog.Trigger class="btn preset-filled">Signup</Dialog.Trigger>
+    <Portal>
+        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/50 backdrop-blur-sm" />
+        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center p-4">
+            <Dialog.Content class="card bg-surface-100-900 p-4 space-y-4 shadow-xl w-sm max-w-screen-sm z-100">
+                <header class="flex justify-between items-center">
+                    <Dialog.Title class="text-lg font-bold">Enter Name</Dialog.Title>
+                </header>
+                <Dialog.Description>
+                    Please provide your username below.
+                </Dialog.Description>
                 <input class="input" type="text" bind:value={username} />
-            </label>
-        </article>
-        <footer class="flex justify-end gap-4">
-            <button type="button" class="btn preset-tonal" onclick={modalClose}>Cancel</button>
-            <button type="button" class="btn preset-filled" onclick={signup}>Confirm</button>
-        </footer>
-    {/snippet}
-</Modal>
+                <footer class="flex justify-end gap-4">
+                    <Dialog.CloseTrigger class="btn preset-tonal">Cancel</Dialog.CloseTrigger>
+                    <button type="button" class="btn preset-filled" onclick={signup}>Confirm</button>
+                </footer>
+            </Dialog.Content>
+        </Dialog.Positioner>
+    </Portal>
+</Dialog>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Modal } from '@skeletonlabs/skeleton-svelte';
+    import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
     import { native, account, send } from '$lib/passkeyClient';
     import { networks } from 'ye_olde_guestbook';
     import { user } from '$lib/state/UserState.svelte';
@@ -60,14 +60,8 @@
     }
 </script>
 
-<Modal
-    open={openState}
-    onOpenChange={(e) => (openState = e.open)}
-    triggerBase="w-full"
-    contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl max-w-screen-sm"
-    backdropClasses="backdrop-blur-sm"
->
-    {#snippet trigger()}
+<Dialog>
+    <Dialog.Trigger class="w-full">
         <button class="btn preset-tonal-surface w-full" disabled={isDonating}>
             <span>
                 {#if isDonating}
@@ -78,24 +72,27 @@
             </span>
             <span>Send Donation</span>
         </button>
-    {/snippet}
-    {#snippet content()}
-        <header class="flex justify-between">
-            <h2 class="h2">Your Generosity Knows No Bounds!</h2>
-        </header>
-        <article>
-            <p class="opacity-60">
-                Donations help this guestbook stay alive. Please enter the quantity of XLM you would
-                like to donate.
-            </p>
-            <label class="label">
-                <span class="label-text">Donation Amount</span>
-                <input class="input" type="number" placeholder="10" bind:value={donation} />
-            </label>
-        </article>
-        <footer class="flex justify-end gap-4">
-            <button type="button" class="btn preset-tonal" onclick={modalClose}>Cancel</button>
-            <button type="button" class="btn preset-filled" onclick={donate}>Confirm</button>
-        </footer>
-    {/snippet}
-</Modal>
+    </Dialog.Trigger>
+    <Portal>
+        <Dialog.Backdrop class="fixed inset-0 z-50 bg-surface-50-950/50 backdrop-blur-sm" />
+        <Dialog.Positioner class="fixed inset-0 z-50 flex justify-center items-center p-4">
+            <Dialog.Content class="card bg-surface-100-900 p-4 space-y-4 shadow-xl w-sm max-w-screen-sm z-100">
+                <header class="flex justify-between items-center">
+                    <Dialog.Title class="text-lg font-bold">Your Generosity Knows No Bounds!</Dialog.Title>
+                </header>
+                <Dialog.Description>
+                    Donations help this guestbook stay alive. Please enter the quantity of XLM you would
+                    like to donate.
+                </Dialog.Description>
+                <label class="label">
+                    <span class="label-text">Donation Amount</span>
+                    <input class="input" type="number" placeholder="10" bind:value={donation} />
+                </label>
+                <footer class="flex justify-end gap-4">
+                    <Dialog.CloseTrigger class="btn preset-tonal">Cancel</Dialog.CloseTrigger>
+                    <Dialog.CloseTrigger class="btn preset-filled" onclick={donate}>Confirm</Dialog.CloseTrigger>
+                </footer>
+            </Dialog.Content>
+        </Dialog.Positioner>
+    </Portal>
+</Dialog>

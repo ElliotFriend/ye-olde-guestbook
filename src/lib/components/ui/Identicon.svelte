@@ -10,6 +10,8 @@
     let { address, size = '8' }: Props = $props();
 </script>
 
-<Avatar name={`${address} identicon`} {size}>
-    {@html drawIdenticon(address)}
+<Avatar class={`size-${size}`}>
+    <Avatar.Fallback>
+        {@html drawIdenticon(address)}
+    </Avatar.Fallback>
 </Avatar>
