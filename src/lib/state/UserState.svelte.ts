@@ -3,10 +3,10 @@ class User {
     contractAddress: string | null = $state(null);
 
     constructor() {
-        if (window.localStorage.hasOwnProperty('yog:keyId')) {
+        if (Object.hasOwn(window.localStorage, 'yog:keyId')) {
             this.keyId = localStorage.getItem('yog:keyId');
         }
-        if (window.localStorage.hasOwnProperty('yog:contractAddress')) {
+        if (Object.hasOwn(window.localStorage, 'yog:contractAddress')) {
             this.contractAddress = localStorage.getItem('yog:contractAddress');
         }
     }

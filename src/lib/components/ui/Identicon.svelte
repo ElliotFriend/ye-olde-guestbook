@@ -12,6 +12,7 @@
 
 <Avatar class={`size-${size}`}>
     <Avatar.Fallback>
+        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
         {@html drawIdenticon(address)}
     </Avatar.Fallback>
 </Avatar>

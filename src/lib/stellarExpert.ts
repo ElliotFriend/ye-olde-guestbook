@@ -72,18 +72,20 @@ export function drawIdenticon(address: string, size: number = SIZE): string {
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" fill="${fillStyle}">${dots.join('')}</svg>`;
 }
 
-export function seContractLink(address: string): string {
+export function seContractLink(address: string): `https://stellar.expert/explorer/${string}` {
     return `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/contract/${address}`;
 }
 
-export function seLedgerLink(ledger: number): string {
+export function seLedgerLink(ledger: number): `https://stellar.expert/explorer/${string}` {
     return `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/ledger/${ledger}`;
 }
 
-export function seTransactionLink(transactionHash: string): string {
+export function seTransactionLink(
+    transactionHash: string,
+): `https://stellar.expert/explorer/${string}` {
     return `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/tx/${transactionHash}`;
 }
 
-export function seAccountLink(account: string): string {
+export function seAccountLink(account: string): `https://stellar.expert/explorer/${string}` {
     return `https://stellar.expert/explorer/${PUBLIC_STELLAR_NETWORK}/account/${account}`;
 }

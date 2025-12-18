@@ -12,7 +12,7 @@
     }
     let { target }: Props = $props();
 
-    let targetHref: string = $derived.by(() => {
+    let targetHref: `https://stellar.expert/${string}` = $derived.by(() => {
         switch (typeof target) {
             case 'number':
                 return seLedgerLink(target);
@@ -23,11 +23,12 @@
                       ? seAccountLink(target)
                       : seTransactionLink(target);
             default:
-                return 'https://stellar.expert';
+                return 'https://stellar.expert/';
         }
     });
 </script>
 
+<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
 <a href={targetHref} target="_blank">
     {#if typeof target !== 'number' && (target.startsWith('C') || target.startsWith('G'))}
         <TruncatedAddress address={target} />

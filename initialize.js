@@ -91,7 +91,7 @@ function bindAll() {
     contracts().forEach(bind);
 }
 
-function importContract({ id, alias }) {
+function importContract({ alias }) {
     const outputDir = `${dirname}/src/lib/contracts/`;
 
     mkdirSync(outputDir, { recursive: true });

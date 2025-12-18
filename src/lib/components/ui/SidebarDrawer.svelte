@@ -1,10 +1,9 @@
 <script lang="ts">
+    import { resolve } from '$app/paths';
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
     import Menu from '@lucide/svelte/icons/menu';
     import XIcon from '@lucide/svelte/icons/x';
     import { dappTitle, menuItems } from '$lib/components/ui/Header.svelte';
-
-    let drawerState: boolean = $state(false);
 
     const animBackdrop =
         'transition transition-discrete opacity-0 starting:data-[state=open]:opacity-0 data-[state=open]:opacity-100';
@@ -29,10 +28,10 @@
                     </Dialog.CloseTrigger>
                 </header>
                 <nav class="flex flex-col gap-2">
-                    {#each menuItems as item}
+                    {#each menuItems as item (item.name)}
                         {@const Icon = item.icon}
                         <Dialog.CloseTrigger>
-                            <a href={item.href} class="btn preset-tonal w-full">
+                            <a href={resolve(item.href)} class="btn preset-tonal w-full">
                                 <span><Icon /></span>
                                 <span>{item.name}</span>
                             </a>

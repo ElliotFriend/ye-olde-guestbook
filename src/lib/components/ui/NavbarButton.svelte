@@ -1,5 +1,6 @@
 <script lang="ts">
     import { page } from '$app/state';
+    import { resolve } from '$app/paths';
     import type { IMenuItem } from '$lib/components/ui/Header.svelte';
 
     let { item }: { item: IMenuItem } = $props();
@@ -7,7 +8,7 @@
 </script>
 
 <a
-    href={item.href}
+    href={resolve(item.href)}
     class={[
         'btn hover:preset-tonal-primary',
         page.url.pathname.startsWith(item.href) && 'preset-tonal-primary',

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { xdr } from '@stellar/stellar-sdk';
     import { goto } from '$app/navigation';
+    import { resolve } from '$app/paths';
 
     import Signature from '@lucide/svelte/icons/signature';
     import LoaderCircle from '@lucide/svelte/icons/loader-circle';
@@ -36,7 +37,7 @@
                 title: 'Success',
                 description: 'Huzzah!! You signed my guestbook! Thanks.',
             });
-            goto(`/read/${messageId}`);
+            goto(resolve(`/read/${messageId}`));
         } catch (err) {
             console.error(err);
             toaster.error({

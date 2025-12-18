@@ -5,7 +5,7 @@ import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
     try {
-        let { result } = await guestbook.read_message({
+        const { result } = await guestbook.read_message({
             message_id: parseInt(params.id),
         });
 
@@ -13,7 +13,8 @@ export const load: PageServerLoad = async ({ params }) => {
             id: params.id,
             message: result.unwrap(),
         };
-    } catch (err) {
+    } catch (err: unknown) {
+        console.error(err);
         error(500, {
             message:
                 "Sorry, something went wrong. Most likely, the message you're looking for doesn't exist.",

@@ -1,7 +1,7 @@
 <script module lang="ts">
     export interface IMenuItem {
         name: string;
-        href: string;
+        href: '/sign' | '/read';
         icon: typeof IconType;
     }
 
@@ -29,6 +29,7 @@
     import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
     import ConnectButtons from '$lib/components/ConnectButtons/ConnectButtons.svelte';
     import SidebarDrawer from '$lib/components/ui/SidebarDrawer.svelte';
+    import { resolve } from '$app/paths';
 </script>
 
 <header class="flex-none shadow-xl">
@@ -38,7 +39,7 @@
                 <SidebarDrawer />
             </div>
             <div class="flex-none flex items-center">
-                <a href="/" title="Ye Olde Guestbook Home">
+                <a href={resolve('/')} title="Ye Olde Guestbook Home">
                     <span class="text-lg md:text-xl"
                         ><div
                             class="leading-5 bg-linear-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
@@ -55,7 +56,7 @@
                 </a>
             </div>
             <div class="hidden md:block flex space-x-1 md:space-x-4">
-                {#each menuItems as item}
+                {#each menuItems as item (item.name)}
                     <NavbarButton {item} />
                 {/each}
             </div>

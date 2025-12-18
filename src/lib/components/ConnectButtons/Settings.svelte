@@ -129,11 +129,13 @@
                         </span>
                         <span>Fund Wallet</span>
                     </button>
+                    <!-- eslint-disable svelte/no-navigation-without-resolve -->
                     <a
                         href={seContractLink(user.contractAddress!)}
                         class="btn preset-tonal-surface"
                         target="_blank"
                     >
+                        <!-- eslint-enable svelte/no-navigation-without-resolve -->
                         <span><Wallet /></span>
                         <span>View Wallet</span></a
                     >

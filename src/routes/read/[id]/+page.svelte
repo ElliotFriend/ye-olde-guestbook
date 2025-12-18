@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { resolve } from '$app/paths';
     import GuestbookMessage from '$lib/components/GuestbookMessage.svelte';
 
     import type { PageProps } from './$types';
@@ -8,7 +9,7 @@
 <h1 class="h1">Read Message {data.id}</h1>
 <p>
     You're viewing just message {data.id}. You can
-    <a class="anchor" href="/read">read all of them here</a>, as well.
+    <a class="anchor" href={resolve('/read')}>read all of them here</a>, as well.
 </p>
 
 <GuestbookMessage message={data.message} messageId={parseInt(data.id)} />

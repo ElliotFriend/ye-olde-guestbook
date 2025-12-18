@@ -6,11 +6,6 @@
     import { user } from '$lib/state/UserState.svelte';
 
     let username: string = $state('');
-    let openState = $state(false);
-
-    function modalClose() {
-        openState = false;
-    }
 
     async function signup() {
         console.log('signing up');

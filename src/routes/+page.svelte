@@ -3,6 +3,7 @@
 
     import ArrowRight from '@lucide/svelte/icons/arrow-right';
     import knightWriting from '$lib/assets/knight-writing.png';
+    import { resolve } from '$app/paths';
 </script>
 
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-10 items-center">
@@ -40,11 +41,11 @@
         </p>
         <p class="text-xl! max-w-[475px]">Today, we recreate that magic.</p>
         <div class="flex gap-4">
-            <a href="/sign" class="btn preset-filled-primary-500">
+            <a href={resolve('/sign')} class="btn preset-filled-primary-500">
                 <span>Sign Now</span>
                 <span><ArrowRight /></span>
             </a>
-            <a href="/read" class="btn preset-tonal-primary">Read Messages</a>
+            <a href={resolve('/read')} class="btn preset-tonal-primary">Read Messages</a>
         </div>
     </div>
     <div class="max-w-[650px] mx-auto">

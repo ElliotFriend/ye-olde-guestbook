@@ -13,13 +13,8 @@
     }
     let { getBalance }: Props = $props();
 
-    let openState: boolean = $state(false);
     let isDonating: boolean = $state(false);
     let donation: number | undefined = $state();
-
-    function modalClose() {
-        openState = false;
-    }
 
     async function sendDonation() {
         if (!donation) {
@@ -37,7 +32,6 @@
     }
 
     async function donate() {
-        modalClose();
         isDonating = true;
         toaster.promise(sendDonation(), {
             loading: {
