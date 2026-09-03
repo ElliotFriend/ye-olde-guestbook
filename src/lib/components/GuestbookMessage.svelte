@@ -8,9 +8,9 @@
     import X from '@lucide/svelte/icons/x';
 
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
-    import { account, send } from '$lib/passkeyClient';
+    import { kit } from '$lib/smartAccountClient';
     import { toaster } from '$lib/toaster';
-    import { user } from '$lib/state/UserState.svelte';
+    import { wallet } from '$lib/state/UserState.svelte';
 
     interface Props {
         message: Message;
@@ -20,8 +20,8 @@
 
     let isEditing: boolean = $state(false);
     let isLoading: boolean = $state(false);
-    let messageTitle = $state(message.title);
-    let messageText = $state(message.text);
+    let messageTitle = $derived(message.title);
+    let messageText = $derived(message.text);
 
     const cancelEdit = () => {
         messageTitle = message.title;
@@ -86,8 +86,7 @@
                             class="textarea"
                             rows="4"
                             title="Message Text"
-                            bind:value={messageText}
-                        ></textarea>
+                            bind:value={messageText}></textarea>
                     </label>
                 {:else}
                     <h3 class="h3">

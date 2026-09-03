@@ -10,7 +10,7 @@
     let { address, size = '8' }: Props = $props();
 </script>
 
-<Avatar class={`size-${size}`}>
+<Avatar class={`size-${size} bg-surface-500`}>
     <Avatar.Fallback>
         <!-- eslint-disable-next-line svelte/no-at-html-tags -->
         {@html drawIdenticon(address)}

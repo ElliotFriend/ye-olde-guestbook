@@ -4,7 +4,7 @@
     import type { IMenuItem } from '$lib/components/ui/Header.svelte';
 
     let { item }: { item: IMenuItem } = $props();
-    const Icon = item.icon;
+    const Icon = $derived(item.icon);
 </script>
 
 <a

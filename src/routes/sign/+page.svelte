@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { xdr } from '@stellar/stellar-sdk';
     import { goto } from '$app/navigation';
     import { resolve } from '$app/paths';
 
@@ -71,8 +70,7 @@
             bind:value={messageText}
             class="textarea"
             rows="4"
-            placeholder="Write your message here"
-        ></textarea>
+            placeholder="Write your message here"></textarea>
     </label>
 
     <button

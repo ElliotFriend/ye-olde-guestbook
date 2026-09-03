@@ -8,19 +8,19 @@
 
 <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 md:gap-10 items-center">
     <div class="flex flex-col items-center xl:items-start text-center xl:text-left space-y-4">
-        <h1 class="h1 text-6xl! max-w-[600px]">
+        <h1 class="h1 text-6xl! max-w-150">
             <span
                 class="bg-linear-to-br from-blue-500 to-cyan-300 bg-clip-text text-transparent box-decoration-clone"
                 style="font-family: 'Jacquard 12';">Ye Olde</span
             >
         </h1>
-        <h1 class="h1 text-6xl! md:text-4xl! max-w-[600px]">
+        <h1 class="h1 text-6xl! md:text-4xl! max-w-150">
             <span
                 class="bg-linear-to-br from-red-500 to-yellow-500 bg-clip-text text-transparent box-decoration-clone"
                 >Guestbook</span
             >
         </h1>
-        <p class="text-xl! max-w-[475px]">
+        <p class="text-xl! max-w-118.75">
             I cut my teeth on the internet in the days of <a
                 class="anchor"
                 href="https://www.angelfire.com"
@@ -29,17 +29,17 @@
             activity. There was no way of knowing who (if anybody) was reading your site. It was chaos,
             and we loved it!
         </p>
-        <p class="text-xl! max-w-[475px]">
+        <p class="text-xl! max-w-118.75">
             Then, the humble <a
                 class="anchor"
                 href="https://en.wikipedia.org/wiki/Guestbook"
                 target="_blank">guestbook</a
             >
             showed up in our lives, and changed everything. Your readers (or, more likely, haters and
-            trolls) could leave messages on your site. Publicly available for all to see! It was the
-            dawn of a new era.
+            trolls) could leave messages on your site. Publicly available for all to see! It was the dawn
+            of a new era.
         </p>
-        <p class="text-xl! max-w-[475px]">Today, we recreate that magic.</p>
+        <p class="text-xl! max-w-118.75">Today, we recreate that magic.</p>
         <div class="flex gap-4">
             <a href={resolve('/sign')} class="btn preset-filled-primary-500">
                 <span>Sign Now</span>
@@ -48,7 +48,7 @@
             <a href={resolve('/read')} class="btn preset-tonal-primary">Read Messages</a>
         </div>
     </div>
-    <div class="max-w-[650px] mx-auto">
+    <div class="max-w-162.5 mx-auto">
         <Avatar class="w-96 h-full shadow-xl rounded-3xl">
             <Avatar.Image
                 src={knightWriting}
