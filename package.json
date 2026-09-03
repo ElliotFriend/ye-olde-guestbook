@@ -51,5 +51,6 @@
         "typescript-eslint": "^8.69.0",
         "vite": "^8.2.2",
         "ye_olde_guestbook": "file:packages/ye_olde_guestbook"
-    }
+    },
+    "packageManager": "pnpm@11.6.0"
 }
