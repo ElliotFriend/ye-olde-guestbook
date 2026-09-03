@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { user } from '$lib/state/UserState.svelte';
-    import { account } from '$lib/passkeyClient';
+    import { wallet } from '$lib/state/UserState.svelte';
+    import { kit } from '$lib/smartAccountClient';
 
     import Settings from './Settings.svelte';
     import Signup from './Signup.svelte';
@@ -8,24 +8,18 @@
     import { onMount } from 'svelte';
 
     onMount(async () => {
-        if (user.keyId) {
-            console.log('keyId', user.keyId);
+        // The kit keeps its own session, so this restores a returning user
+        // without prompting them for their passkey again.
+        const restored = await kit.connectWallet();
 
-            const { contractId } = await account.connectWallet({
-                keyId: user.keyId,
-            });
-            user.set({
-                keyId: user.keyId,
-                contractAddress: contractId,
-            });
-
-            console.log('contractAddress', user.contractAddress);
+        if (restored) {
+            console.log('contractAddress', wallet.contractAddress);
         }
     });
 </script>
 
 <div class="flex space-x-1 md:space-x-2">
-    {#if !user.contractAddress}
+    {#if !wallet.contractAddress}
         <Signup />
         <Login />
     {:else}

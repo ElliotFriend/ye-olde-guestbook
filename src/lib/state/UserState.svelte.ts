@@ -1,29 +1,12 @@
-class User {
-    keyId: string | null = $state(null);
+import { kit } from '$lib/smartAccountClient';
+
+class Wallet {
     contractAddress: string | null = $state(null);
 
     constructor() {
-        if (Object.hasOwn(window.localStorage, 'yog:keyId')) {
-            this.keyId = localStorage.getItem('yog:keyId');
-        }
-        if (Object.hasOwn(window.localStorage, 'yog:contractAddress')) {
-            this.contractAddress = localStorage.getItem('yog:contractAddress');
-        }
+        kit.events.on('walletConnected', ({ contractId }) => (this.contractAddress = contractId));
+        kit.events.on('walletDisconnected', () => (this.contractAddress = null));
     }
-
-    set = ({ keyId, contractAddress }: { keyId: string; contractAddress: string }) => {
-        this.keyId = keyId;
-        window.localStorage.setItem('yog:keyId', keyId);
-        this.contractAddress = contractAddress;
-        window.localStorage.setItem('yog:contractAddress', contractAddress);
-    };
-
-    reset = () => {
-        this.keyId = null;
-        this.contractAddress = null;
-        window.localStorage.clear();
-        window.location.reload();
-    };
 }
 
-export const user = new User();
+export const wallet = new Wallet();

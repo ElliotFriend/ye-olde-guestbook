@@ -33,8 +33,8 @@
         console.log('submitting message edit');
         isLoading = true;
         try {
-            if (!user.keyId) {
-                throw 'user missing keyId';
+            if (!wallet.contractAddress) {
+                throw 'user missing contract address';
             }
 
             const at = await ye_olde_guestbook.edit_message({
@@ -43,8 +43,11 @@
                 text: messageText,
             });
 
-            const txn = await account.sign(at.built!, { keyId: user.keyId });
-            await send(txn.built!);
+            const result = await kit.signAndSubmit(at);
+
+            if (!result.success) {
+                throw result.error;
+            }
 
             toaster.success({
                 title: 'Success',
@@ -95,7 +98,7 @@
                     </article>
                 {/if}
             </div>
-            {#if user.contractAddress && user.contractAddress === message.author}
+            {#if wallet.contractAddress && wallet.contractAddress === message.author}
                 <div class="flex flex-row space-x-2">
                     {#if isEditing}
                         <div>

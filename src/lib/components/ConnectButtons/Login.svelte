@@ -1,20 +1,18 @@
 <script lang="ts">
-    import { account } from '$lib/passkeyClient';
+    import { kit } from '$lib/smartAccountClient';
     import { toaster } from '$lib/toaster';
-    import { user } from '$lib/state/UserState.svelte';
+    import { wallet } from '$lib/state/UserState.svelte';
 
     async function login() {
         console.log('logging in');
         try {
-            const { keyIdBase64, contractId } = await account.connectWallet();
+            const connected = await kit.connectWallet({ prompt: true });
 
-            user.set({
-                keyId: keyIdBase64,
-                contractAddress: contractId,
-            });
+            if (!connected) {
+                return;
+            }
 
-            console.log('keyId', user.keyId);
-            console.log('contractAddress', user.contractAddress);
+            console.log('contractAddress', wallet.contractAddress);
         } catch (err) {
             console.error(err);
             toaster.error({

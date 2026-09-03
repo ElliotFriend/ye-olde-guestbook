@@ -1,9 +1,9 @@
 <script lang="ts">
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
-    import { native, account, send } from '$lib/passkeyClient';
+    import { kit } from '$lib/smartAccountClient';
     import { networks } from 'ye_olde_guestbook';
-    import { user } from '$lib/state/UserState.svelte';
     import { toaster } from '$lib/toaster';
+    import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$env/static/public';
 
     import HandHelping from '@lucide/svelte/icons/hand-helping';
     import LoaderCircle from '@lucide/svelte/icons/loader-circle';
@@ -21,14 +21,19 @@
             throw 'undefined donation amount';
         }
 
-        const at = await native.transfer({
-            to: networks.testnet.contractId,
-            from: user.contractAddress!,
-            amount: BigInt(donation * 10_000_000),
-        });
-        await account.sign(at, { keyId: user.keyId! });
-        const res = await send(at.built!);
-        console.log(res);
+        // `kit.transfer()` signs with the connected passkey and submits through
+        // the relayer in one step. Easy peasy!
+        const result = await kit.transfer(
+            PUBLIC_NATIVE_TOKEN_CONTRACT,
+            networks.testnet.contractId,
+            donation,
+        );
+
+        if (!result.success) {
+            throw result.error;
+        }
+
+        console.log(result);
     }
 
     async function donate() {

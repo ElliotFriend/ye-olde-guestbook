@@ -1,4 +1,4 @@
-import { rpc } from '$lib/passkeyClient';
+import { rpc } from '$lib/smartAccountClient';
 import { networks, type Message } from 'ye_olde_guestbook';
 import { Address, Contract, xdr, scValToNative } from '@stellar/stellar-sdk';
 

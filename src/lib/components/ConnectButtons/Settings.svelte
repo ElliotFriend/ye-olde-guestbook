@@ -10,9 +10,10 @@
     import LoaderCircle from '@lucide/svelte/icons/loader-circle';
 
     import { toaster } from '$lib/toaster';
-    import { user } from '$lib/state/UserState.svelte';
+    import { wallet } from '$lib/state/UserState.svelte';
     import { seContractLink } from '$lib/stellarExpert';
-    import { fundContract, native } from '$lib/passkeyClient';
+    import { kit, getNativeBalance } from '$lib/smartAccountClient';
+    import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$env/static/public';
     import Identicon from '$lib/components/ui/Identicon.svelte';
     import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
     import DonateButton from '$lib/components/ConnectButtons/DonateButton.svelte';
@@ -23,8 +24,7 @@
     async function getBalance() {
         console.log('fetching balances');
         try {
-            const { result } = await native.balance({ id: user.contractAddress! });
-            balance = result.toString();
+            balance = (await getNativeBalance(wallet.contractAddress!)).toString();
         } catch (err) {
             console.log(err);
             toaster.error({
@@ -34,11 +34,23 @@
         }
     }
 
+    // `kit.fundWallet()` reports expected failures in the result rather than
+    // throwing, but `toaster.promise` depends on that rejection.
+    async function fundWallet() {
+        const result = await kit.fundWallet(PUBLIC_NATIVE_TOKEN_CONTRACT);
+
+        if (!result.success) {
+            throw result.error;
+        }
+
+        return result;
+    }
+
     async function fund() {
         console.log('funding wallet');
         isFunding = true;
 
-        toaster.promise(fundContract(user.contractAddress!), {
+        toaster.promise(fundWallet(), {
             loading: {
                 title: 'Loading...',
                 description: 'You got it! Awaiting airdrop.',
@@ -62,7 +74,7 @@
 
     async function logout() {
         try {
-            user.reset();
+            await kit.disconnect();
         } catch (err) {
             console.error(err);
             toaster.error({
@@ -83,9 +95,9 @@
             <Popover.Content class="card shadow-lg bg-surface-200-800 p-4 space-y-4 max-w-[320px]">
                 <div class="flex gap-4 w-full justify-between">
                     <div>
-                        <Identicon address={user.contractAddress!} />
+                        <Identicon address={wallet.contractAddress!} />
                     </div>
-                    <div class="flex flex-col gap-0.25">
+                    <div class="flex flex-col gap-px">
                         <div class="text-right"><small>Balance</small></div>
                         {#await getBalance() then}
                             <div>
@@ -102,9 +114,9 @@
                     <p class="font-bold">Your Wallet</p>
                     <div class="mt-1">
                         <div class="overflow-hidden flex items-center gap-3">
-                            <TruncatedAddress address={user.contractAddress!} />
+                            <TruncatedAddress address={wallet.contractAddress!} />
                             <!-- TODO: this copy/pasting doesn't work... :shrug: -->
-                            <input type="hidden" bind:value={user.contractAddress} data-address />
+                            <input type="hidden" value={wallet.contractAddress} data-address />
                             <button
                                 type="button"
                                 class="btn-icon btn-icon-sm preset-tonal-surface"
@@ -131,7 +143,7 @@
                     </button>
                     <!-- eslint-disable svelte/no-navigation-without-resolve -->
                     <a
-                        href={seContractLink(user.contractAddress!)}
+                        href={seContractLink(wallet.contractAddress!)}
                         class="btn preset-tonal-surface"
                         target="_blank"
                     >

@@ -6,32 +6,38 @@
     import Signature from '@lucide/svelte/icons/signature';
     import LoaderCircle from '@lucide/svelte/icons/loader-circle';
 
-    import { account, send } from '$lib/passkeyClient';
+    import { kit, getTransactionReturnValue } from '$lib/smartAccountClient';
     import { toaster } from '$lib/toaster';
-    import { user } from '$lib/state/UserState.svelte';
+    import { wallet } from '$lib/state/UserState.svelte';
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
 
     let messageTitle: string = $state('');
     let messageText: string = $state('');
     let isLoading: boolean = $state(false);
 
-    let signButtonDisabled = $derived(isLoading || !user.contractAddress);
+    let signButtonDisabled = $derived(isLoading || !wallet.contractAddress);
 
     async function signGuestbook() {
         isLoading = true;
         try {
-            if (!user.keyId || !user.contractAddress) {
-                throw 'user missing keyId';
+            if (!wallet.contractAddress) {
+                throw 'user missing contract address';
             }
             const at = await ye_olde_guestbook.write_message({
-                author: user.contractAddress,
+                author: wallet.contractAddress,
                 title: messageTitle,
                 text: messageText,
             });
 
-            let txn = await account.sign(at.built!, { keyId: user.keyId });
-            const { returnValue } = await send(txn.built!);
-            const messageId = xdr.ScVal.fromXDR(returnValue, 'base64').u32();
+            const result = await kit.signAndSubmit(at);
+
+            if (!result.success) {
+                throw result.error;
+            }
+
+            // The relayer reports a hash rather than the invocation's return
+            // value, so read the new message's id back from the network.
+            const messageId = (await getTransactionReturnValue(result.hash)).u32();
 
             toaster.success({
                 title: 'Success',

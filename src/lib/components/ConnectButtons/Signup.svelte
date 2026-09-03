@@ -1,42 +1,39 @@
 <script lang="ts">
-    import { error } from '@sveltejs/kit';
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
     import { toaster } from '$lib/toaster';
-    import { account, send, fundContract } from '$lib/passkeyClient';
-    import { user } from '$lib/state/UserState.svelte';
+    import { kit } from '$lib/smartAccountClient';
+    import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$env/static/public';
+    import { wallet } from '$lib/state/UserState.svelte';
 
     let username: string = $state('');
 
     async function signup() {
         console.log('signing up');
         try {
-            const { keyIdBase64, contractId, signedTx } = await account.createWallet(
+            // `autoSubmit` deploys the wallet through the relayer and connects
+            // only once the deployment has landed; `autoFund` then tops it up
+            // from Friendbot so the user has some Testnet XLM to work with.
+            // const { credentialId, contractId, fundResult } = await kit.createWallet(
+            const { fundResult, submitResult } = await kit.createWallet(
                 'Ye Olde Guestbook',
                 username,
+                {
+                    autoSubmit: true,
+                    autoFund: true,
+                    nativeTokenContract: PUBLIC_NATIVE_TOKEN_CONTRACT,
+                },
             );
 
-            user.set({
-                keyId: keyIdBase64,
-                contractAddress: contractId,
-            });
-
-            console.log('keyId', user.keyId);
-            console.log('contractAddress', user.contractAddress);
-
-            if (!signedTx) {
-                error(500, {
-                    message: 'built transaction missing',
-                });
+            if (!submitResult?.success) {
+                throw submitResult?.error ?? new Error('failed to deploy smart account');
             }
 
-            if (!user.contractAddress) {
-                error(500, {
-                    message: 'missing user contract address',
-                });
-            }
+            console.log('contractAddress', wallet.contractAddress);
 
-            await send(signedTx);
-            await fundContract(user.contractAddress);
+            // Funding is a convenience, not a reason to fail signup.
+            if (fundResult && !fundResult.success) {
+                console.error(fundResult.error);
+            }
         } catch (err) {
             console.error(err);
             toaster.error({
