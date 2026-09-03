@@ -26,7 +26,7 @@
         "@eslint/js": "^10.0.1",
         "@skeletonlabs/skeleton": "^5.0.1",
         "@skeletonlabs/skeleton-svelte": "^5.0.1",
-        "@sveltejs/adapter-auto": "^7.0.1",
+        "@sveltejs/adapter-vercel": "^6.3.4",
         "@sveltejs/kit": "^2.70.3",
         "@sveltejs/vite-plugin-svelte": "^7.3.0",
         "@tailwindcss/forms": "^0.5.11",
@@ -52,6 +52,8 @@
         "vite": "^8.2.2",
         "ye_olde_guestbook": "file:packages/ye_olde_guestbook"
     },
-    "engines": { "node": "24" },
+    "engines": {
+        "node": "24"
+    },
     "packageManager": "pnpm@11.6.0"
 }
