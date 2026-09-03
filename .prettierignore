@@ -4,3 +4,6 @@ package-lock.json
 yarn.lock
 contracts/**/test_snapshots
 *.yaml
+
+# Build output from the generated contract bindings package
+packages/*/dist

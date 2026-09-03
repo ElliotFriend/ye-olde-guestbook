@@ -82,9 +82,21 @@ function contracts() {
 }
 
 function bind({ alias, id }) {
-    exe(
-        `stellar contract bindings typescript --id ${id} --output-dir ${dirname}/packages/${alias} --overwrite`,
-    );
+    const packageDir = `${dirname}/packages/${alias}`;
+
+    exe(`stellar contract bindings typescript --id ${id} --output-dir ${packageDir} --overwrite`);
+
+    // The generated package.json only defines `build`. Adding `prepare` lets
+    // pnpm compile the bindings automatically whenever someone installs the
+    // workspace, so `dist/` never has to be committed.
+    const manifestPath = `${packageDir}/package.json`;
+    const manifest = JSON.parse(readFileSync(manifestPath));
+    manifest.scripts = { ...manifest.scripts, prepare: 'tsc' };
+    writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 4)}\n`);
+
+    // The CLI writes a standalone package, but inside a workspace the root
+    // lockfile is the only one that matters.
+    rmSync(`${packageDir}/pnpm-lock.yaml`, { force: true });
 }
 
 function bindAll() {

@@ -5,7 +5,8 @@
     "exports": "./dist/index.js",
     "typings": "dist/index.d.ts",
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "prepare": "tsc"
     },
     "dependencies": {
         "@stellar/stellar-sdk": "^16.3.0",

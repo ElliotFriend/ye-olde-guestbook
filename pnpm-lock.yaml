@@ -112,8 +112,21 @@ importers:
         specifier: ^8.2.2
         version: 8.2.2(@types/node@24.13.3)(esbuild@0.28.2)(jiti@2.7.0)
       ye_olde_guestbook:
-        specifier: file:packages/ye_olde_guestbook
-        version: file:packages/ye_olde_guestbook
+        specifier: workspace:*
+        version: link:packages/ye_olde_guestbook
+
+  packages/ye_olde_guestbook:
+    dependencies:
+      '@stellar/stellar-sdk':
+        specifier: ^16.3.0
+        version: 16.3.0
+      buffer:
+        specifier: ^6.0.3
+        version: 6.0.3
+    devDependencies:
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
 
 packages:
 
@@ -1807,6 +1820,11 @@ packages:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
       typescript: '>=4.8.4 <6.1.0'
 
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typescript@6.0.3:
     resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
     engines: {node: '>=14.17'}
@@ -1901,9 +1919,6 @@ packages:
   yaml@1.10.3:
     resolution: {integrity: sha512-vIYeF1u3CjlhAFekPPAk2h/Kv4T3mAkMox5OymRiJQB0spDP10LHvt+K7G9Ny6NuuMAb25/6n1qyUjAcGNf/AA==}
     engines: {node: '>= 6'}
-
-  ye_olde_guestbook@file:packages/ye_olde_guestbook:
-    resolution: {directory: packages/ye_olde_guestbook, type: directory}
 
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
@@ -3648,6 +3663,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  typescript@5.9.3: {}
+
   typescript@6.0.3: {}
 
   uint8array-extras@1.5.0: {}
@@ -3695,14 +3712,6 @@ snapshots:
   yallist@5.0.0: {}
 
   yaml@1.10.3: {}
-
-  ye_olde_guestbook@file:packages/ye_olde_guestbook:
-    dependencies:
-      '@stellar/stellar-sdk': 16.3.0
-      buffer: 6.0.3
-    transitivePeerDependencies:
-      - debug
-      - supports-color
 
   yocto-queue@0.1.0: {}
 
