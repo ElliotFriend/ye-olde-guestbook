@@ -8,8 +8,8 @@ guestbooks](https://en.wikipedia.org/wiki/Guestbook) from the olden days!
 - [Give it a Spin](#give-it-a-spin)
 - [Passkeys](#passkeys)
 - [Anatomy of the Repository](#anatomy-of-the-repository)
-    - [Smart Contract](#smart-contract)
-    - [Frontend](#frontend)
+  - [Smart Contract](#smart-contract)
+  - [Frontend](#frontend)
 - [More Info](#more-info)
 
 ## Give it a Spin
@@ -23,9 +23,10 @@ You can get to a Testnet version of the dapp here:
 ## Passkeys
 
 We utilize Tyler's **amazing**
-[passkey-kit](https://github.com/kalepail/passkey-kit) to interact with users
-and authenticate with their passkeys. This makes it possible for users to get
-on-chain without _any_ of the usual obstacles that can stand in their way.
+[smart-account-kit](https://github.com/stellar/smart-account-kit) to interact
+with users and authenticate with their passkeys. Wallets are OpenZeppelin smart
+account contracts, and this makes it possible for users to get on-chain without
+_any_ of the usual obstacles that can stand in their way.
 
 > Seriously. You have **GOT** to start thinking about passkeys.
 
@@ -59,9 +60,11 @@ included in the `/src/lib` directory.
 - Testnet Dapp: <https://ye-olde-guestbook.vercel.app>
 - Developer Documentation:
   <https://developers.stellar.org/docs/build/apps/smart-wallets>
-- Passkey-kit: <https://github.com/kalepail/passkey-kit>
-- Superpeach: <https://github.com/kalepail/superpeach>
-- Launchtube: <https://github.com/kalepail/launchtube>
+- Smart Account Kit: <https://github.com/stellar/smart-account-kit>
+- OpenZeppelin Stellar Contracts:
+  <https://github.com/OpenZeppelin/stellar-contracts>
+- OpenZeppelin Relayer Channels:
+  <https://docs.openzeppelin.com/relayer/1.5.x/guides/stellar-channels-guide>
 - Mercury Data Indexer: <https://www.mercurydata.app>
 - [Join us on Discord](https://discord.gg/stellardev), and ask questions in the
   `#passkeys` channel
