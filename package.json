@@ -52,6 +52,6 @@
         "vite": "^8.2.2",
         "ye_olde_guestbook": "file:packages/ye_olde_guestbook"
     },
-    "engines": { "node": ">=24" },
+    "engines": { "node": "24" },
     "packageManager": "pnpm@11.6.0"
 }
