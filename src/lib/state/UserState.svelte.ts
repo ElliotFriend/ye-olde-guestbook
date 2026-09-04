@@ -1,11 +1,14 @@
-import { kit } from '$lib/smartAccountClient';
+import { account } from '$lib/smartAccountClient';
 
 class Wallet {
     contractAddress: string | null = $state(null);
 
     constructor() {
-        kit.events.on('walletConnected', ({ contractId }) => (this.contractAddress = contractId));
-        kit.events.on('walletDisconnected', () => (this.contractAddress = null));
+        account.events.on(
+            'walletConnected',
+            ({ contractId }) => (this.contractAddress = contractId),
+        );
+        account.events.on('walletDisconnected', () => (this.contractAddress = null));
     }
 }
 

@@ -1,20 +1,26 @@
 <script lang="ts">
-    import { kit } from '$lib/smartAccountClient';
+    import { account, userDismissedPasskey } from '$lib/smartAccountClient';
     import { toaster } from '$lib/toaster';
     import { wallet } from '$lib/state/UserState.svelte';
 
     async function login() {
         console.log('logging in');
         try {
-            const connected = await kit.connectWallet({ prompt: true });
-
-            if (!connected) {
+            // `prompt: true` asks the user's authenticator to pick a passkey;
+            // SmartAccountKit uses the selected credential to look up the
+            // matching smart account contract via its IndexedDB index.
+            await account.connectWallet({ prompt: true });
+            console.log('[login] contractAddress', wallet.contractAddress);
+        } catch (err: unknown) {
+            if (userDismissedPasskey(err)) {
+                toaster.warning({
+                    title: 'Cancelled',
+                    description: 'Passkey prompt dismissed.',
+                });
                 return;
             }
 
-            console.log('contractAddress', wallet.contractAddress);
-        } catch (err) {
-            console.error(err);
+            console.error('[login]', err);
             toaster.error({
                 title: 'Error',
                 description: 'Something went wrong logging in. Please try again later.',

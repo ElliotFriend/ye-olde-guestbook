@@ -12,7 +12,7 @@
     import { toaster } from '$lib/toaster';
     import { wallet } from '$lib/state/UserState.svelte';
     import { seContractLink } from '$lib/stellarExpert';
-    import { kit, getNativeBalance } from '$lib/smartAccountClient';
+    import { account, getNativeBalance } from '$lib/smartAccountClient';
     import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$env/static/public';
     import Identicon from '$lib/components/ui/Identicon.svelte';
     import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
@@ -22,11 +22,11 @@
     let isFunding: boolean = $state(false);
 
     async function getBalance() {
-        console.log('fetching balances');
+        console.log('[settings] fetching balances');
         try {
             balance = (await getNativeBalance(wallet.contractAddress!)).toString();
-        } catch (err) {
-            console.log(err);
+        } catch (err: unknown) {
+            console.error('[balance]', err);
             toaster.error({
                 title: 'Error',
                 description: 'Something went wrong checking your balance. Please try again later.',
@@ -34,10 +34,10 @@
         }
     }
 
-    // `kit.fundWallet()` reports expected failures in the result rather than
-    // throwing, but `toaster.promise` depends on that rejection.
+    // `account.fundWallet()` reports expected failures in the result rather
+    // than throwing, but `toaster.promise` depends on that rejection.
     async function fundWallet() {
-        const result = await kit.fundWallet(PUBLIC_NATIVE_TOKEN_CONTRACT);
+        const result = await account.fundWallet(PUBLIC_NATIVE_TOKEN_CONTRACT);
 
         if (!result.success) {
             throw result.error;
@@ -62,21 +62,38 @@
                     description: 'Funds received. Congrats!',
                 };
             },
-            error: () => ({
-                title: 'Error',
-                description: 'Something went funding smart wallet. Please try again later.',
-            }),
+            error: (err: unknown) => {
+                console.error('[fund]', err);
+                return {
+                    title: 'Error',
+                    description: 'Something went funding smart wallet. Please try again later.',
+                };
+            },
             finally: () => {
                 isFunding = false;
             },
         });
     }
 
+    async function copyAddress() {
+        if (!wallet.contractAddress) {
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(wallet.contractAddress);
+            toaster.success({ title: 'Copied', description: 'Smart account address copied.' });
+        } catch (err: unknown) {
+            console.error('[copy]', err);
+            toaster.error({ title: 'Copy failed', description: 'Your browser blocked the copy.' });
+        }
+    }
+
     async function logout() {
         try {
-            await kit.disconnect();
-        } catch (err) {
-            console.error(err);
+            await account.disconnect();
+        } catch (err: unknown) {
+            console.error('[logout]', err);
             toaster.error({
                 title: 'Error',
                 description: 'Something went wrong logging out. Please try again later.',
@@ -115,12 +132,10 @@
                     <div class="mt-1">
                         <div class="overflow-hidden flex items-center gap-3">
                             <TruncatedAddress address={wallet.contractAddress!} />
-                            <!-- TODO: this copy/pasting doesn't work... :shrug: -->
-                            <input type="hidden" value={wallet.contractAddress} data-address />
                             <button
                                 type="button"
                                 class="btn-icon btn-icon-sm preset-tonal-surface"
-                                data-copy-address><Copy size="14" /></button
+                                onclick={copyAddress}><Copy /></button
                             >
                         </div>
                     </div>

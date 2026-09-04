@@ -6,7 +6,6 @@ import {
     Contract,
     TransactionBuilder,
     scValToNative,
-    xdr,
 } from '@stellar/stellar-sdk';
 import { SmartAccountKit, IndexedDBStorage } from 'smart-account-kit';
 import { browser } from '$app/environment';
@@ -25,25 +24,24 @@ import {
 export const rpc = new Server(PUBLIC_STELLAR_RPC_URL);
 
 /**
- * Transactions are POSTed to our own `/api/send` route, which forwards them on
- * to the OpenZeppelin Relayer Channels service. The Channels API key stays
- * server-side.
- */
-export const RELAYER_URL = '/api/send';
-
-/**
  * The smart account client. Wallets are OpenZeppelin smart account contracts,
  * authenticated with WebAuthn passkeys.
  */
-export const kit = new SmartAccountKit({
+export const account = new SmartAccountKit({
     rpcUrl: PUBLIC_STELLAR_RPC_URL,
     networkPassphrase: PUBLIC_STELLAR_NETWORK_PASSPHRASE,
     accountWasmHash: PUBLIC_ACCOUNT_WASM_HASH,
     webauthnVerifierAddress: PUBLIC_WEBAUTHN_VERIFIER_ADDRESS,
-    relayerUrl: RELAYER_URL,
+    // Transactions are POSTed to our own `/api/send` route, which forwards them
+    // on to the OpenZeppelin Relayer Channels service. The Channels API key
+    // stays server-side.
+    relayerUrl: '/api/send',
     // IndexedDB isn't available while server-rendering, but the kit is only
     // ever driven from the browser anyway.
     storage: browser ? new IndexedDBStorage() : undefined,
+    // the "relying-party" name will be displayed in the passkey prompt from the
+    // user's authenticator
+    rpName: 'Ye Olde Guestbook',
     timeoutInSeconds: 30,
 });
 
@@ -82,22 +80,12 @@ export async function getNativeBalance(address: string): Promise<bigint> {
 }
 
 /**
- * Fetch the value a contract call returned, given the hash of the transaction
- * that made it.
- *
- * The relayer reports a transaction hash rather than the invocation's return
- * value, so anything that needs the return value reads it back from the
- * network afterwards.
- *
- * @param hash - The transaction hash
- * @returns The return value of the contract call
+ * Figure out if authenticating with a passkey was simply the user
+ * dismissing the prompt. This can present itself in a few different ways,
+ * depending on a user's computer/browser/etc.
  */
-export async function getTransactionReturnValue(hash: string): Promise<xdr.ScVal> {
-    const response = await rpc.pollTransaction(hash);
-
-    if (response.status !== Api.GetTransactionStatus.SUCCESS || !response.returnValue) {
-        throw new Error(`Transaction ${hash} did not return a value`);
-    }
-
-    return response.returnValue;
+export function userDismissedPasskey(err: unknown): boolean {
+    const nameOf = (e: unknown) => (e as { name?: string } | null)?.name;
+    const name = nameOf(err) ?? nameOf((err as { cause?: unknown } | null)?.cause);
+    return name === 'NotAllowedError' || name === 'AbortError';
 }

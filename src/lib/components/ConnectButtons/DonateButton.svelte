@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
-    import { kit } from '$lib/smartAccountClient';
+    import { account } from '$lib/smartAccountClient';
     import { networks } from 'ye_olde_guestbook';
     import { toaster } from '$lib/toaster';
     import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$env/static/public';
@@ -21,9 +21,9 @@
             throw 'undefined donation amount';
         }
 
-        // `kit.transfer()` signs with the connected passkey and submits through
-        // the relayer in one step. Easy peasy!
-        const result = await kit.transfer(
+        // `account.transfer()` signs with the connected passkey and submits
+        // through the relayer in one step. Easy peasy!
+        const result = await account.transfer(
             PUBLIC_NATIVE_TOKEN_CONTRACT,
             networks.testnet.contractId,
             donation,
@@ -33,7 +33,7 @@
             throw result.error;
         }
 
-        console.log(result);
+        console.log('[donate]', result);
     }
 
     async function donate() {
@@ -47,10 +47,13 @@
                 title: 'Success',
                 description: 'Donation received! You really ARE the goat.',
             }),
-            error: () => ({
-                title: 'Error',
-                description: 'Something went wrong donating. Please try again later.',
-            }),
+            error: (err: unknown) => {
+                console.error('[donate]', err);
+                return {
+                    title: 'Error',
+                    description: 'Something went wrong donating. Please try again later.',
+                };
+            },
             finally: () => {
                 isDonating = false;
                 getBalance();

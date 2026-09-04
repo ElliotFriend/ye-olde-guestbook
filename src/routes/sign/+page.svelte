@@ -5,10 +5,11 @@
     import Signature from '@lucide/svelte/icons/signature';
     import LoaderCircle from '@lucide/svelte/icons/loader-circle';
 
-    import { kit, getTransactionReturnValue } from '$lib/smartAccountClient';
+    import { account, rpc } from '$lib/smartAccountClient';
     import { toaster } from '$lib/toaster';
     import { wallet } from '$lib/state/UserState.svelte';
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
+    import { Api } from '@stellar/stellar-sdk/rpc';
 
     let messageTitle: string = $state('');
     let messageText: string = $state('');
@@ -28,7 +29,7 @@
                 text: messageText,
             });
 
-            const result = await kit.signAndSubmit(at);
+            const result = await account.signAndSubmit(at);
 
             if (!result.success) {
                 throw result.error;
@@ -36,15 +37,19 @@
 
             // The relayer reports a hash rather than the invocation's return
             // value, so read the new message's id back from the network.
-            const messageId = (await getTransactionReturnValue(result.hash)).u32();
+            const response = await rpc.pollTransaction(result.hash);
+            if (response.status !== Api.GetTransactionStatus.SUCCESS || !response.returnValue) {
+                throw new Error(`Transaction ${result.hash} did not return a value`);
+            }
+            const messageId = response.returnValue.u32();
 
             toaster.success({
                 title: 'Success',
                 description: 'Huzzah!! You signed my guestbook! Thanks.',
             });
             goto(resolve(`/read/${messageId}`));
-        } catch (err) {
-            console.error(err);
+        } catch (err: unknown) {
+            console.error('[sign]', err);
             toaster.error({
                 title: 'Error',
                 description: 'Something went wrong signing the guestbook. Please try again later.',

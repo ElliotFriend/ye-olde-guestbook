@@ -1,6 +1,6 @@
 <script lang="ts">
     import { wallet } from '$lib/state/UserState.svelte';
-    import { kit } from '$lib/smartAccountClient';
+    import { account } from '$lib/smartAccountClient';
 
     import Settings from './Settings.svelte';
     import Signup from './Signup.svelte';
@@ -8,12 +8,16 @@
     import { onMount } from 'svelte';
 
     onMount(async () => {
-        // The kit keeps its own session, so this restores a returning user
-        // without prompting them for their passkey again.
-        const restored = await kit.connectWallet();
+        try {
+            // The kit keeps its own session, so this restores a returning user
+            // without prompting them for their passkey again.
+            const restored = await account.connectWallet();
 
-        if (restored) {
-            console.log('contractAddress', wallet.contractAddress);
+            if (restored) {
+                console.log('[connected] contractAddress', wallet.contractAddress);
+            }
+        } catch (err: unknown) {
+            console.warn('[connect] silent reconnect failed:', err);
         }
     });
 </script>

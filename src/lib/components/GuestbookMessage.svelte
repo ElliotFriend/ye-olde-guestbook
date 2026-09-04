@@ -8,7 +8,7 @@
     import X from '@lucide/svelte/icons/x';
 
     import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
-    import { kit } from '$lib/smartAccountClient';
+    import { account } from '$lib/smartAccountClient';
     import { toaster } from '$lib/toaster';
     import { wallet } from '$lib/state/UserState.svelte';
 
@@ -43,7 +43,7 @@
                 text: messageText,
             });
 
-            const result = await kit.signAndSubmit(at);
+            const result = await account.signAndSubmit(at);
 
             if (!result.success) {
                 throw result.error;
@@ -53,8 +53,8 @@
                 title: 'Success',
                 description: 'Message edited successfully.',
             });
-        } catch (err) {
-            console.log(err);
+        } catch (err: unknown) {
+            console.error('[edit]', err);
             toaster.error({
                 title: 'Error',
                 description: 'Something went wrong editing your message. Please try again later.',
@@ -105,7 +105,7 @@
                                 type="button"
                                 class="btn-icon btn-icon-sm preset-tonal-error"
                                 onclick={cancelEdit}
-                                disabled={isLoading}><X size={16} /></button
+                                disabled={isLoading}><X /></button
                             >
                         </div>
                         <div>
@@ -113,7 +113,7 @@
                                 type="button"
                                 class="btn-icon btn-icon-sm preset-tonal-success"
                                 onclick={submitEdit}
-                                disabled={isLoading}><Check size={16} /></button
+                                disabled={isLoading}><Check /></button
                             >
                         </div>
                     {:else}
@@ -121,7 +121,7 @@
                             <button
                                 type="button"
                                 class="btn-icon btn-icon-sm preset-tonal"
-                                onclick={() => (isEditing = true)}><SquarePen size={16} /></button
+                                onclick={() => (isEditing = true)}><SquarePen /></button
                             >
                         </div>
                     {/if}
@@ -134,7 +134,7 @@
         >
             <div class="flex flex-row space-x-4">
                 <div class="self-center">
-                    <Identicon size="w-10" address={message.author} />
+                    <Identicon address={message.author} />
                 </div>
                 <div class="flex flex-col space-y-1 overflow-hidden">
                     <h6 class="h6">Author</h6>

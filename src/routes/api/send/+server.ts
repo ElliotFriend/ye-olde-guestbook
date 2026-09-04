@@ -1,33 +1,54 @@
 import type { RequestHandler } from './$types';
-import { json } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 
-import { PUBLIC_OZ_CHANNELS_URL } from '$env/static/public';
-import { PRIVATE_OZ_CHANNELS_API_KEY } from '$env/static/private';
+import { PRIVATE_RELAYER_BASE_URL, PRIVATE_RELAYER_API_KEY } from '$env/static/private';
 
 /**
- * The smart account kit POSTs either `{ func, auth }` (the usual Soroban path)
- * or `{ xdr }` (a fully signed envelope) to this endpoint. It deliberately
- * sends no credentials, because it runs in the browser. This route adds the
- * OpenZeppelin Relayer Channels API key and forwards the request on, so the
- * key never leaves the server.
+ * The smart account kit POSTs either `{ func, auth }` (a smart contract
+ * invocation) or `{ xdr }` (a fully signed envelope) to this endpoint. It
+ * deliberately sends no credentials, because it runs in the browser. This route
+ * adds the OpenZeppelin Relayer Channels API key and forwards the request on,
+ * so the key never leaves the server.
  */
-export const POST: RequestHandler = async ({ request, fetch }) => {
-    const { func, auth, xdr } = await request.json();
+export const POST: RequestHandler = async ({ url, request, fetch }) => {
+    // ensure requests are coming from our own frontend
+    if (!request.headers.get('origin')?.includes(url.origin)) {
+        error(403, { message: 'hostname mismatch' });
+    }
+
+    // parse the request body and get the transaction details
+    const body = await request.json().catch(() => null);
+    if (!body || typeof body !== 'object') {
+        error(400, { message: 'request body must be a JSON object' });
+    }
+    const { func, auth, xdr }: { func?: string; auth?: string[]; xdr?: string } = body;
 
     // Channels takes either a signed transaction envelope, or a host function
     // plus its auth entries. But, you must never mix the two shapes!
-    const params = xdr ? { xdr } : { func, auth };
+    if (func && xdr) {
+        error(400, { message: 'request body must contain a transaction OR a function, not both' });
+    }
+    if (!func && !xdr) {
+        error(400, { message: 'request body must contain either a function or a transaction' });
+    }
 
-    const res = await fetch(`${PUBLIC_OZ_CHANNELS_URL}/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${PRIVATE_OZ_CHANNELS_API_KEY}`,
-        },
-        body: JSON.stringify({ params }),
-    });
+    const params = func ? { func, auth } : { xdr };
 
-    // Pass the relayer's response through untouched. The kit understands both
-    // the `{ success, data }` envelope and a bare transaction result.
-    return json(await res.json(), { status: res.ok ? 200 : res.status });
+    try {
+        const res = await fetch(`${PRIVATE_RELAYER_BASE_URL}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${PRIVATE_RELAYER_API_KEY}`,
+            },
+            body: JSON.stringify({ params }),
+        });
+
+        // Pass the relayer's response through untouched. The kit understands both
+        // the `{ success, data }` envelope and a bare transaction result.
+        return json(await res.json(), { status: res.ok ? 200 : res.status });
+    } catch (err: unknown) {
+        console.error('[send]', err);
+        error(502, { message: err instanceof Error ? err.message : 'relayer submission failed' });
+    }
 };
