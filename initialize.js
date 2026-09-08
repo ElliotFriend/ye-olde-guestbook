@@ -19,10 +19,22 @@ console.log('###################### Initializing ########################');
 const __filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(__filename);
 
+// Rust targets the Stellar CLI may have built our contracts into
+const WASM_TARGETS = ['wasm32v1-none', 'wasm32-unknown-unknown'];
+
 // Function to execute and log shell commands
 function exe(command) {
     console.log(command);
     execSync(command, { stdio: 'inherit' });
+}
+
+// Same, but returns the command's standard output. Standard error still
+// streams to our own, so the Stellar CLI's progress messages stay visible.
+function exeCapture(command) {
+    console.log(command);
+    return execSync(command, { stdio: ['inherit', 'pipe', 'inherit'] })
+        .toString()
+        .trim();
 }
 
 function fundAll() {
@@ -41,9 +53,17 @@ function removeFiles(pattern) {
     glob(pattern).forEach((entry) => rmSync(entry));
 }
 
+// The Stellar CLI builds to `wasm32v1-none` these days, but older versions
+// used `wasm32-unknown-unknown`, so we look in both places.
+function wasmFiles() {
+    return WASM_TARGETS.flatMap((target) => glob(`${dirname}/target/${target}/release/*.wasm`));
+}
+
 function buildAll() {
-    removeFiles(`${dirname}/target/wasm32-unknown-unknown/release/*.wasm`);
-    removeFiles(`${dirname}/target/wasm32-unknown-unknown/release/*.d`);
+    for (const target of WASM_TARGETS) {
+        removeFiles(`${dirname}/target/${target}/release/*.wasm`);
+        removeFiles(`${dirname}/target/${target}/release/*.d`);
+    }
     exe(`stellar contract build`);
 }
 
@@ -51,34 +71,20 @@ function filenameNoExtension(filename) {
     return path.basename(filename, path.extname(filename));
 }
 
+// The Stellar CLI prints the deployed contract address on standard out, which
+// is where we get it from: where the CLI stores its aliases has moved around
+// between versions.
 function deploy(wasm) {
-    exe(
-        `stellar contract deploy --wasm ${wasm} --alias ${filenameNoExtension(wasm)} --salt 05e04211b7f13ae334fb3d7f3a7927591f7b95b87d5a4d9fd2793434936c2718 -- --admin ${process.env.STELLAR_ACCOUNT} --title "Hello, Initialized Contract!" --text "I would be most honored if you would please sign my humble guestbook."`,
+    const alias = filenameNoExtension(wasm);
+    const id = exeCapture(
+        `stellar contract deploy --wasm ${wasm} --alias ${alias} --salt 05e04211b7f13ae334fb3d7f3a7927591f7b95b87d5a4d9fd2793434936c2718 -- --admin ${process.env.STELLAR_ACCOUNT} --title "Hello, Initialized Contract!" --text "I would be most honored if you would please sign my humble guestbook."`,
     );
+
+    return { alias, id };
 }
 
 function deployAll() {
-    const contractsDir = `${dirname}/.stellar/contract-ids`;
-    mkdirSync(contractsDir, { recursive: true });
-
-    const wasmFiles = glob(`${dirname}/target/wasm32-unknown-unknown/release/*.wasm`);
-
-    wasmFiles.forEach(deploy);
-}
-
-function contracts() {
-    const contractFiles = glob(`${dirname}/.stellar/contract-ids/*.json`);
-
-    return contractFiles
-        .map((path) => ({
-            alias: filenameNoExtension(path),
-            ...JSON.parse(readFileSync(path)),
-        }))
-        .filter((data) => data.ids[process.env.STELLAR_NETWORK_PASSPHRASE])
-        .map((data) => ({
-            alias: data.alias,
-            id: data.ids[process.env.STELLAR_NETWORK_PASSPHRASE],
-        }));
+    return wasmFiles().map(deploy);
 }
 
 function bind({ alias, id }) {
@@ -94,13 +100,21 @@ function bind({ alias, id }) {
     manifest.scripts = { ...manifest.scripts, prepare: 'tsc' };
     writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 4)}\n`);
 
+    // Since the bindings are compiled on install, the compiled output doesn't
+    // belong in version control either.
+    const ignorePath = `${packageDir}/.gitignore`;
+    const ignored = readFileSync(ignorePath, 'utf8');
+    if (!ignored.split('\n').includes('dist/')) {
+        writeFileSync(ignorePath, `${ignored.trimEnd()}\ndist/\n`);
+    }
+
     // The CLI writes a standalone package, but inside a workspace the root
     // lockfile is the only one that matters.
     rmSync(`${packageDir}/pnpm-lock.yaml`, { force: true });
 }
 
-function bindAll() {
-    contracts().forEach(bind);
+function bindAll(contracts) {
+    contracts.forEach(bind);
 }
 
 function importContract({ alias }) {
@@ -123,13 +137,13 @@ function importContract({ alias }) {
     console.log(`Created import for ${alias}`);
 }
 
-function importAll() {
-    contracts().forEach(importContract);
+function importAll(contracts) {
+    contracts.forEach(importContract);
 }
 
 // Calling the functions (equivalent to the last part of your bash script)
 fundAll();
 buildAll();
-deployAll();
-bindAll();
-importAll();
+const deployed = deployAll();
+bindAll(deployed);
+importAll(deployed);
