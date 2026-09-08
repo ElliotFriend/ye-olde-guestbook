@@ -109,10 +109,10 @@ function importContract({ alias }) {
     mkdirSync(outputDir, { recursive: true });
 
     const importContent =
-        `import * as Client from '${alias}';\n` +
+        `import { Client, networks } from '${alias}';\n` +
         `import { PUBLIC_STELLAR_RPC_URL } from '$env/static/public';\n\n` +
-        `export default new Client.Client({\n` +
-        `    ...Client.networks.${process.env.STELLAR_NETWORK},\n` +
+        `export default new Client({\n` +
+        `    ...networks.${process.env.STELLAR_NETWORK},\n` +
         `    rpcUrl: PUBLIC_STELLAR_RPC_URL,\n` +
         `});\n`;
 
