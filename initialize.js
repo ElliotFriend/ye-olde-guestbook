@@ -92,9 +92,12 @@ function bind({ alias, id }) {
 
     exe(`stellar contract bindings typescript --id ${id} --output-dir ${packageDir} --overwrite`);
 
-    // The generated package.json only defines `build`. Adding `prepare` lets
-    // pnpm compile the bindings automatically whenever someone installs the
-    // workspace, so `dist/` never has to be committed.
+    // The generated package.json only defines `build`. Adding `prepare` gets
+    // the bindings compiled on a clean `pnpm install`, so `dist/` never has to
+    // be committed. Note that pnpm only runs `prepare` when it actually has
+    // installing to do: against an up-to-date workspace it reports "Already up
+    // to date" and skips lifecycle scripts, which is why the root `bindings`
+    // script, not this, is what guarantees `dist/` exists before a build.
     const manifestPath = `${packageDir}/package.json`;
     const manifest = JSON.parse(readFileSync(manifestPath));
     manifest.scripts = { ...manifest.scripts, prepare: 'tsc' };

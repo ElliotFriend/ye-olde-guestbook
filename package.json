@@ -5,11 +5,12 @@
     "private": true,
     "scripts": {
         "setup": "node initialize.js",
-        "dev": "vite dev",
-        "build": "vite build",
+        "bindings": "pnpm --filter \"./packages/*\" run build",
+        "dev": "pnpm run bindings && vite dev",
+        "build": "pnpm run bindings && vite build",
         "preview": "vite preview",
-        "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-        "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+        "check": "pnpm run bindings && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "check:watch": "pnpm run bindings && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
         "lint": "prettier --check . && eslint .",
         "format": "prettier --write ."
     },
