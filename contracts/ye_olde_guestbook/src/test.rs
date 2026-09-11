@@ -1,10 +1,14 @@
 #![cfg(test)]
 
 use super::*;
-use soroban_sdk::{testutils::Address as _, Env};
+use soroban_sdk::{
+    testutils::{Address as _, AuthorizedFunction, AuthorizedInvocation},
+    Env, IntoVal, Symbol,
+};
+extern crate std;
 
 #[test]
-fn test_initialize() {
+fn test_constructor() {
     let env = Env::default();
     env.mock_all_auths();
 
@@ -19,8 +23,38 @@ fn test_initialize() {
 }
 
 #[test]
+fn test_constructor_auth() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+
+    assert_eq!(
+        env.auths(),
+        std::vec![(
+            admin.clone(),
+            AuthorizedInvocation {
+                function: AuthorizedFunction::Contract((
+                    contract_id.clone(),
+                    Symbol::new(&env, "__constructor"),
+                    (admin.clone(), hello_world, lorem_ipsum).into_val(&env),
+                )),
+                sub_invocations: std::vec![],
+            },
+        )],
+    );
+}
+
+#[test]
 #[should_panic(expected = "Error(Contract, #1")]
-fn test_initialize_empty_title() {
+fn test_constructor_empty_title() {
     let env = Env::default();
     env.mock_all_auths();
 
@@ -36,7 +70,7 @@ fn test_initialize_empty_title() {
 
 #[test]
 #[should_panic(expected = "Error(Contract, #1")]
-fn test_initialize_empty_text() {
+fn test_constructor_empty_text() {
     let env = Env::default();
     env.mock_all_auths();
 
@@ -68,6 +102,40 @@ fn test_write_message() {
     let author = Address::generate(&env);
     let newer_id = client.write_message(&author, &hello_world, &lorem_ipsum);
     assert_eq!(newer_id, 2u32);
+}
+
+#[test]
+fn test_write_message_auth() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
+
+    let author = Address::generate(&env);
+    client.write_message(&author, &hello_world, &lorem_ipsum);
+
+    assert_eq!(
+        env.auths(),
+        std::vec![(
+            author.clone(),
+            AuthorizedInvocation {
+                function: AuthorizedFunction::Contract((
+                    contract_id.clone(),
+                    Symbol::new(&env, "write_message"),
+                    (author.clone(), hello_world, lorem_ipsum).into_val(&env),
+                )),
+                sub_invocations: std::vec![],
+            },
+        )],
+    );
 }
 
 #[test]
@@ -221,6 +289,46 @@ fn test_edit_message() {
     let newly_read_message = client.read_message(&message_id);
     assert_eq!(newly_read_message.title, new_hello_world);
     assert_eq!(newly_read_message.text, new_lorem_ipsum);
+}
+
+#[test]
+fn test_edit_message_auth() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let hello_world = String::from_str(&env, "Hello World");
+    let lorem_ipsum = String::from_str(&env, "Lorem Ipsum ain't got nothin' on me!");
+
+    let contract_id = env.register(
+        YeOldGuestbookContract,
+        (&admin, hello_world.as_val(), lorem_ipsum.as_val()),
+    );
+    let client = YeOldGuestbookContractClient::new(&env, &contract_id);
+
+    let author = Address::generate(&env);
+    let message_id = client.write_message(&author, &hello_world, &lorem_ipsum);
+
+    let new_hello_world: String = String::from_str(&env, "Updated Hello World");
+    let new_lorem_ipsum: String =
+        String::from_str(&env, "Lorem Ipsum STILL ain't got nothin' on me!");
+
+    client.edit_message(&message_id, &new_hello_world, &new_lorem_ipsum);
+
+    assert_eq!(
+        env.auths(),
+        std::vec![(
+            author.clone(),
+            AuthorizedInvocation {
+                function: AuthorizedFunction::Contract((
+                    contract_id.clone(),
+                    Symbol::new(&env, "edit_message"),
+                    (2u32, new_hello_world, new_lorem_ipsum).into_val(&env),
+                )),
+                sub_invocations: std::vec![],
+            },
+        )],
+    );
 }
 
 #[test]
