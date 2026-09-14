@@ -10,15 +10,10 @@
     let { data }: Props = $props();
 
     let sortNewestFirst = $state(true);
-    let messages = $state(data.messages);
 
-    $effect(() => {
-        if (sortNewestFirst) {
-            messages = messages.sort((a, b) => b.id - a.id);
-        } else {
-            messages = messages.sort((a, b) => a.id - b.id);
-        }
-    });
+    const messages = $derived(
+        data.messages.toSorted((a, b) => (sortNewestFirst ? b.id - a.id : a.id - b.id)),
+    );
 </script>
 
 <div class="flex flex-col md:flex-row justify-start md:justify-between space-y-4">
@@ -26,7 +21,7 @@
         <h1 class="h1">Read the Book</h1>
         <p>Take a gander at all these messages!</p>
     </div>
-    {#if data.messages.length > -1}
+    {#if data.messages.length > 1}
         <div class="md:self-end">
             <Switch
                 checked={sortNewestFirst}
