@@ -2,7 +2,7 @@
     export interface IMenuItem {
         name: string;
         href: '/sign' | '/read';
-        icon: typeof IconType;
+        icon: LucideIcon;
     }
 
     export const menuItems: IMenuItem[] = [
@@ -24,7 +24,7 @@
 <script lang="ts">
     import BookOpenText from '@lucide/svelte/icons/book-open-text';
     import Signature from '@lucide/svelte/icons/signature';
-    import { Icon as IconType } from '@lucide/svelte';
+    import type { LucideIcon } from '@lucide/svelte';
 
     import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
     import ConnectButtons from '$lib/components/ConnectButtons/ConnectButtons.svelte';

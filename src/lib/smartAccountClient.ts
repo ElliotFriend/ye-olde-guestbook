@@ -7,7 +7,14 @@ import {
     TransactionBuilder,
     scValToNative,
 } from '@stellar/stellar-sdk';
-import { SmartAccountKit, IndexedDBStorage } from 'smart-account-kit';
+import {
+    SmartAccountKit,
+    IndexedDBStorage,
+    WalletAmbiguousError,
+    WalletCodeNotAcceptedError,
+    WalletOwnershipError,
+    WalletProvenanceError,
+} from 'smart-account-kit';
 import { browser } from '$app/environment';
 
 import {
@@ -77,6 +84,61 @@ export async function getNativeBalance(address: string): Promise<bigint> {
     }
 
     return scValToNative(simulation.result.retval) as bigint;
+}
+
+/**
+ * Turn one of the kit's fail-closed connection errors into something we can
+ * actually show a user.
+ *
+ * `connectWallet()` verifies how a wallet was created, what code it runs, and
+ * that the passkey is a live signer on it. A failed check throws instead of
+ * connecting, and most of those are not worth retrying with the same passkey.
+ *
+ * @param err - The error thrown by `connectWallet()`
+ * @returns A toast title and description, or `null` if this wasn't a
+ * connection-verification failure and the caller should fall back to its own
+ * generic message
+ */
+export function describeConnectionError(
+    err: unknown,
+): { title: string; description: string } | null {
+    if (err instanceof WalletAmbiguousError) {
+        return {
+            title: 'More than one wallet',
+            description:
+                'This passkey is registered to several smart accounts, and the guestbook has no way to ask which one you meant. Try the passkey you created here.',
+        };
+    }
+
+    if (err instanceof WalletOwnershipError) {
+        return {
+            title: 'Passkey not recognized',
+            description:
+                "This passkey isn't a live signer on that smart account. Log in with the passkey you used when you signed up.",
+        };
+    }
+
+    if (err instanceof WalletProvenanceError) {
+        // This one is genuinely ambiguous. It covers a wallet whose creation
+        // history failed verification (permanent) and an indexer that is
+        // incomplete or lagging the network (transient), so the copy has to
+        // leave room for waiting it out.
+        return {
+            title: "Couldn't verify this wallet",
+            description:
+                'We could not confirm how this smart account was created. If you just signed up, the indexer may still be catching up, so give it a moment and try again.',
+        };
+    }
+
+    if (err instanceof WalletCodeNotAcceptedError) {
+        return {
+            title: 'Unsupported wallet',
+            description:
+                'That smart account runs contract code this app does not accept, which usually means it was upgraded elsewhere.',
+        };
+    }
+
+    return null;
 }
 
 /**

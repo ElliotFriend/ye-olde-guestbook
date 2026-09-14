@@ -1,5 +1,9 @@
 <script lang="ts">
-    import { account, userDismissedPasskey } from '$lib/smartAccountClient';
+    import {
+        account,
+        describeConnectionError,
+        userDismissedPasskey,
+    } from '$lib/smartAccountClient';
     import { toaster } from '$lib/toaster';
     import { wallet } from '$lib/state/UserState.svelte';
 
@@ -21,6 +25,16 @@
             }
 
             console.error('[login]', err);
+
+            // The kit verifies provenance, code, and signer state before it
+            // connects, and refuses to connect when a check fails. Those
+            // failures deserve better advice than "try again later".
+            const connectionError = describeConnectionError(err);
+            if (connectionError) {
+                toaster.error(connectionError);
+                return;
+            }
+
             toaster.error({
                 title: 'Error',
                 description: 'Something went wrong logging in. Please try again later.',

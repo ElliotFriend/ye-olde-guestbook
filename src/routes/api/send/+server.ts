@@ -44,8 +44,9 @@ export const POST: RequestHandler = async ({ url, request, fetch }) => {
             body: JSON.stringify({ params }),
         });
 
-        // Pass the relayer's response through untouched. The kit understands both
-        // the `{ success, data }` envelope and a bare transaction result.
+        // The kit counts a submission as successful only when the status is ok
+        // and the body carries a top-level `success: true`. Channels already
+        // answers with that `{ success, data }` envelope, so pass it through.
         return json(await res.json(), { status: res.ok ? 200 : res.status });
     } catch (err: unknown) {
         console.error('[send]', err);
