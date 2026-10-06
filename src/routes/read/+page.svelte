@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Switch } from '@skeletonlabs/skeleton-svelte';
-    import GuestbookMessage from '$lib/components/GuestbookMessage.svelte';
+    import GuestbookMessage from '#lib/components/GuestbookMessage.svelte';
     import type { PageData } from './$types';
 
     interface Props {

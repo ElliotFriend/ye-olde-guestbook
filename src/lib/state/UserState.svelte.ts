@@ -1,4 +1,4 @@
-import { account } from '$lib/smartAccountClient';
+import { account } from '#lib/smartAccountClient.js';
 
 class Wallet {
     contractAddress: string | null = $state(null);

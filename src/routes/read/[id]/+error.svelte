@@ -9,4 +9,8 @@
 
 <p><code class="code">{JSON.stringify({ status: page.status, ...page.error })}</code></p>
 
-<p>Try heading back to the <a class="anchor" href={resolve('/read')}>Read</a> page.</p>
+<p>
+    Try heading back to the
+    <a class="anchor" href={resolve('read')}>Read</a>
+    page.
+</p>

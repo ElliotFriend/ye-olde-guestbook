@@ -8,7 +8,11 @@
 <ol class="flex items-center gap-4">
     <li><a class="opacity-60 hover:underline" href={resolve('/')}>Home</a></li>
     <li class="opacity-50" aria-hidden="true">›</li>
-    <li><a class="opacity-60 hover:underline" href={resolve('/read')}>Read</a></li>
+
+    <li>
+        <a class="opacity-60 hover:underline" href={resolve('read')}>Read</a>
+    </li>
+
     <li class="opacity-50" aria-hidden="true">›</li>
     <li>Message {page.params.id}</li>
 </ol>

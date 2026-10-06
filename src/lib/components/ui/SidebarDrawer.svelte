@@ -3,7 +3,7 @@
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
     import Menu from '@lucide/svelte/icons/menu';
     import XIcon from '@lucide/svelte/icons/x';
-    import { dappTitle, menuItems } from '$lib/components/ui/Header.svelte';
+    import { dappTitle, menuItems } from '#lib/components/ui/Header.svelte';
 
     const animBackdrop =
         'transition transition-discrete opacity-0 starting:data-[state=open]:opacity-0 data-[state=open]:opacity-100';

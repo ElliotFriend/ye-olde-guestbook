@@ -1,7 +1,7 @@
 <script lang="ts">
     import { Avatar } from '@skeletonlabs/skeleton-svelte';
 
-    import { drawIdenticon } from '$lib/stellarExpert';
+    import { drawIdenticon } from '#lib/stellarExpert.js';
 
     interface Props {
         address: string;

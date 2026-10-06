@@ -15,7 +15,7 @@ import {
     WalletOwnershipError,
     WalletProvenanceError,
 } from 'smart-account-kit';
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 
 import {
     PUBLIC_STELLAR_RPC_URL,
@@ -23,7 +23,7 @@ import {
     PUBLIC_ACCOUNT_WASM_HASH,
     PUBLIC_WEBAUTHN_VERIFIER_ADDRESS,
     PUBLIC_NATIVE_TOKEN_CONTRACT,
-} from '$env/static/public';
+} from '$app/env/public';
 
 /**
  * A configured Stellar RPC server instance used to interact with the network.
@@ -147,7 +147,21 @@ export function describeConnectionError(
  * depending on a user's computer/browser/etc.
  */
 export function userDismissedPasskey(err: unknown): boolean {
-    const nameOf = (e: unknown) => (e as { name?: string } | null)?.name;
-    const name = nameOf(err) ?? nameOf((err as { cause?: unknown } | null)?.cause);
-    return name === 'NotAllowedError' || name === 'AbortError';
+    // The names of errors when the passkey prompt is declined
+    const dismissalNames = ['NotAllowedError', 'AbortError'];
+
+    // Sometimes the error is itself the dismissal
+    const errName = (err as { name?: string } | null)?.name;
+    if (errName && dismissalNames.includes(errName)) {
+        return true;
+    }
+
+    // Sometimes, the error might be "wrapped" inside another error as a `cause`
+    const cause = (err as { cause?: unknown } | null)?.cause;
+    const causeName = (cause as { name?: string } | null)?.name;
+    if (causeName && dismissalNames.includes(causeName)) {
+        return true;
+    }
+
+    return false;
 }

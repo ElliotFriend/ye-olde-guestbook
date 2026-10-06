@@ -1,16 +1,16 @@
 <script lang="ts">
     import type { Message } from 'ye_olde_guestbook';
-    import Identicon from '$lib/components/ui/Identicon.svelte';
-    import StellarExpertLink from '$lib/components/ui/StellarExpertLink.svelte';
+    import Identicon from '#lib/components/ui/Identicon.svelte';
+    import StellarExpertLink from '#lib/components/ui/StellarExpertLink.svelte';
 
     import SquarePen from '@lucide/svelte/icons/square-pen';
     import Check from '@lucide/svelte/icons/check';
     import X from '@lucide/svelte/icons/x';
 
-    import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
-    import { account } from '$lib/smartAccountClient';
-    import { toaster } from '$lib/toaster';
-    import { wallet } from '$lib/state/UserState.svelte';
+    import ye_olde_guestbook from '#lib/contracts/ye_olde_guestbook.js';
+    import { account } from '#lib/smartAccountClient.js';
+    import { toaster } from '#lib/toaster.js';
+    import { wallet } from '#lib/state/UserState.svelte.js';
 
     interface Props {
         message: Message;

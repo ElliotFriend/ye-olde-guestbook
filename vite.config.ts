@@ -1,3 +1,4 @@
+import adapter from '@sveltejs/adapter-vercel';
 import { sveltekit } from '@sveltejs/kit/vite';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'vite';
@@ -8,5 +9,11 @@ export default defineConfig({
             allow: ['./packages'],
         },
     },
-    plugins: [tailwindcss(), sveltekit()],
+    plugins: [
+        tailwindcss(),
+        sveltekit({
+            adapter: adapter(),
+            inspector: true,
+        }),
+    ],
 });

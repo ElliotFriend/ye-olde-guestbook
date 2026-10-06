@@ -1,9 +1,9 @@
 <script lang="ts">
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
-    import { toaster } from '$lib/toaster';
-    import { account, userDismissedPasskey } from '$lib/smartAccountClient';
-    import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$env/static/public';
-    import { wallet } from '$lib/state/UserState.svelte';
+    import { toaster } from '#lib/toaster.js';
+    import { account, userDismissedPasskey } from '#lib/smartAccountClient.js';
+    import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$app/env/public';
+    import { wallet } from '#lib/state/UserState.svelte.js';
 
     import LoaderCircle from '@lucide/svelte/icons/loader-circle';
 

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from '$app/state';
     import { resolve } from '$app/paths';
-    import type { IMenuItem } from '$lib/components/ui/Header.svelte';
+    import type { IMenuItem } from '#lib/components/ui/Header.svelte';
 
     let { item }: { item: IMenuItem } = $props();
     const Icon = $derived(item.icon);

@@ -2,7 +2,7 @@
     import { Avatar } from '@skeletonlabs/skeleton-svelte';
 
     import ArrowRight from '@lucide/svelte/icons/arrow-right';
-    import knightWriting from '$lib/assets/knight-writing.png';
+    import knightWriting from '#lib/assets/knight-writing.png';
     import { resolve } from '$app/paths';
 </script>
 
@@ -41,11 +41,11 @@
         </p>
         <p class="text-xl! max-w-118.75">Today, we recreate that magic.</p>
         <div class="flex gap-4">
-            <a href={resolve('/sign')} class="btn preset-filled-primary-500">
-                <span>Sign Now</span>
-                <span><ArrowRight /></span>
-            </a>
-            <a href={resolve('/read')} class="btn preset-tonal-primary">Read Messages</a>
+            <a href={resolve('sign')} class="btn preset-filled-primary-500"
+                ><span>Sign Now</span><span><ArrowRight /></span></a
+            >
+
+            <a href={resolve('read')} class="btn preset-tonal-primary">Read Messages</a>
         </div>
     </div>
     <div class="max-w-162.5 mx-auto">

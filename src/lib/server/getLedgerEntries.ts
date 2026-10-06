@@ -1,4 +1,4 @@
-import { rpc } from '$lib/smartAccountClient';
+import { rpc } from '#lib/smartAccountClient.js';
 import { networks, type Message } from 'ye_olde_guestbook';
 import { Address, Contract, xdr, scValToNative } from '@stellar/stellar-sdk';
 
@@ -39,14 +39,20 @@ export async function getAllMessages(): Promise<MessageWithIndex[]> {
         ledgerKeysArray.push(buildMessageLedgerKey(messageId));
     }
 
-    const result = await rpc.getLedgerEntries(...ledgerKeysArray);
-    const messages = result.entries.map((message) => {
-        const key = scValToNative(message.val.contractData().key())[1]; // scVal of the key is ['Message', 2]
-        const val = scValToNative(message.val.contractData().val()) as MessageWithIndex;
-        val.id = key;
-
-        return val;
-    });
+    // Stellar RPC accepts at most 200 ledger keys per `getLedgerEntries`
+    // request, so we ask for them in batches.
+    const MAX_LEDGER_KEYS = 200;
+    const messages: MessageWithIndex[] = [];
+    for (let offset = 0; offset < ledgerKeysArray.length; offset += MAX_LEDGER_KEYS) {
+        const chunk = ledgerKeysArray.slice(offset, offset + MAX_LEDGER_KEYS);
+        const result = await rpc.getLedgerEntries(...chunk);
+        for (const message of result.entries) {
+            const key = scValToNative(message.val.contractData().key())[1]; // scVal of the key is ['Message', 2]
+            const val = scValToNative(message.val.contractData().val()) as MessageWithIndex;
+            val.id = key;
+            messages.push(val);
+        }
+    }
 
     return messages;
 }

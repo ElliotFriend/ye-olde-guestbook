@@ -5,10 +5,10 @@
     import Signature from '@lucide/svelte/icons/signature';
     import LoaderCircle from '@lucide/svelte/icons/loader-circle';
 
-    import { account, rpc } from '$lib/smartAccountClient';
-    import { toaster } from '$lib/toaster';
-    import { wallet } from '$lib/state/UserState.svelte';
-    import ye_olde_guestbook from '$lib/contracts/ye_olde_guestbook';
+    import { account, rpc } from '#lib/smartAccountClient.js';
+    import { toaster } from '#lib/toaster.js';
+    import { wallet } from '#lib/state/UserState.svelte.js';
+    import ye_olde_guestbook from '#lib/contracts/ye_olde_guestbook.js';
     import { Api } from '@stellar/stellar-sdk/rpc';
 
     let messageTitle: string = $state('');
@@ -47,7 +47,7 @@
                 title: 'Success',
                 description: 'Huzzah!! You signed my guestbook! Thanks.',
             });
-            goto(resolve(`/read/${messageId}`));
+            goto(resolve(`read/${messageId}`));
         } catch (err: unknown) {
             console.error('[sign]', err);
             toaster.error({
