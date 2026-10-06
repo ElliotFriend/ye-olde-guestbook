@@ -147,7 +147,21 @@ export function describeConnectionError(
  * depending on a user's computer/browser/etc.
  */
 export function userDismissedPasskey(err: unknown): boolean {
-    const nameOf = (e: unknown) => (e as { name?: string } | null)?.name;
-    const name = nameOf(err) ?? nameOf((err as { cause?: unknown } | null)?.cause);
-    return name === 'NotAllowedError' || name === 'AbortError';
+    // The names of errors when the passkey prompt is declined
+    const dismissalNames = ['NotAllowedError', 'AbortError'];
+
+    // Sometimes the error is itself the dismissal
+    const errName = (err as { name?: string } | null)?.name;
+    if (errName && dismissalNames.includes(errName)) {
+        return true;
+    }
+
+    // Sometimes, the error might be "wrapped" inside another error as a `cause`
+    const cause = (err as { cause?: unknown } | null)?.cause;
+    const causeName = (cause as { name?: string } | null)?.name;
+    if (causeName && dismissalNames.includes(causeName)) {
+        return true;
+    }
+
+    return false;
 }
