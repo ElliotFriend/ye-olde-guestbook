@@ -1,4 +1,4 @@
-import { PUBLIC_STELLAR_NETWORK } from '$env/static/public';
+import { PUBLIC_STELLAR_NETWORK } from '$app/env/public';
 
 const RESOLUTION: number = 7;
 const SIZE: number = 448;

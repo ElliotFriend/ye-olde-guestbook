@@ -15,7 +15,7 @@ import {
     WalletOwnershipError,
     WalletProvenanceError,
 } from 'smart-account-kit';
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 
 import {
     PUBLIC_STELLAR_RPC_URL,
@@ -23,7 +23,7 @@ import {
     PUBLIC_ACCOUNT_WASM_HASH,
     PUBLIC_WEBAUTHN_VERIFIER_ADDRESS,
     PUBLIC_NATIVE_TOKEN_CONTRACT,
-} from '$env/static/public';
+} from '$app/env/public';
 
 /**
  * A configured Stellar RPC server instance used to interact with the network.

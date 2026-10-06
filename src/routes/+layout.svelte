@@ -1,11 +1,11 @@
 <script lang="ts">
     import { Toast } from '@skeletonlabs/skeleton-svelte';
-    import { toaster } from '$lib/toaster';
+    import { toaster } from '#lib/toaster.js';
     import '../app.css';
 
-    import Header from '$lib/components/ui/Header.svelte';
-    import PageContent from '$lib/components/ui/PageContent.svelte';
-    import Footer from '$lib/components/ui/Footer.svelte';
+    import Header from '#lib/components/ui/Header.svelte';
+    import PageContent from '#lib/components/ui/PageContent.svelte';
+    import Footer from '#lib/components/ui/Footer.svelte';
 
     let { children } = $props();
 </script>

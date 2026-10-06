@@ -26,9 +26,9 @@
     import Signature from '@lucide/svelte/icons/signature';
     import type { LucideIcon } from '@lucide/svelte';
 
-    import NavbarButton from '$lib/components/ui/NavbarButton.svelte';
-    import ConnectButtons from '$lib/components/ConnectButtons/ConnectButtons.svelte';
-    import SidebarDrawer from '$lib/components/ui/SidebarDrawer.svelte';
+    import NavbarButton from '#lib/components/ui/NavbarButton.svelte';
+    import ConnectButtons from '#lib/components/ConnectButtons/ConnectButtons.svelte';
+    import SidebarDrawer from '#lib/components/ui/SidebarDrawer.svelte';
     import { resolve } from '$app/paths';
 </script>
 

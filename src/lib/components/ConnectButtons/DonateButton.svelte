@@ -1,9 +1,9 @@
 <script lang="ts">
     import { Dialog, Portal } from '@skeletonlabs/skeleton-svelte';
-    import { account } from '$lib/smartAccountClient';
+    import { account } from '#lib/smartAccountClient.js';
     import { networks } from 'ye_olde_guestbook';
-    import { toaster } from '$lib/toaster';
-    import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$env/static/public';
+    import { toaster } from '#lib/toaster.js';
+    import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$app/env/public';
 
     import HandHelping from '@lucide/svelte/icons/hand-helping';
     import LoaderCircle from '@lucide/svelte/icons/loader-circle';
@@ -11,8 +11,8 @@
     interface Props {
         getBalance: () => void;
     }
-    let { getBalance }: Props = $props();
 
+    let { getBalance }: Props = $props();
     let isDonating: boolean = $state(false);
     let donation: number | undefined = $state();
 

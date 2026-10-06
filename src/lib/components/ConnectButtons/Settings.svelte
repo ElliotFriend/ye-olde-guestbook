@@ -9,14 +9,14 @@
     import LogOut from '@lucide/svelte/icons/log-out';
     import LoaderCircle from '@lucide/svelte/icons/loader-circle';
 
-    import { toaster } from '$lib/toaster';
-    import { wallet } from '$lib/state/UserState.svelte';
-    import { seContractLink } from '$lib/stellarExpert';
-    import { account, getNativeBalance } from '$lib/smartAccountClient';
-    import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$env/static/public';
-    import Identicon from '$lib/components/ui/Identicon.svelte';
-    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
-    import DonateButton from '$lib/components/ConnectButtons/DonateButton.svelte';
+    import { toaster } from '#lib/toaster.js';
+    import { wallet } from '#lib/state/UserState.svelte.js';
+    import { seContractLink } from '#lib/stellarExpert.js';
+    import { account, getNativeBalance } from '#lib/smartAccountClient.js';
+    import { PUBLIC_NATIVE_TOKEN_CONTRACT } from '$app/env/public';
+    import Identicon from '#lib/components/ui/Identicon.svelte';
+    import TruncatedAddress from '#lib/components/ui/TruncatedAddress.svelte';
+    import DonateButton from '#lib/components/ConnectButtons/DonateButton.svelte';
 
     let balance: string = $state('0');
     let isFunding: boolean = $state(false);
@@ -164,12 +164,11 @@
                     >
                         <!-- eslint-enable svelte/no-navigation-without-resolve -->
                         <span><Wallet /></span>
-                        <span>View Wallet</span></a
-                    >
+                        <span>View Wallet</span>
+                    </a>
                     <DonateButton {getBalance} />
-                    <button class="btn preset-tonal-error w-full" onclick={logout}>
-                        <span><LogOut /></span>
-                        <span>Logout</span></button
+                    <button class="btn preset-tonal-error w-full" onclick={logout}
+                        ><span><LogOut /></span><span>Logout</span></button
                     >
                 </nav>
             </Popover.Content>

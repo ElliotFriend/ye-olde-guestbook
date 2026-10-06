@@ -4,8 +4,8 @@
         seContractLink,
         seLedgerLink,
         seTransactionLink,
-    } from '$lib/stellarExpert';
-    import TruncatedAddress from '$lib/components/ui/TruncatedAddress.svelte';
+    } from '#lib/stellarExpert.js';
+    import TruncatedAddress from '#lib/components/ui/TruncatedAddress.svelte';
 
     interface Props {
         target: string | number;

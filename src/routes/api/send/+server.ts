@@ -1,7 +1,7 @@
 import type { RequestHandler } from './$types';
-import { error, json } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 
-import { PRIVATE_RELAYER_BASE_URL, PRIVATE_RELAYER_API_KEY } from '$env/static/private';
+import { PRIVATE_RELAYER_BASE_URL, PRIVATE_RELAYER_API_KEY } from '$app/env/private';
 
 /**
  * The smart account kit POSTs either `{ func, auth }` (a smart contract
@@ -13,23 +13,23 @@ import { PRIVATE_RELAYER_BASE_URL, PRIVATE_RELAYER_API_KEY } from '$env/static/p
 export const POST: RequestHandler = async ({ url, request, fetch }) => {
     // ensure requests are coming from our own frontend
     if (request.headers.get('origin') !== url.origin) {
-        error(403, { message: 'hostname mismatch' });
+        error(403, 'hostname mismatch');
     }
 
     // parse the request body and get the transaction details
     const body = await request.json().catch(() => null);
     if (!body || typeof body !== 'object') {
-        error(400, { message: 'request body must be a JSON object' });
+        error(400, 'request body must be a JSON object');
     }
     const { func, auth, xdr }: { func?: string; auth?: string[]; xdr?: string } = body;
 
     // Channels takes either a signed transaction envelope, or a host function
     // plus its auth entries. But, you must never mix the two shapes!
     if (func && xdr) {
-        error(400, { message: 'request body must contain a transaction OR a function, not both' });
+        error(400, 'request body must contain a transaction OR a function, not both');
     }
     if (!func && !xdr) {
-        error(400, { message: 'request body must contain either a function or a transaction' });
+        error(400, 'request body must contain either a function or a transaction');
     }
 
     const params = func ? { func, auth } : { xdr };
@@ -47,9 +47,9 @@ export const POST: RequestHandler = async ({ url, request, fetch }) => {
         // The kit counts a submission as successful only when the status is ok
         // and the body carries a top-level `success: true`. Channels already
         // answers with that `{ success, data }` envelope, so pass it through.
-        return json(await res.json(), { status: res.ok ? 200 : res.status });
+        return Response.json(await res.json(), { status: res.ok ? 200 : res.status });
     } catch (err: unknown) {
         console.error('[send]', err);
-        error(502, { message: err instanceof Error ? err.message : 'relayer submission failed' });
+        error(502, err instanceof Error ? err.message : 'relayer submission failed');
     }
 };

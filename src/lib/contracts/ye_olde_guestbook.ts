@@ -1,5 +1,5 @@
 import { Client, networks } from 'ye_olde_guestbook';
-import { PUBLIC_STELLAR_RPC_URL } from '$env/static/public';
+import { PUBLIC_STELLAR_RPC_URL } from '$app/env/public';
 
 export default new Client({
     ...networks.testnet,

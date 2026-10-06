@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { wallet } from '$lib/state/UserState.svelte';
-    import { account } from '$lib/smartAccountClient';
+    import { wallet } from '#lib/state/UserState.svelte.js';
+    import { account } from '#lib/smartAccountClient.js';
 
     import Settings from './Settings.svelte';
     import Signup from './Signup.svelte';

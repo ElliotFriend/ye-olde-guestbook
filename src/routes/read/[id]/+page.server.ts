@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import guestbook from '$lib/contracts/ye_olde_guestbook';
+import guestbook from '#lib/contracts/ye_olde_guestbook.js';
 
 import type { PageServerLoad } from './$types';
 
@@ -15,9 +15,9 @@ export const load: PageServerLoad = async ({ params }) => {
         };
     } catch (err: unknown) {
         console.error(err);
-        error(500, {
-            message:
-                "Sorry, something went wrong. Most likely, the message you're looking for doesn't exist.",
-        });
+        error(
+            500,
+            "Sorry, something went wrong. Most likely, the message you're looking for doesn't exist.",
+        );
     }
 };
