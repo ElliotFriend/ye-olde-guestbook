@@ -34,7 +34,7 @@ fn get_message(env: &Env, message_id: u32) -> Message {
         .persistent()
         .get(&DataKey::Message(message_id))
         .unwrap();
-    return message;
+    message
 }
 
 // Write a message to persistent storage.
@@ -43,7 +43,7 @@ fn save_message(env: &Env, message: Message) -> u32 {
         .storage()
         .instance()
         .get(&DataKey::MessageCount)
-        .unwrap_or(0 as u32);
+        .unwrap_or(0u32);
     num_messages += 1;
 
     env.storage()
@@ -53,7 +53,7 @@ fn save_message(env: &Env, message: Message) -> u32 {
         .instance()
         .set(&DataKey::MessageCount, &num_messages);
 
-    return num_messages;
+    num_messages
 }
 
 #[contract]
@@ -149,7 +149,7 @@ impl YeOldGuestbookContract {
         };
 
         let message_id = save_message(&env, new_message);
-        return Ok(message_id);
+        Ok(message_id)
     }
 
     /// Edit a specified message in the guestbook.
@@ -195,7 +195,7 @@ impl YeOldGuestbookContract {
         env.storage()
             .persistent()
             .set(&DataKey::Message(message_id), &message);
-        return Ok(());
+        Ok(())
     }
 
     /// Read a specified message from the guestbook.
