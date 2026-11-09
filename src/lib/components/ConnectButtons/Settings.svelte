@@ -1,5 +1,6 @@
 <script lang="ts">
     import { Popover, Portal } from '@skeletonlabs/skeleton-svelte';
+    import { Soroban } from '@stellar/stellar-sdk';
 
     import Settings from '@lucide/svelte/icons/settings';
     import ChevronDown from '@lucide/svelte/icons/chevron-down';
@@ -20,6 +21,17 @@
 
     let balance: string = $state('0');
     let isFunding: boolean = $state(false);
+
+    // Truncate, so we never show more than the real balance
+    const balanceFormat = new Intl.NumberFormat(undefined, {
+        maximumFractionDigits: 2,
+        roundingMode: 'trunc',
+    });
+
+    // Stroops to XLM as an exact decimal string, no floating-point math
+    let displayBalance = $derived(
+        balanceFormat.format(Soroban.formatTokenAmount(balance, 7) as Intl.StringNumericLiteral),
+    );
 
     async function getBalance() {
         console.log('[settings] fetching balances');
@@ -119,9 +131,7 @@
                         {#await getBalance() then}
                             <div>
                                 <h4 class="h4">
-                                    {parseFloat((Number(balance) / 1e7).toFixed(2))}<small
-                                        >XLM</small
-                                    >
+                                    {displayBalance}<small>XLM</small>
                                 </h4>
                             </div>
                         {/await}
