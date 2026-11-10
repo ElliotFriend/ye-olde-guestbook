@@ -22,16 +22,14 @@
     let balance: string = $state('0');
     let isFunding: boolean = $state(false);
 
-    // Truncate, so we never show more than the real balance
-    const balanceFormat = new Intl.NumberFormat(undefined, {
-        maximumFractionDigits: 2,
-        roundingMode: 'trunc',
-    });
+    const balanceFormat = new Intl.NumberFormat(undefined, { maximumFractionDigits: 2 });
 
-    // Stroops to XLM as an exact decimal string, no floating-point math
-    let displayBalance = $derived(
-        balanceFormat.format(Soroban.formatTokenAmount(balance, 7) as Intl.StringNumericLiteral),
-    );
+    // Stroops to XLM as an exact decimal string, then cut to two decimals with
+    // string math, so we never show more than the real balance
+    let displayBalance = $derived.by(() => {
+        const [whole, fraction = ''] = Soroban.formatTokenAmount(balance, 7).split('.');
+        return balanceFormat.format(Number(`${whole}.${fraction.slice(0, 2)}`));
+    });
 
     async function getBalance() {
         console.log('[settings] fetching balances');
